@@ -78,6 +78,12 @@ Use `--json` when a downstream step needs structured results. For a Kafka topic,
 use `systemlens topics trace <topic>`; for a Kafka topic or HTTP route, use the
 MCP `trace_message_flow` tool to follow indexed source sites.
 
+For the complete extraction contract, including supported Java/Spring forms,
+dynamic-value handling, exact REST target resolution, Kafka matching,
+module/OpenAPI attribution, MongoDB evidence and Strategy1 conventions, read
+[analysis-rules.md](references/analysis-rules.md). Never enable Strategy1 just
+to force an expected edge; verify the repository convention first.
+
 When the repository follows the documented `getTopics()` and
 `${kafka.topics.*.name}` conventions, use the explicit strategy:
 
@@ -152,6 +158,21 @@ systemlens export modules --html module-dependencies.html
 systemlens mcp
 ```
 
+When deterministic extraction cannot resolve repository-specific conventions,
+have the analysis agent produce a `systemlens-ai-graph-v1` manifest and render
+it without changing the persisted index:
+
+```bash
+systemlens export microservices --graph architecture.ai-graph.json --html architecture.html --root-path /path/to/checkout
+```
+
+The manifest must keep source evidence relative, include confidence and
+`confirmed`/`proposed`/`ambiguous`/`unresolved` status on every claim, and give
+an explicit reason for unresolved claims. SystemLens draws confirmed and
+proposed claims and puts ambiguous or unresolved claims in the Quality panel;
+it never turns an AI guess into persisted source topology. See
+[ai-graph.md](references/ai-graph.md) for the full contract and example.
+
 Exports consume the persisted snapshot; refresh the index deliberately when
 source changes must be reflected. Use `--root-path` only to resolve local source
 links at HTML export time.
@@ -164,5 +185,8 @@ changes before making further architecture claims.
 ## References
 
 - [settings.md](references/settings.md): project configuration.
+- [analysis-rules.md](references/analysis-rules.md): deterministic extraction,
+  conservative resolution and Strategy1 rules.
+- [ai-graph.md](references/ai-graph.md): versioned AI-produced graph manifests.
 - [management.md](references/management.md): installation, refresh and
   troubleshooting.
