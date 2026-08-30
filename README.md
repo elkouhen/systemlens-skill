@@ -12,6 +12,12 @@ iterative: index once with SystemLens, generate focused JSON fact passes, then
 re-import them idempotently so newer evidence replaces older AI facts without
 duplicating or overwriting source-derived facts.
 
+For complex codebases, the skill provides five focused passes: `boundaries`,
+`http`, `messaging`, `data`, and `deployment`. Boundaries runs first; HTTP,
+messaging, and data may then run in parallel; deployment closes the loop by
+mapping logical components to runtime resources. Each pass has its own namespace
+and replaceable JSON artifact.
+
 ## Install
 
 ```bash
@@ -36,6 +42,8 @@ code-analysis service is required.
 ## Contents
 
 - [`skills/systemlens/SKILL.md`](skills/systemlens/SKILL.md) — architecture-first workflow.
+- [`skills/systemlens/references/pass-profiles.md`](skills/systemlens/references/pass-profiles.md)
+  — boundaries, HTTP, messaging, data and deployment pass contracts.
 - [`skills/systemlens/references/settings.md`](skills/systemlens/references/settings.md) —
   project configuration.
 - [`skills/systemlens/references/management.md`](skills/systemlens/references/management.md)

@@ -1,4 +1,4 @@
 interface:
   display_name: "SystemLens"
   short_description: "Analyze services, topics, and databases"
-  default_prompt: "Use $systemlens to analyze this repository's microservices, APIs, message channels, and databases."
+  default_prompt: "Use $systemlens to analyze this repository with focused boundaries, HTTP, messaging, data, and deployment passes, then iteratively import the resulting architecture facts."

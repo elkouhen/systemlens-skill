@@ -92,6 +92,21 @@ confidence, plus a list of unresolved relationships. Include technology and
 ownership where the repository proves them; never infer ownership from naming
 alone.
 
+## Profiled architecture passes
+
+For a complex repository, use the focused pass profiles in
+[references/pass-profiles.md](references/pass-profiles.md). The recommended
+sequence is `boundaries`, then `http`, `messaging`, and `data` (in parallel when
+useful), followed by `deployment`. Each pass writes a replaceable artifact in
+its own namespace: `ai-boundaries`, `ai-http`, `ai-messaging`, `ai-data`, or
+`ai-deployment`. Keep `partial` as the default mode and use `complete` only
+after inspecting the full scope of that profile.
+
+Select only the profiles needed by the user's question, but run `boundaries`
+first when the repository vocabulary is not established. After each import,
+review the inserted/updated/removed counts and query the graph before handing
+facts to the next pass.
+
 ```bash
 systemlens microservices show order-service
 systemlens topics consumers orders.created
@@ -256,5 +271,6 @@ such as `provides`, `calls`, `reads`, `writes`, `publishes`, and `consumes`.
 - [analysis-rules.md](references/analysis-rules.md): deterministic extraction,
   conservative resolution and Strategy1 rules.
 - [ai-graph.md](references/ai-graph.md): versioned AI-produced graph manifests.
+- [pass-profiles.md](references/pass-profiles.md): focused architecture pass profiles.
 - [management.md](references/management.md): installation, refresh and
   troubleshooting.
