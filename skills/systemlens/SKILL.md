@@ -211,6 +211,10 @@ systemlens export modules --html module-dependencies.html
 systemlens mcp
 ```
 
+The HTML export includes persisted MCP graph facts. After enriching a graph,
+rerun the export command to display added `data_schema` and
+`message_channel` nodes and their relations.
+
 When deterministic extraction cannot resolve repository-specific conventions,
 have the analysis agent produce a `systemlens-ai-graph-v1` manifest and render
 it without changing the persisted index:
