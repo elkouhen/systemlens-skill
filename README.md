@@ -4,8 +4,10 @@ Coding-agent skill for `systemlens`, a local Java/Spring architecture explorer b
 on source ASTs.
 
 The skill guides an agent through initialization, incremental indexing and
-architecture exploration of microservices, HTTP APIs, Kafka topics, MongoDB
-collections, modules, dependencies and topology risks.
+architecture exploration of complex repositories: microservices, HTTP APIs,
+Kafka or other message channels, MongoDB or other databases, schemas, modules,
+dependencies and topology risks. Unsupported conventions can be completed with
+an evidence-based AI graph and reviewed MCP facts.
 
 ## Install
 

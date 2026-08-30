@@ -30,6 +30,11 @@ field such as `postgresql`, `redis`, `rabbitmq`, or `sqs`, and a `metadata`
 object for provider-specific identifiers. A data schema can be a MongoDB
 collection, SQL table, keyspace, bucket or another persisted data contract; a
 message channel can be a Kafka topic, queue, exchange, subscription or stream.
+For complex or polyglot repositories, service nodes may include `technology`,
+`module`, `runtime` and `deployment` metadata; data/message nodes may include
+`namespace`, `database`, `schema`, `table`, `collection`, `queue`, `exchange`,
+`consumer_group` or `binding` metadata. Use only fields established by source,
+configuration or deployment evidence.
 Allowed legacy edge kinds are `http`, `event`, and `data`; MCP enrichment also
 accepts relation labels such as `provides`, `calls`, `reads`, `writes`,
 `publishes`, and `consumes`.
@@ -39,6 +44,13 @@ Every edge must include `status` (`confirmed`, `proposed`, `ambiguous`, or
 `reason` for ambiguous or unresolved claims. Include short relative source
 evidence whenever available. If a convention cannot be resolved to one target,
 emit an ambiguous/unresolved edge instead of choosing a likely service.
+
+Prefer these edge semantics when enriching a complex repository:
+`serves`/`calls` for HTTP, `publishes`/`consumes` for channels, and
+`reads`/`writes` for data schemas. Keep the channel or schema as an explicit
+node when it is identifiable, so the graph can show fan-in, fan-out and shared
+data stores. Add `reason` to proposed claims too when the claim depends on a
+repository convention rather than a literal reference.
 
 Generate it with the code revision and analysis method in `generated_by`. Keep
 the graph bounded and use stable IDs. Do not include source contents beyond a

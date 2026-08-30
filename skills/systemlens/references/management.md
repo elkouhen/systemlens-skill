@@ -1,6 +1,9 @@
 # systemlens management
 
 `systemlens` indexes Java/Spring architecture facts locally from source ASTs.
+For complex or polyglot repositories, use it as the deterministic baseline and
+add unsupported microservice, messaging and database facts through the AI graph
+or reviewed MCP enrichment workflow.
 
 ## Installation
 
@@ -63,3 +66,8 @@ For another MCP-compatible client:
 - Absent index: run `systemlens index`.
 - Unresolved facts: run `systemlens analyze indexing-issues --json` and inspect
   the recorded source evidence; do not replace them with guessed dependencies.
+- For a repository-wide inventory, review source, build descriptors,
+  application configuration, migrations/schema files, Dockerfiles and
+  Kubernetes/Helm/Terraform manifests in addition to indexed AST results.
+  Re-run `coverage` after deciding that a file family is outside the configured
+  perimeter.

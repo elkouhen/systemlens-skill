@@ -1,11 +1,14 @@
 ---
 name: systemlens
-description: "Guide architecture-first exploration of a repository with SystemLens. Use when asked to index code, inspect or enrich services, HTTP APIs, data schemas, message channels, build modules, dependencies, unresolved facts, or architecture exports."
+description: "Guide architecture-first analysis of complex repositories with SystemLens, including microservices, HTTP APIs, message topics or queues, databases, schemas, dependencies, unresolved facts, and architecture exports."
 ---
 
 # systemlens Architecture Explorer
 
-Use `systemlens` to query a local, persisted Java/Spring architecture inventory.
+Use `systemlens` to query a local, persisted architecture inventory, primarily
+for Java/Spring repositories. For polyglot or convention-heavy repositories,
+combine the deterministic inventory with the AI graph and MCP enrichment paths
+below; do not present unsupported source as if it were deterministically indexed.
 Start with the inventory before inspecting implementation files. It describes
 services, modules, HTTP APIs, data schemas, message channels and their
 evidenced relationships. MongoDB collections and Kafka topics are concrete
@@ -60,6 +63,34 @@ Start with the indexed architecture and retrieve source evidence only when neede
 6. `systemlens analyze audit` — assess static topology risks.
 7. `systemlens analyze microservices impact <name>` or `path <source> <target>` —
    inspect dependencies and impact paths.
+
+For a complex codebase, build the analysis in passes and keep the result
+evidence-based:
+
+1. Establish the repository perimeter and build/deployment units: services,
+   modules, applications, Docker/Kubernetes/Helm manifests and configuration
+   files. Record the source path that establishes each service boundary.
+2. For every service, inventory inbound/outbound HTTP, published/consumed
+   channels, and read/write data stores. Separate a logical service from its
+   deployable module, database/schema, table/collection, topic/queue/exchange,
+   and external dependency.
+3. Correlate both directions: producer → channel → consumer, service → API →
+   service, and service → data schema. Require a concrete shared identifier
+   before creating an edge; retain candidate links as ambiguous when several
+   targets match.
+4. Run `coverage`, `indexing-issues` and `audit`, then inspect source evidence
+   for every important conclusion. Report blind spots (unsupported language,
+   generated code, dynamic configuration, missing manifests or runtime-only
+   wiring) explicitly.
+5. If deterministic extraction is incomplete, create a bounded AI graph and
+   optionally persist only reviewed claims through MCP. Keep the deterministic
+   snapshot and AI/runtime observations distinguishable in the final report.
+
+The minimum useful deliverable for a complex repository is a service matrix
+with service boundary, APIs, channels, data stores, evidence paths and
+confidence, plus a list of unresolved relationships. Include technology and
+ownership where the repository proves them; never infer ownership from naming
+alone.
 
 ```bash
 systemlens microservices show order-service
@@ -118,7 +149,9 @@ deterministic extractors:
 An agent can use this prompt as a bounded starting point:
 
 > Analyse the code and configuration under this directory. First identify
-> services, external systems, event topics, HTTP routes and data stores. Then
+> all deployable services/modules, external systems, event topics or queues,
+> HTTP routes, database schemas/tables/collections and their read/write sites.
+> Then
 > write `architecture.ai-graph.json` in `systemlens-ai-graph-v1` format. Keep
 > all evidence paths relative to the directory, include short reasons for
 > ambiguous or unresolved relationships, and do not guess dynamic targets.

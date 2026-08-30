@@ -2,7 +2,9 @@
 
 This document is the operational contract for asking an agent to analyse code
 for SystemLens. It describes what can become a fact, what remains unresolved,
-and when Strategy1 is allowed.
+and when Strategy1 is allowed. It also defines the minimum evidence needed to
+complete a complex repository view with microservices, channels and databases
+that are not covered by the built-in Java/Spring extractors.
 
 ## Evidence and indexing perimeter
 
@@ -16,6 +18,14 @@ and when Strategy1 is allowed.
   relative source path, line range, snippet, module and optional qualified name.
 - A parse failure is a visible extraction diagnostic; it is not permission to
   guess facts from the file name or surrounding code.
+- In a polyglot repository, treat build files, deployment manifests and source
+  directories as complementary evidence. A directory or image name alone does
+  not prove a deployable service. Prefer an executable entry point, build
+  target, container image, deployment object or explicit service registration.
+- Generated clients, ORM models and schema migrations are evidence of a
+  contract or store, not automatically evidence of a live call or ownership.
+  Mark generated/runtime-only relationships separately when their target is not
+  visible in source.
 - Reindex after source/configuration changes. Use `--full` after broad changes
   or extractor upgrades. A changed Spring configuration, build descriptor,
   extraction profile or topic strategy invalidates dependent facts.
@@ -62,6 +72,58 @@ from an explicit listener parameter or producer/client generic signature.
   consumer. The graph displays the service → topic → service path.
 - Missing payload type is unknown, not an inferred DTO.
 - Duplicate sites are deduplicated by their stable role/topic/path/line ID.
+
+## Generic message channels
+
+When enriching beyond deterministic Kafka extraction, use `kind=message_channel`
+for a concrete topic, queue, exchange, subscription or stream. Supported
+evidence includes producer/consumer annotations, client calls, binding
+configuration, infrastructure manifests and schema/contract files. Capture the
+provider (`kafka`, `rabbitmq`, `sqs`, `sns`, `redis`, `nats` or another explicit
+technology), namespace/cluster when known, and the routing identifier in
+metadata. Distinguish an exchange from its queues and a topic from a consumer
+group; do not collapse them into one node.
+
+- A literal or safely resolved configuration value is concrete.
+- A binding with a wildcard, computed routing key or environment-only value is
+  unresolved unless the value is available in the indexed repository.
+- A shared payload schema can be linked to a channel, but matching field names
+  or serializer classes do not prove producer/consumer compatibility.
+- Runtime-observed messaging destinations remain observations and must not be
+  promoted to confirmed static topics without source or configuration evidence.
+
+## Databases and data schemas
+
+For data stores not covered by the MongoDB extractor, use
+`kind=data_schema` and `technology` such as `postgresql`, `mysql`, `oracle`,
+`sqlserver`, `redis`, `elasticsearch`, `s3` or another explicit provider.
+Represent the narrowest proven resource: database/schema/table or view,
+collection, index, keyspace, bucket or search index. Record migrations,
+entities/ORM mappings, repository/DAO queries, client configuration and
+deployment-managed stores as separate evidence when applicable.
+
+- A migration proves that a schema object is declared; a query or repository
+  proves access; neither alone proves which service owns the data.
+- Create `reads`/`writes` relations only when the access site and resource can
+  be tied to the same concrete identifier. A database URL without a database
+  or schema is a store hint, not a table-level edge.
+- Treat shared databases as shared dependencies, not service-to-service calls.
+  Flag cross-service writes, undocumented ownership, destructive migrations and
+  incompatible schema changes as review items when evidence supports them.
+- Keep secrets, connection strings with credentials and raw SQL result data out
+  of manifests and reports; redact values while preserving the property name
+  and relative evidence path.
+
+## Correlation and quality
+
+Use stable identities based on normalized coordinates (service/module,
+provider, namespace and resource identifier). Correlate only on explicit host,
+route, binding, topic/queue, schema/table/collection or manifest references.
+For every inferred or enriched edge record the evidence path, line when
+available, confidence, and a short rationale. If more than one target remains
+possible, emit `ambiguous`; if the identifier is dynamic or absent, emit
+`unresolved`. Never turn a common class, table or topic suffix into a confirmed
+relationship.
 
 ## Strategy1 (explicit opt-in)
 
