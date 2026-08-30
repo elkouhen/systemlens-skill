@@ -1,14 +1,15 @@
 ---
 name: systemlens
-description: "Guide architecture-first exploration of a Java/Spring repository with SystemLens. Use when asked to use SystemLens or to inspect an indexed project's microservices, HTTP APIs, Kafka topics, MongoDB collections, build modules, dependency impact, architecture coverage, unresolved facts, message flows, or architecture exports."
+description: "Guide architecture-first exploration of a repository with SystemLens. Use when asked to index code, inspect or enrich services, HTTP APIs, data schemas, message channels, build modules, dependencies, unresolved facts, or architecture exports."
 ---
 
 # systemlens Architecture Explorer
 
 Use `systemlens` to query a local, persisted Java/Spring architecture inventory.
 Start with the inventory before inspecting implementation files. It describes
-services, modules, HTTP APIs, Kafka topics, MongoDB collections and their
-evidenced relationships.
+services, modules, HTTP APIs, data schemas, message channels and their
+evidenced relationships. MongoDB collections and Kafka topics are concrete
+technology views of the generic schema/channel vocabulary.
 
 ## Documentation language
 
@@ -74,9 +75,61 @@ systemlens analyze audit
 Kafka message types are shown only when explicit in the source. A missing type
 is unknown, not an invitation to infer it from a topic name or serializer.
 
-Use `--json` when a downstream step needs structured results. For a Kafka topic,
-use `systemlens topics trace <topic>`; for a Kafka topic or HTTP route, use the
-MCP `trace_message_flow` tool to follow indexed source sites.
+## Simple AI-assisted graph workflow
+
+Use this path when the goal is simply to analyse one directory and obtain a
+graph, including repositories whose conventions are not covered by the
+deterministic extractors:
+
+1. Set `PROJECT_ROOT` to the repository being analysed and run the normal
+   SystemLens baseline (`doctor`, `init` if needed, then `index`). Keep
+   Strategy1 opt-in; do not enable it unless the repository follows the rules
+   in [analysis-rules.md](references/analysis-rules.md).
+2. Inspect the repository source, configuration and manifests as an analysis
+   agent. Produce `PROJECT_ROOT/architecture.ai-graph.json` using the
+   `systemlens-ai-graph-v1` contract. Use relative evidence paths, stable IDs,
+   and keep uncertain convention matches as `ambiguous` or `unresolved`.
+3. Prefer the MCP enrichment workflow after indexing: call
+   `graph_fact_exists` before every proposed node or edge, then call
+   `add_graph_fact` only when `exists` is false. Use `confidence`, relative
+   `evidence_path` and `note`, review with `list_graph_facts`, and remove only
+   MCP assertions with `remove_graph_fact`.
+   Use `kind=data_schema` or `kind=message_channel` plus `technology` for
+   middleware not covered by the built-in extractors (for example SQL, Redis,
+   RabbitMQ or SQS); keep provider-specific details in `metadata`.
+4. Read the merged result with `architecture_graph`. A later
+   `index_repository` refresh preserves the enrichment layer.
+5. For a portable file-based handoff, import the analysis artifact into
+   SystemLens's HTML renderer:
+
+   ```bash
+   cd "$PROJECT_ROOT"
+   systemlens export microservices \
+     --graph architecture.ai-graph.json \
+     --html architecture.html \
+     --root-path "$PROJECT_ROOT"
+   ```
+
+6. Open `architecture.html`. Confirmed and proposed relations are drawn;
+   ambiguous and unresolved claims are available in the Quality panel. This
+   import is read-only: it does not merge AI claims into `.systemlens/` or
+   replace the deterministic inventory.
+
+An agent can use this prompt as a bounded starting point:
+
+> Analyse the code and configuration under this directory. First identify
+> services, external systems, event topics, HTTP routes and data stores. Then
+> write `architecture.ai-graph.json` in `systemlens-ai-graph-v1` format. Keep
+> all evidence paths relative to the directory, include short reasons for
+> ambiguous or unresolved relationships, and do not guess dynamic targets.
+> Finally run `systemlens export microservices --graph architecture.ai-graph.json
+> --html architecture.html --root-path .`.
+
+Use `--json` when a downstream step needs structured results. The current MCP
+surface is intentionally focused on the index/enrich workflow: call
+`index_repository`, then `architecture_graph` for the complete dependency
+graph. The returned graph includes legacy API, MongoDB collection and Kafka
+associations as well as generic schema/channel facts.
 
 For the complete extraction contract, including supported Java/Spring forms,
 dynamic-value handling, exact REST target resolution, Kafka matching,
@@ -177,10 +230,20 @@ Exports consume the persisted snapshot; refresh the index deliberately when
 source changes must be reflected. Use `--root-path` only to resolve local source
 links at HTML export time.
 
-The MCP server exposes the same indexed architecture. Start the agent from the
-initialized repository so it can locate `.systemlens/config.yml` and its local
-index. Query it before an edit, and call `reindex_architecture` after relevant
-changes before making further architecture claims.
+The MCP server is intentionally a control surface for the two-phase workflow:
+call `index_repository` first, then call `graph_fact_exists` before enriching
+with `add_graph_fact` using `fact_type=node` or `fact_type=edge`. The add
+operation rejects semantic duplicates atomically, so this remains safe when
+multiple agents work on the same repository. Use `architecture_graph` for the
+merged generic graph. `remove_graph_fact` never deletes source-derived facts;
+it only removes an assertion previously added through MCP.
+
+For a data resource, use `kind=data_schema` and set `technology` to
+`mongodb`, `postgresql`, `redis`, `s3`, or another provider. For messaging,
+use `kind=message_channel` and set `technology` to `kafka`, `rabbitmq`, `sqs`,
+or another provider. Put provider-specific identifiers in `metadata`, for
+example `{database, schema, table}` or `{exchange, queue}`. Use edge kinds
+such as `provides`, `calls`, `reads`, `writes`, `publishes`, and `consumes`.
 
 ## References
 

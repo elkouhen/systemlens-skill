@@ -14,20 +14,25 @@ absolute machine paths.
   "generated_by": {"agent": "agent-name", "model": "model-id", "source_revision": "commit-or-unknown"},
   "nodes": [
     {"id": "orders", "kind": "service", "name": "orders", "evidence": [{"path": "src/main/java/Orders.java", "start_line": 12, "end_line": 20}]},
+    {"id": "billing", "kind": "service", "name": "billing"},
     {"id": "orders-created", "kind": "topic", "name": "orders.created"}
   ],
   "edges": [
-    {"id": "orders-publishes-created", "source": "orders", "target": "orders", "kind": "event", "channel": "orders.created", "status": "confirmed", "confidence": "high", "message_type": "OrderCreated", "evidence": [{"path": "src/main/java/Orders.java", "start_line": 42, "end_line": 42}]}
+    {"id": "orders-to-billing", "source": "orders", "target": "billing", "kind": "event", "channel": "orders.created", "status": "confirmed", "confidence": "high", "message_type": "OrderCreated", "evidence": [{"path": "src/main/java/Orders.java", "start_line": 42, "end_line": 42}]}
   ]
 }
 ```
 
-Allowed node kinds are `service`, `external_service`, `topic`, and
-`collection`. A collection must have an `owner` naming a service. Allowed
-edge kinds are `http`, `event`, and `data`; HTTP and event edges connect two
-services, while data edges connect a service to an owned collection. Event
-edges use `channel` for the exact topic or channel expression. Topic nodes are
-optional metadata and are derived visually from event channels.
+Allowed node kinds in the legacy file export are `service`, `external_service`,
+`topic`, and `collection`. For the persistent MCP enrichment workflow, prefer
+the generic node kinds `data_schema` and `message_channel`, with a `technology`
+field such as `postgresql`, `redis`, `rabbitmq`, or `sqs`, and a `metadata`
+object for provider-specific identifiers. A data schema can be a MongoDB
+collection, SQL table, keyspace, bucket or another persisted data contract; a
+message channel can be a Kafka topic, queue, exchange, subscription or stream.
+Allowed legacy edge kinds are `http`, `event`, and `data`; MCP enrichment also
+accepts relation labels such as `provides`, `calls`, `reads`, `writes`,
+`publishes`, and `consumes`.
 
 Every edge must include `status` (`confirmed`, `proposed`, `ambiguous`, or
 `unresolved`) and `confidence` (`high`, `medium`, `low`, or `unknown`). Include
@@ -52,3 +57,9 @@ SystemLens displays confirmed and proposed claims. Ambiguous and unresolved
 claims are kept out of the dependency lines and shown in the Quality panel.
 The manifest is read-only input and is not persisted into the SQLite source
 index.
+
+For an AI analysis that should be persisted and visible in the complete MCP
+graph, call `graph_fact_exists` before `add_graph_fact` for each confirmed node
+and edge instead of relying only on this read-only manifest. Review with
+`list_graph_facts` and
+read the merged topology with `architecture_graph`.
