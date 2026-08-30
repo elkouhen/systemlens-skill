@@ -72,6 +72,9 @@ from an explicit listener parameter or producer/client generic signature.
   consumer. The graph displays the service → topic → service path.
 - Missing payload type is unknown, not an inferred DTO.
 - Duplicate sites are deduplicated by their stable role/topic/path/line ID.
+- Across iterative AI passes, duplicate logical facts are reconciled by stable
+  `(namespace, fact_type, id)` identity. The newest imported value replaces the
+  previous AI assertion; source-derived facts remain immutable.
 
 ## Generic message channels
 

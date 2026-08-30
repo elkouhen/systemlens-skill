@@ -1,6 +1,6 @@
 ---
 name: systemlens
-description: "Guide architecture-first analysis of complex repositories with SystemLens, including microservices, HTTP APIs, message topics or queues, databases, schemas, dependencies, unresolved facts, and architecture exports."
+description: "Guide iterative architecture analysis with SystemLens, enriching an indexed repository with replaceable JSON facts about microservices, APIs, message topics or queues, databases, schemas, dependencies, and exports."
 ---
 
 # systemlens Architecture Explorer
@@ -106,31 +106,37 @@ systemlens analyze audit
 Kafka message types are shown only when explicit in the source. A missing type
 is unknown, not an invitation to infer it from a topic name or serializer.
 
-## Simple AI-assisted graph workflow
+## Iterative AI fact workflow
 
-Use this path when the goal is simply to analyse one directory and obtain a
-graph, including repositories whose conventions are not covered by the
-deterministic extractors:
+Use this path to progressively complete a SystemLens model when repository
+conventions are not covered by deterministic extractors. The persisted model
+combines the SystemLens index with the latest accepted AI facts:
 
 1. Set `PROJECT_ROOT` to the repository being analysed and run the normal
    SystemLens baseline (`doctor`, `init` if needed, then `index`). Keep
    Strategy1 opt-in; do not enable it unless the repository follows the rules
    in [analysis-rules.md](references/analysis-rules.md).
-2. Inspect the repository source, configuration and manifests as an analysis
-   agent. Produce `PROJECT_ROOT/architecture.ai-graph.json` using the
-   `systemlens-ai-graph-v1` contract. Use relative evidence paths, stable IDs,
-   and keep uncertain convention matches as `ambiguous` or `unresolved`.
-3. Prefer the MCP enrichment workflow after indexing: call
-   `graph_fact_exists` before every proposed node or edge, then call
-   `add_graph_fact` only when `exists` is false. Use `confidence`, relative
-   `evidence_path` and `note`, review with `list_graph_facts`, and remove only
-   MCP assertions with `remove_graph_fact`.
-   Use `kind=data_schema` or `kind=message_channel` plus `technology` for
-   middleware not covered by the built-in extractors (for example SQL, Redis,
-   RabbitMQ or SQS); keep provider-specific details in `metadata`.
-4. Read the merged result with `architecture_graph`. A later
-   `index_repository` refresh preserves the enrichment layer.
-5. For a portable file-based handoff, import the analysis artifact into
+2. On each analysis pass, inspect the relevant source, configuration,
+   manifests and previous findings, then produce a JSON fact file such as
+   `architecture.ai-graph.pass-001.json` using the
+   `systemlens-ai-graph-v1` contract. Use stable IDs and relative evidence
+   paths. A later pass may repeat a fact with better evidence or corrected
+   metadata; it must retain the same identity for the same logical fact.
+3. Validate the JSON before import: IDs are unique, edge endpoints exist,
+   statuses/confidence are valid, evidence is relative, and
+   ambiguous/unresolved claims include a reason.
+4. Import the complete fact file through the SystemLens/MCP enrichment surface
+   as an upsert/reconciliation operation. Match existing AI facts by stable
+   identity and replace their full value, evidence, status, confidence and
+   metadata. Do not append a second copy and do not skip an improved fact just
+   because it already exists.
+5. Scope replacement to facts managed by the current JSON producer or
+   namespace. Never delete or overwrite source-derived SystemLens facts, and
+   never delete unrelated AI facts from earlier passes. If the available MCP
+   surface only supports add/remove, use a bounded list → remove matching AI
+   assertion → add replacement sequence, then verify the result.
+6. Read the merged result with `architecture_graph`, review the import summary
+   and `list_graph_facts`, then export the current model if needed:
    SystemLens's HTML renderer:
 
    ```bash
@@ -141,10 +147,10 @@ deterministic extractors:
      --root-path "$PROJECT_ROOT"
    ```
 
-6. Open `architecture.html`. Confirmed and proposed relations are drawn;
-   ambiguous and unresolved claims are available in the Quality panel. This
-   import is read-only: it does not merge AI claims into `.systemlens/` or
-   replace the deterministic inventory.
+7. Open `architecture.html`. Confirmed and proposed relations are drawn;
+   ambiguous and unresolved claims are available in the Quality panel. The
+   HTML graph is read-only; importing the JSON is what updates the persisted
+   enrichment layer.
 
 An agent can use this prompt as a bounded starting point:
 
@@ -155,8 +161,10 @@ An agent can use this prompt as a bounded starting point:
 > write `architecture.ai-graph.json` in `systemlens-ai-graph-v1` format. Keep
 > all evidence paths relative to the directory, include short reasons for
 > ambiguous or unresolved relationships, and do not guess dynamic targets.
-> Finally run `systemlens export microservices --graph architecture.ai-graph.json
-> --html architecture.html --root-path .`.
+> Give the file a stable pass name, validate it, import it as a replacement of
+> the facts in its producer namespace, verify the merged graph, and finally run
+> `systemlens export microservices --graph architecture.ai-graph.json --html
+> architecture.html --root-path .` when an HTML handoff is needed.
 
 Use `--json` when a downstream step needs structured results. The current MCP
 surface is intentionally focused on the index/enrich workflow: call
@@ -267,13 +275,13 @@ Exports consume the persisted snapshot; refresh the index deliberately when
 source changes must be reflected. Use `--root-path` only to resolve local source
 links at HTML export time.
 
-The MCP server is intentionally a control surface for the two-phase workflow:
-call `index_repository` first, then call `graph_fact_exists` before enriching
-with `add_graph_fact` using `fact_type=node` or `fact_type=edge`. The add
-operation rejects semantic duplicates atomically, so this remains safe when
-multiple agents work on the same repository. Use `architecture_graph` for the
-merged generic graph. `remove_graph_fact` never deletes source-derived facts;
-it only removes an assertion previously added through MCP.
+The MCP server is a control surface for the two-layer workflow: call
+`index_repository` first, then reconcile JSON facts into the enrichment layer
+using `fact_type=node` or `fact_type=edge`. Reconciliation is idempotent: the
+same stable identity updates the existing AI assertion instead of creating a
+duplicate. Use `architecture_graph` for the merged generic graph.
+`remove_graph_fact` is limited to matching AI assertions during replacement or
+explicit cleanup; it never deletes source-derived facts.
 
 For a data resource, use `kind=data_schema` and set `technology` to
 `mongodb`, `postgresql`, `redis`, `s3`, or another provider. For messaging,

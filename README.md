@@ -7,7 +7,10 @@ The skill guides an agent through initialization, incremental indexing and
 architecture exploration of complex repositories: microservices, HTTP APIs,
 Kafka or other message channels, MongoDB or other databases, schemas, modules,
 dependencies and topology risks. Unsupported conventions can be completed with
-an evidence-based AI graph and reviewed MCP facts.
+an evidence-based AI graph and reviewed MCP facts. The intended workflow is
+iterative: index once with SystemLens, generate focused JSON fact passes, then
+re-import them idempotently so newer evidence replaces older AI facts without
+duplicating or overwriting source-derived facts.
 
 ## Install
 
