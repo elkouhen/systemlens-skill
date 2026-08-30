@@ -141,6 +141,8 @@ combines the SystemLens index with the latest accepted AI facts:
 
    ```bash
    cd "$PROJECT_ROOT"
+   systemlens import-facts architecture.ai-graph.pass-001.json \
+     --namespace ai-architecture
    systemlens export microservices \
      --graph architecture.ai-graph.json \
      --html architecture.html \
@@ -166,11 +168,10 @@ An agent can use this prompt as a bounded starting point:
 > `systemlens export microservices --graph architecture.ai-graph.json --html
 > architecture.html --root-path .` when an HTML handoff is needed.
 
-Use `--json` when a downstream step needs structured results. The current MCP
-surface is intentionally focused on the index/enrich workflow: call
-`index_repository`, then `architecture_graph` for the complete dependency
-graph. The returned graph includes legacy API, MongoDB collection and Kafka
-associations as well as generic schema/channel facts.
+Use `--json` when a downstream step needs structured results. The MCP surface
+supports the same workflow through `index_repository`, `import_graph_facts` and
+`architecture_graph`. The returned graph includes legacy API, MongoDB
+collection and Kafka associations as well as generic schema/channel facts.
 
 For the complete extraction contract, including supported Java/Spring forms,
 dynamic-value handling, exact REST target resolution, Kafka matching,
@@ -200,49 +201,6 @@ Every build module independently inventories all valid YAML or JSON OpenAPI
 documents under its own `src/main/resources/openapi/` directory. Contract file
 names do not need to be `openapi.*` or `swagger.*`.
 
-## Runtime APM investigation
-
-When read-only Elasticsearch access is configured and the user needs observed
-runtime service dependencies, errors, or latency, export a bounded APM digest:
-
-```bash
-systemlens apm doctor --json
-systemlens apm export --since 1h --environment production --out apm-digest.json
-```
-
-Configure `SYSTEMLENS_ELASTICSEARCH_URL` and
-`SYSTEMLENS_ELASTICSEARCH_API_KEY` in the shell; do not put credentials in a
-command, report, or prompt. The digest contains `service_destination` metric
-aggregates only, never raw spans or request data. It is a one-shot observed
-dataset: it is not persisted in the SystemLens index, surfaced through MCP, or
-evidence for a static source relationship. Check `coverage` before treating an
-absent relation as conclusive, because the aggregation and export are bounded.
-
-For a human performance investigation, produce the explicit runtime report
-instead of asking an agent to interpret raw APM events:
-
-```bash
-systemlens apm report --since 1h --environment production --html apm-runtime.html
-```
-
-The report ranks service and transaction tail latency with average and P95 and
-provides an interactive directed service map. Circle nodes are observed
-services; diamond nodes are observed messaging targets. Arrows go from source
-service to target, are labelled HTTP or `send`, and carry volume and aggregate
-risk styling. A messaging target is not claimed to be a confirmed broker topic.
-Selecting a service reveals its HTTP (`request` or `http`), messaging
-(`messaging`), and other transaction aggregates plus inbound and outbound
-dependencies. The map does not claim that a transaction called a dependency;
-that would require a separately approved sampled-span aggregate. Dependency P95
-is intentionally unavailable in this first pass.
-The report contains aggregates and a bounded Timeline projection of recorded
-transaction fields. It never includes `_source`, trace IDs, request data,
-headers, bodies, logs, or error messages. It is observed runtime context, not
-evidence of a static source relationship; review its window and coverage before
-drawing conclusions.
-Its interactive graph reuses the Graphology/Sigma.js CDN assets of the
-architecture export and retains an embedded SVG fallback when they are offline.
-
 ## Exports and MCP
 
 ```bash
@@ -257,8 +215,9 @@ rerun the export command to display added `data_schema` and
 `message_channel` nodes and their relations.
 
 When deterministic extraction cannot resolve repository-specific conventions,
-have the analysis agent produce a `systemlens-ai-graph-v1` manifest and render
-it without changing the persisted index:
+have the analysis agent produce a `systemlens-ai-graph-v1` manifest. Render it
+temporarily when reviewing it, or import it to the enrichment layer when the
+facts have been validated:
 
 ```bash
 systemlens export microservices --graph architecture.ai-graph.json --html architecture.html --root-path /path/to/checkout
@@ -268,7 +227,8 @@ The manifest must keep source evidence relative, include confidence and
 `confirmed`/`proposed`/`ambiguous`/`unresolved` status on every claim, and give
 an explicit reason for unresolved claims. SystemLens draws confirmed and
 proposed claims and puts ambiguous or unresolved claims in the Quality panel;
-it never turns an AI guess into persisted source topology. See
+it never turns an AI guess into persisted source topology; persistence occurs
+only through explicit `import-facts`/`import_graph_facts`. See
 [ai-graph.md](references/ai-graph.md) for the full contract and example.
 
 Exports consume the persisted snapshot; refresh the index deliberately when

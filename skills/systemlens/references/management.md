@@ -66,6 +66,9 @@ For another MCP-compatible client:
 - Absent index: run `systemlens index`.
 - Unresolved facts: run `systemlens analyze indexing-issues --json` and inspect
   the recorded source evidence; do not replace them with guessed dependencies.
+- Reconcile a validated AI manifest with
+  `systemlens import-facts FILE --namespace NAME`; use `--complete` only when
+  the file is a complete snapshot for that namespace.
 - For a repository-wide inventory, review source, build descriptors,
   application configuration, migrations/schema files, Dockerfiles and
   Kubernetes/Helm/Terraform manifests in addition to indexed AST results.

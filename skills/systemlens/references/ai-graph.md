@@ -93,8 +93,9 @@ systemlens export microservices \
 
 SystemLens displays confirmed and proposed claims. Ambiguous and unresolved
 claims are kept out of the dependency lines and shown in the Quality panel.
-The manifest is read-only input and is not persisted into the SQLite source
-index.
+The manifest is never merged into the SQLite source-derived tables. It can be
+persisted explicitly into the separate enrichment layer with
+`systemlens import-facts` or the MCP `import_graph_facts` tool.
 
 For an AI analysis that should be persisted and visible in the complete MCP
 graph, reconcile every node and edge by stable identity. `graph_fact_exists`
