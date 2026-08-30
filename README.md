@@ -41,12 +41,13 @@ code-analysis service is required.
 
 ## Contents
 
-- [`skills/systemlens/SKILL.md`](skills/systemlens/SKILL.md) — architecture-first workflow.
-- [`skills/systemlens/references/pass-profiles.md`](skills/systemlens/references/pass-profiles.md)
+- [`PRD.md`](PRD.md) — product requirements and completion objective for the skill.
+- [`SKILL.md`](SKILL.md) — architecture-first workflow.
+- [`references/pass-profiles.md`](references/pass-profiles.md)
   — boundaries, HTTP, messaging, data and deployment pass contracts.
-- [`skills/systemlens/references/settings.md`](skills/systemlens/references/settings.md) —
+- [`references/settings.md`](references/settings.md) —
   project configuration.
-- [`skills/systemlens/references/management.md`](skills/systemlens/references/management.md)
+- [`references/management.md`](references/management.md)
   — installation, MCP setup and troubleshooting.
 
 ## MCP
