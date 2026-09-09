@@ -47,7 +47,7 @@ For another MCP-compatible client:
 - After code changes: run `systemlens index`.
 - After a broad refactor or extractor upgrade: run `systemlens index --full`.
 - Use `systemlens microservices`, `systemlens topics`, `systemlens apis`, `systemlens mongodb`,
-  `systemlens dtos`, `systemlens modules`, `systemlens analyze coverage`,
+  `systemlens dtos`, `systemlens projects`, `systemlens analyze coverage`,
   `systemlens analyze indexing-issues` and `systemlens analyze audit` for architecture questions.
 - Use `systemlens index --topic-strategy strategy1` only for repositories that
   follow the documented Strategy1 Kafka and REST conventions.
@@ -56,7 +56,7 @@ For another MCP-compatible client:
   `model-xxx/src/main/resources/openapi/`. Contract file names in that module
   may differ from `xxx`; run `systemlens index --full --topic-strategy strategy1`
   after changing this declaration or those contracts.
-- Every build module inventories all valid YAML or JSON OpenAPI contracts in
+- Every build project inventories all valid YAML or JSON OpenAPI contracts in
   its own `src/main/resources/openapi/` directory, regardless of filename.
 
 ## Troubleshooting

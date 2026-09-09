@@ -83,7 +83,7 @@ for a concrete topic, queue, exchange, subscription or stream. Supported
 evidence includes producer/consumer annotations, client calls, binding
 configuration, infrastructure manifests and schema/contract files. Capture the
 provider (`kafka`, `rabbitmq`, `sqs`, `sns`, `redis`, `nats` or another explicit
-technology), namespace/cluster when known, and the routing identifier in
+technology), provider scope when known, and the routing identifier in
 metadata. Distinguish an exchange from its queues and a topic from a consumer
 group; do not collapse them into one node.
 
@@ -191,9 +191,9 @@ workspace. Strategy1 adds the following facts:
   `model-xxx/src/main/resources/openapi/`.
 - Candidates must parse as OpenAPI and contain a `paths` object. Invalid
   candidates are ignored, not fabricated into APIs.
-- Published operations remain attributed to the module that owns the `.rest`
+- Published operations remain attributed to the project that owns the `.rest`
   declaration, while the contract path remains its own evidence.
-- Independently of Strategy1, each build module inventories valid OpenAPI
+- Independently of Strategy1, each build project inventories valid OpenAPI
   YAML/JSON files under its own `src/main/resources/openapi/`, regardless of
   the filename.
 

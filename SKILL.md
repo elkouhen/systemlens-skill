@@ -112,7 +112,7 @@ systemlens microservices show order-service
 systemlens topics consumers orders.created
 systemlens apis consumers 'POST /payments'
 systemlens mongodb services orders
-systemlens modules show shared-domain
+systemlens projects show shared-domain
 systemlens analyze coverage
 systemlens analyze indexing-issues
 systemlens analyze audit
@@ -190,7 +190,7 @@ collection and Kafka associations as well as generic schema/channel facts.
 
 For the complete extraction contract, including supported Java/Spring forms,
 dynamic-value handling, exact REST target resolution, Kafka matching,
-module/OpenAPI attribution, MongoDB evidence and Strategy1 conventions, read
+project/OpenAPI attribution, MongoDB evidence and Strategy1 conventions, read
 [analysis-rules.md](references/analysis-rules.md). Never enable Strategy1 just
 to force an expected edge; verify the repository convention first.
 
@@ -212,7 +212,7 @@ contract under `model-xxx/src/main/resources/openapi/`; contract file names do
 not need to match `xxx`. Reindex with `--full --topic-strategy strategy1` after
 adding or moving a declaration or shared contract.
 
-Every build module independently inventories all valid YAML or JSON OpenAPI
+Every build project independently inventories all valid YAML or JSON OpenAPI
 documents under its own `src/main/resources/openapi/` directory. Contract file
 names do not need to be `openapi.*` or `swagger.*`.
 
@@ -221,7 +221,7 @@ names do not need to be `openapi.*` or `swagger.*`.
 ```bash
 systemlens export microservices --html architecture.html
 systemlens export microservices --c4 likec4-project
-systemlens export modules --html module-dependencies.html
+systemlens export projects --html project-dependencies.html
 systemlens mcp
 ```
 
