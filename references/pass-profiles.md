@@ -64,13 +64,14 @@ Run the profiles in this order:
 1. `boundaries` establishes the service, module, external-system, and runtime
    vocabulary.
 2. `http`, `messaging`, and `data` can run in parallel once boundaries exist.
-3. `deployment` maps logical components to the environments and runtime
+3. `flows` reconstructs bounded potential behaviour from source evidence.
+4. `deployment` maps logical components to the environments and runtime
    resources that host them.
 
 The default sequence is therefore:
 
 ```text
-boundaries → (http || messaging || data) → deployment
+boundaries → (http || messaging || data) → flows → deployment
 ```
 
 Repeat only the affected profiles after a code or infrastructure change. A
@@ -213,6 +214,48 @@ which components read or write them?
 Every read/write edge points to a concrete query, repository, mapping, or
 configuration source. Connection strings are represented by safe references
 such as a variable name, never by their secret value.
+
+## `flows`
+
+Output: a reviewable source-flow report. Do not create a graph-fact namespace
+until SystemLens defines a versioned contract for ordered flow steps.
+
+### Question
+
+Which potential application paths connect an entry point to externally visible
+effects, and where do control-flow or execution-model boundaries change them?
+
+### Inspect
+
+- Begin with `systemlens flows --json` and inspect every persisted same-method
+  flow relevant to the question.
+- HTTP controllers, message listeners, schedulers, batch entry points, and
+  framework handlers.
+- Direct calls and injected interface calls only when one implementation is
+  uniquely supported by repository wiring.
+- HTTP calls, message publications, data reads/writes, file or external-system
+  effects, and explicit transaction boundaries.
+- Branches, exception paths, loops, async/reactive hand-offs, retries,
+  timeouts, circuit breakers, dead-letter routes, and compensation logic.
+- Tests as `test-evidenced` behaviour, kept distinct from production source.
+
+### Report
+
+- A stable flow identity, entry point, ordered steps, and relative source
+  evidence for each step.
+- Branch alternatives instead of one invented linear path.
+- Boundary markers for transaction, thread/async, reactive, retry, timeout,
+  circuit-breaker, dead-letter, and compensation semantics when explicit.
+- Provenance for each conclusion: `systemlens`, `source-assisted`, or
+  `test-evidenced`, with confidence and an uncertainty reason where needed.
+
+### Exit criteria
+
+Every followed call has evidence for both its call site and selected target.
+Traversal is bounded and cycle-safe. Reflection, dynamic dispatch, multiple
+bean candidates, runtime routing, and unresolved configuration terminate the
+path explicitly. The report says `potential`, never claims runtime execution,
+and does not import ordered steps as ordinary topology facts.
 
 ## `deployment`
 

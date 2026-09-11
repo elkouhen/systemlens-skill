@@ -128,6 +128,27 @@ possible, emit `ambiguous`; if the identifier is dynamic or absent, emit
 `unresolved`. Never turn a common class, table or topic suffix into a confirmed
 relationship.
 
+## Potential source flows
+
+`systemlens flows` materializes only conservative same-method Java paths. An
+HTTP or Kafka entry point is followed by source-ordered HTTP calls, Kafka
+publications, and MongoDB reads/writes whose evidence lies in the same parsed
+method. This containment is useful evidence, but a branch may prevent an effect
+from running, so the result remains `potential` with medium confidence.
+
+An assisted analysis may continue through direct calls or an injected
+interface only when repository wiring resolves exactly one implementation.
+Keep conditional branches as alternatives, summarize loops, make transaction
+and async/reactive boundaries explicit, and terminate at reflection, dynamic
+dispatch, multiple candidates, or runtime-only routing. Every transition needs
+relative evidence for both the call site and selected target. Tests may support
+a separate `test-evidenced` path but do not prove production execution.
+
+These flows describe possible behaviour visible in source, not runtime traces,
+frequency, latency, or guaranteed execution. Do not flatten their ordered or
+branched steps into ordinary AI graph edges while the graph contract has no
+versioned sequence semantics.
+
 ## Strategy1 (explicit opt-in)
 
 Strategy1 is repository-convention support, not a general heuristic. Enable it

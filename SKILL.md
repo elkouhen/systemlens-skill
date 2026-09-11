@@ -1,6 +1,6 @@
 ---
 name: systemlens
-description: "Guide iterative architecture analysis with SystemLens, enriching an indexed repository with replaceable JSON facts about microservices, APIs, message topics or queues, databases, schemas, dependencies, and exports."
+description: "Guide iterative architecture and potential source-flow analysis with SystemLens, enriching an indexed repository with reviewable evidence and replaceable JSON topology facts."
 ---
 
 # systemlens Architecture Explorer
@@ -63,6 +63,8 @@ Start with the indexed architecture and retrieve source evidence only when neede
 6. `systemlens analyze audit` — assess static topology risks.
 7. `systemlens analyze microservices impact <name>` or `path <source> <target>` —
    inspect dependencies and impact paths.
+8. `systemlens flows` and `systemlens flows show <id>` — inspect conservative,
+   same-method paths from an HTTP or Kafka entry point to external effects.
 
 For a complex codebase, build the analysis in passes and keep the result
 evidence-based:
@@ -97,10 +99,10 @@ alone.
 For a complex repository, use the focused pass profiles in
 [references/pass-profiles.md](references/pass-profiles.md). The recommended
 sequence is `boundaries`, then `http`, `messaging`, and `data` (in parallel when
-useful), followed by `deployment`. Each pass writes a replaceable artifact in
-its own namespace: `ai-boundaries`, `ai-http`, `ai-messaging`, `ai-data`, or
-`ai-deployment`. Keep `partial` as the default mode and use `complete` only
-after inspecting the full scope of that profile.
+useful), followed by `flows` and `deployment`. Each topology pass writes a
+replaceable artifact in its own namespace: `ai-boundaries`, `ai-http`,
+`ai-messaging`, `ai-data`, or `ai-deployment`. Keep `partial` as the default
+mode and use `complete` only after inspecting the full scope of that profile.
 
 Select only the profiles needed by the user's question, but run `boundaries`
 first when the repository vocabulary is not established. After each import,
@@ -116,10 +118,35 @@ systemlens projects show shared-domain
 systemlens analyze coverage
 systemlens analyze indexing-issues
 systemlens analyze audit
+systemlens flows --json
 ```
 
 Kafka message types are shown only when explicit in the source. A missing type
 is unknown, not an invitation to infer it from a topic name or serializer.
+
+## Source flow analysis
+
+Use the `flows` profile in
+[references/pass-profiles.md](references/pass-profiles.md) to expose potential
+application behaviour from code without runtime traces. Start with
+`systemlens flows --json`: its persisted flows link an HTTP or Kafka entry
+point to HTTP calls, Kafka publications, and MongoDB accesses found in the same
+parsed Java method. The steps are source-ordered and deliberately labelled
+`potential` with medium confidence.
+
+An assisted pass may follow a bounded direct call chain and uniquely resolved
+injected interfaces or ports/adapters. Record evidence for both the call site
+and selected target. Keep branches as alternatives, summarize loops, and stop
+at reflection, dynamic dispatch, multiple bean candidates, or runtime routing.
+Capture transaction, asynchronous/reactive, retry, timeout, circuit-breaker,
+dead-letter, and compensation boundaries only when explicit in code or
+configuration.
+
+Do not flatten an assisted ordered flow into ordinary topology edges: the
+current AI graph contract describes relationships, not causal sequence. Until
+SystemLens provides a versioned ordered-flow import contract, return a
+reviewable source-flow report with relative evidence and compare it with the
+persisted same-method baseline.
 
 ## Iterative AI fact workflow
 

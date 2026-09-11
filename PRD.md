@@ -83,17 +83,22 @@ The skill must support these independently runnable passes:
 | Data | `ai-data` | stores, schemas, tables, collections, reads, writes, ownership observations |
 | Deployment | `ai-deployment` | workloads, environments, runtime resources, configuration bindings |
 
+Source-flow analysis is an additional review workflow. It compares persisted
+same-method SystemLens flows with bounded source-assisted traversal, but stays
+separate from graph-fact namespaces until an ordered-flow import contract
+exists.
+
 The default order is:
 
 ```text
-boundaries → (http || messaging || data) → deployment
+boundaries → (http || messaging || data) → flows → deployment
 ```
 
 The skill may select a subset when the user's question is narrower.
 
-### FR-3 — Generate a versioned fact artifact
+### FR-3 — Generate a versioned topology fact artifact
 
-Each pass must produce a JSON artifact named:
+Each topology pass must produce a JSON artifact named:
 
 ```text
 architecture.ai-<profile>.pass-<NNN>.json
@@ -134,8 +139,8 @@ must query or export the graph before starting the next dependent pass.
 - Environment-specific deployment facts must remain environment-specific.
 - Missing or unsupported extraction coverage must be stated in the report.
 - JSON artifacts must validate against the supported SystemLens graph contract.
-- The skill documentation must describe the five pass profiles and their
-  namespaces.
+- The skill documentation must describe the five topology profiles and their
+  namespaces, plus the non-imported source-flow review workflow.
 
 ## 7. Out of scope
 
@@ -151,9 +156,11 @@ must query or export the graph before starting the next dependent pass.
 The feature is complete when an architect can:
 
 1. Run SystemLens static indexing and obtain a baseline model.
-2. Execute the boundaries, HTTP, messaging, data, and deployment passes either
+2. Execute the boundaries, HTTP, messaging, data, source-flow, and deployment
+   passes either
    sequentially or with the documented parallelization.
-3. Import the resulting JSON artifacts into their dedicated namespaces.
+3. Import the resulting topology JSON artifacts into their dedicated
+   namespaces and retain source-flow analysis as a separate ordered report.
 4. Re-run one pass with a changed fact and observe an update, not a duplicate.
 5. Confirm that static SystemLens facts remain present and distinguishable.
 6. Inspect evidence and unresolved items for every major complementary fact.
