@@ -49,6 +49,7 @@ code-analysis service is required.
 ## Contents
 
 - [`PRD.md`](PRD.md) — product requirements and completion objective for the skill.
+- [`BACKLOG.md`](BACKLOG.md) — prioritized architecture-analysis work items.
 - [`SKILL.md`](SKILL.md) — architecture-first workflow.
 - [`references/pass-profiles.md`](references/pass-profiles.md)
   — boundaries, HTTP, messaging, data and deployment pass contracts.
