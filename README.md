@@ -20,7 +20,9 @@ For complex codebases, the skill provides five focused passes: `boundaries`,
 `http`, `messaging`, `data`, and `deployment`. Boundaries runs first; HTTP,
 messaging, and data may then run in parallel; deployment closes the loop by
 mapping logical components to runtime resources. Each pass has its own namespace
-and replaceable JSON artifact.
+and replaceable JSON artifact. A separate `flows` review reconstructs selected
+business outcomes as evidence-backed potential source flows; it is reported in
+Markdown and is not imported as an ordered topology graph.
 
 ## Install
 
@@ -53,6 +55,8 @@ code-analysis service is required.
 - [`SKILL.md`](SKILL.md) — architecture-first workflow.
 - [`references/pass-profiles.md`](references/pass-profiles.md)
   — boundaries, HTTP, messaging, data and deployment pass contracts.
+- [`references/business-flows.md`](references/business-flows.md) — selecting and
+  reporting potential business flows from source evidence.
 - [`references/settings.md`](references/settings.md) —
   project configuration.
 - [`references/management.md`](references/management.md)

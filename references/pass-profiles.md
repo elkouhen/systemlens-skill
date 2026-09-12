@@ -241,6 +241,9 @@ effects, and where do control-flow or execution-model boundaries change them?
 
 ### Report
 
+- A requester-provided or repository-documented business outcome when one is
+  available; otherwise a neutral technical-flow name and an explicit note that
+  the business outcome is unknown.
 - A stable flow identity, entry point, ordered steps, and relative source
   evidence for each step.
 - Branch alternatives instead of one invented linear path.
@@ -255,7 +258,9 @@ Every followed call has evidence for both its call site and selected target.
 Traversal is bounded and cycle-safe. Reflection, dynamic dispatch, multiple
 bean candidates, runtime routing, and unresolved configuration terminate the
 path explicitly. The report says `potential`, never claims runtime execution,
-and does not import ordered steps as ordinary topology facts.
+and does not import ordered steps as ordinary topology facts. Follow
+[business-flows.md](business-flows.md) when the goal is to reconstruct named
+business outcomes.
 
 ## `deployment`
 

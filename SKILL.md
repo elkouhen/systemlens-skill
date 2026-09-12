@@ -160,6 +160,15 @@ SystemLens provides a versioned ordered-flow import contract, return a
 reviewable source-flow report with relative evidence and compare it with the
 persisted same-method baseline.
 
+For a business-oriented investigation, use
+[business-flows.md](references/business-flows.md). Select two or three outcomes
+with the requester, start from `systemlens flows --json`, inspect each selected
+flow with `systemlens flows show <id> --json`, and use
+`systemlens topics trace <topic> --json` only to follow a relevant Kafka
+continuation. The report must keep its business label separate from what the
+code proves: when the outcome is not documented or user-provided, call it a
+technical flow and record the uncertainty.
+
 ## Iterative AI fact workflow
 
 Use this path to progressively complete a SystemLens model when repository
@@ -311,5 +320,7 @@ such as `provides`, `calls`, `reads`, `writes`, `publishes`, and `consumes`.
   conservative resolution and Strategy1 rules.
 - [ai-graph.md](references/ai-graph.md): versioned AI-produced graph manifests.
 - [pass-profiles.md](references/pass-profiles.md): focused architecture pass profiles.
+- [business-flows.md](references/business-flows.md): business-flow discovery and
+  source-flow report contract.
 - [management.md](references/management.md): installation, refresh and
   troubleshooting.

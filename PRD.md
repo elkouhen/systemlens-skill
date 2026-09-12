@@ -47,6 +47,9 @@ requires architectural interpretation.
    rather than creating duplicates.
 5. Repeat a pass after code or configuration changes and reconcile the model.
 6. Inspect unresolved questions and blind spots instead of hiding uncertainty.
+7. Reconstruct a small, requester-selected set of business outcomes as
+   potential, evidence-backed source flows without presenting them as runtime
+   traces.
 
 ## 4. Product principles
 
@@ -88,7 +91,9 @@ The skill must support these independently runnable passes:
 Source-flow analysis is an additional review workflow. It compares persisted
 same-method SystemLens flows with bounded source-assisted traversal, but stays
 separate from graph-fact namespaces until an ordered-flow import contract
-exists.
+exists. For business-flow discovery, it must select two or three outcomes,
+record the requested or documented outcome separately from source evidence,
+and report alternatives, stop conditions, and scope limits.
 
 The default order is:
 
@@ -143,6 +148,9 @@ must query or export the graph before starting the next dependent pass.
 - JSON artifacts must validate against the supported SystemLens graph contract.
 - The skill documentation must describe the five topology profiles and their
   namespaces, plus the non-imported source-flow review workflow.
+- Business-flow reports must state `potential`, preserve ordered evidence and
+  alternatives, and distinguish a user-provided or documented business outcome
+  from a technical label inferred from the source.
 
 ## 7. Out of scope
 
@@ -168,6 +176,9 @@ The feature is complete when an architect can:
 6. Inspect evidence and unresolved items for every major complementary fact.
 7. Rebuild a coherent current model after several iterations without manually
    merging JSON files.
+8. Produce a reviewable report for selected business outcomes that identifies
+   entry points, ordered potential effects, explicit boundaries, and unresolved
+   transitions without importing the sequence as topology facts.
 
 ## 9. Success measures
 
