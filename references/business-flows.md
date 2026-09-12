@@ -8,7 +8,7 @@ trace or a claim that every step executes in production.
 
 Run `systemlens doctor` and `systemlens index` from the analyzed repository
 before starting. Select two or three flows with the requester. A flow can be
-named from a documented capability, an HTTP operation, a message trigger, a
+named from a documented capability, an API operation, a message trigger, a
 scheduled job, or a batch entry point. If the business meaning is not explicit
 in the repository or request, use a neutral technical name and record that the
 business outcome is unknown.
@@ -27,7 +27,7 @@ For each selected flow, record:
    potential flows by trigger, module, and externally visible effect.
 2. Inspect each selected flow with `systemlens flows show <id> --json`.
    Treat its ordered same-method steps as the deterministic baseline.
-3. When a relevant step publishes a Kafka topic, use
+3. When a relevant step publishes a Topic, use
    `systemlens topics trace <topic> --json` to explore bounded potential
    service-level continuations. A returned path is still potential and may be
    truncated, cyclic, or conditional.
@@ -38,7 +38,7 @@ For each selected flow, record:
 5. Stop and mark the path unresolved at reflection, dynamic dispatch, multiple
    bean candidates, computed routes or destinations, environment-only wiring,
    or a boundary outside the inspected scope.
-6. Compare the resulting report with the HTTP, messaging, and data topology
+6. Compare the resulting report with the API, messaging, and data topology
    facts. Correct a topology fact only through its owning pass; do not convert
    ordered steps into graph edges.
 
@@ -60,7 +60,7 @@ Status: `potential`
 Confidence: `medium`
 Entry point: `POST /orders` — `src/.../OrderController.java:42`
 
-1. `HTTP entry` — `src/.../OrderController.java:42`
+1. `API entry` — `src/.../OrderController.java:42`
 2. `transaction begins` — `src/.../OrderService.java:58`
 3. `writes orders` — `src/.../OrderRepository.java:31`
 4. `publishes orders.created` — `src/.../OrderService.java:76`

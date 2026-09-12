@@ -10,9 +10,9 @@ for Java/Spring repositories. For polyglot or convention-heavy repositories,
 combine the deterministic inventory with the AI graph and MCP enrichment paths
 below; do not present unsupported source as if it were deterministically indexed.
 Start with the inventory before inspecting implementation files. It describes
-services, modules, HTTP APIs, data schemas, message channels and their
-evidenced relationships. MongoDB collections and Kafka topics are concrete
-technology views of the generic schema/channel vocabulary.
+services, modules, APIs, Data resources, Topics and their evidenced
+relationships. Collections, schemas, tables, queues, and broker-specific
+topics are concrete technology views of these generic categories.
 
 ## Documentation language
 
@@ -67,13 +67,14 @@ only when needed:
 1. `systemlens microservices` — discover services and main integrations.
 2. `systemlens microservices show <name>` — inspect one service.
 3. `systemlens microservices topics <name>`, `apis <name>` or `mongodb <name>` —
-   follow linked objects.
+   follow linked Topics, APIs, or Data. (`mongodb` is the compatible CLI name.)
 4. `systemlens topics`, `systemlens apis`, `systemlens dtos` or
-   `systemlens mongodb` — inspect a shared object from the other direction.
+   `systemlens mongodb` — inspect a shared Topic, API, DTO, or Data object from
+   the other direction.
 5. `systemlens analyze microservices impact <name>` or `path <source> <target>` —
    inspect dependencies and impact paths.
 6. `systemlens flows` and `systemlens flows show <id>` — inspect conservative,
-   same-method paths from an HTTP or Kafka entry point to external effects.
+   same-method paths from an API or Topic entry point to external effects.
 
 Use `systemlens analyze coverage`, `systemlens analyze indexing-issues`, or
 `systemlens analyze audit` as optional diagnostics: respectively when the
@@ -86,12 +87,12 @@ evidence-based:
 1. Establish the repository perimeter and build/deployment units: services,
    modules, applications, Docker/Kubernetes/Helm manifests and configuration
    files. Record the source path that establishes each service boundary.
-2. For every service, inventory inbound/outbound HTTP, published/consumed
+2. For every service, inventory inbound/outbound APIs, published/consumed
    channels, and read/write data stores. Separate a logical service from its
-   deployable module, database/schema, table/collection, topic/queue/exchange,
+   deployable module, Data store, Data resource, Topic or channel,
    and external dependency.
 3. Correlate both directions: producer → channel → consumer, service → API →
-   service, and service → data schema. Require a concrete shared identifier
+   service, and service → Data. Require a concrete shared identifier
    before creating an edge; retain candidate links as ambiguous when several
    targets match.
 4. Inspect source evidence for every important conclusion. When the inventory
@@ -133,7 +134,7 @@ systemlens projects show shared-domain
 systemlens flows --json
 ```
 
-Kafka message types are shown only when explicit in the source. A missing type
+Topic message types are shown only when explicit in the source. A missing type
 is unknown, not an invitation to infer it from a topic name or serializer.
 
 ## Source flow analysis
@@ -141,8 +142,8 @@ is unknown, not an invitation to infer it from a topic name or serializer.
 Use the `flows` profile in
 [references/pass-profiles.md](references/pass-profiles.md) to expose potential
 application behaviour from code without runtime traces. Start with
-`systemlens flows --json`: its persisted flows link an HTTP or Kafka entry
-point to HTTP calls, Kafka publications, and MongoDB accesses found in the same
+`systemlens flows --json`: its persisted flows link an API or Topic entry
+point to API calls, Topic publications, and Data accesses found in the same
 parsed Java method. The steps are source-ordered and deliberately labelled
 `potential` with medium confidence.
 
@@ -164,7 +165,7 @@ For a business-oriented investigation, use
 [business-flows.md](references/business-flows.md). Select two or three outcomes
 with the requester, start from `systemlens flows --json`, inspect each selected
 flow with `systemlens flows show <id> --json`, and use
-`systemlens topics trace <topic> --json` only to follow a relevant Kafka
+`systemlens topics trace <topic> --json` only to follow a relevant Topic
 continuation. The report must keep its business label separate from what the
 code proves: when the outcome is not documented or user-provided, call it a
 technical flow and record the uncertainty.
@@ -220,8 +221,8 @@ combines the SystemLens index with the latest accepted AI facts:
 An agent can use this prompt as a bounded starting point:
 
 > Analyse the code and configuration under this directory. First identify
-> all deployable services/modules, external systems, event topics or queues,
-> HTTP routes, database schemas/tables/collections and their read/write sites.
+> all deployable services/modules, external systems, Topics or channels,
+> APIs, Data resources and their read/write sites.
 > Then
 > write `architecture.ai-graph.json` in `systemlens-ai-graph-v1` format. Keep
 > all evidence paths relative to the directory, include short reasons for
@@ -233,12 +234,12 @@ An agent can use this prompt as a bounded starting point:
 
 Use `--json` when a downstream step needs structured results. The MCP surface
 supports the same workflow through `index_repository`, `import_graph_facts` and
-`architecture_graph`. The returned graph includes legacy API, MongoDB
-collection and Kafka associations as well as generic schema/channel facts.
+`architecture_graph`. The returned graph includes technology-specific legacy
+associations as well as generic Data and Topic facts.
 
 For the complete extraction contract, including supported Java/Spring forms,
-dynamic-value handling, exact REST target resolution, Kafka matching,
-project/OpenAPI attribution, MongoDB evidence and Strategy1 conventions, read
+dynamic-value handling, exact REST target resolution, Topic matching,
+project/OpenAPI attribution, Data evidence and Strategy1 conventions, read
 [analysis-rules.md](references/analysis-rules.md). Never enable Strategy1 just
 to force an expected edge; verify the repository convention first.
 
@@ -249,7 +250,7 @@ When the repository follows the documented `getTopics()` and
 systemlens index --topic-strategy strategy1
 ```
 
-It may derive convention-based Kafka and configured HTTP dependencies. Treat
+It may derive convention-based Topic and configured API dependencies. Treat
 these as convention-derived facts and inspect their source evidence. Do not
 enable this strategy solely to make an expected relation appear.
 

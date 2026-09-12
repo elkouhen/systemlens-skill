@@ -7,7 +7,7 @@ architecture analysis**.
 
 SystemLens remains the source of deterministic, code-derived facts. The skill
 adds the architectural facts that static extraction cannot reliably determine,
-such as implicit service boundaries, HTTP relationships, messaging flows,
+such as implicit service boundaries, API relationships, messaging flows,
 data ownership, and deployment bindings. These additions must be evidence-based,
 reviewable, and incrementally mergeable into the SystemLens model.
 
@@ -21,8 +21,8 @@ configuration, but complex repositories commonly contain gaps caused by:
 
 - dynamic service discovery and environment-specific configuration;
 - generated clients, shared contracts, and framework conventions;
-- topics, queues, exchanges, and payload contracts spread across modules;
-- database ownership and cross-service access patterns;
+- Topics, queues, exchanges, and payload contracts spread across modules;
+- Data ownership and cross-service access patterns;
 - deployment topology expressed outside application source code;
 - relationships that require correlating several independent pieces of evidence.
 
@@ -83,9 +83,9 @@ The skill must support these independently runnable passes:
 | Pass | Namespace | Primary output |
 | --- | --- | --- |
 | Boundaries | `ai-boundaries` | services, modules, external systems, logical ownership boundaries |
-| HTTP | `ai-http` | APIs, routes, synchronous callers and servers |
-| Messaging | `ai-messaging` | topics, queues, exchanges, publishers, consumers, delivery metadata |
-| Data | `ai-data` | stores, schemas, tables, collections, reads, writes, ownership observations |
+| API | `ai-http` | APIs, routes, synchronous callers and servers |
+| Messaging | `ai-messaging` | Topics, queues, exchanges, publishers, consumers, delivery metadata |
+| Data | `ai-data` | Data stores and resources, reads, writes, ownership observations |
 | Deployment | `ai-deployment` | workloads, environments, runtime resources, configuration bindings |
 
 Source-flow analysis is an additional review workflow. It compares persisted
@@ -166,7 +166,7 @@ must query or export the graph before starting the next dependent pass.
 The feature is complete when an architect can:
 
 1. Run SystemLens static indexing and obtain a baseline model.
-2. Execute the boundaries, HTTP, messaging, data, source-flow, and deployment
+2. Execute the boundaries, API, messaging, data, source-flow, and deployment
    passes either
    sequentially or with the documented parallelization.
 3. Import the resulting topology JSON artifacts into their dedicated

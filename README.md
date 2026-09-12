@@ -4,8 +4,8 @@ Coding-agent skill for `systemlens`, a local Java/Spring architecture explorer b
 on source ASTs.
 
 The skill guides an agent through initialization, incremental indexing and
-architecture exploration of complex repositories: microservices, HTTP APIs,
-Kafka or other message channels, MongoDB or other databases, schemas, modules,
+architecture exploration of complex repositories: microservices, APIs,
+Topics, Data resources, modules,
 dependencies and topology risks. Unsupported conventions can be completed with
 an evidence-based AI graph and reviewed MCP facts. The intended workflow is
 iterative: index once with SystemLens, generate focused JSON fact passes, then
@@ -17,7 +17,7 @@ and SystemLens. It owns only its namespace and supplements, rather than
 changes, the deterministic source inventory.
 
 For complex codebases, the skill provides five focused passes: `boundaries`,
-`http`, `messaging`, `data`, and `deployment`. Boundaries runs first; HTTP,
+`http`, `messaging`, `data`, and `deployment`. Boundaries runs first; API,
 messaging, and data may then run in parallel; deployment closes the loop by
 mapping logical components to runtime resources. Each pass has its own namespace
 and replaceable JSON artifact. A separate `flows` review reconstructs selected
@@ -54,7 +54,7 @@ code-analysis service is required.
 - [`BACKLOG.md`](BACKLOG.md) — prioritized architecture-analysis work items.
 - [`SKILL.md`](SKILL.md) — architecture-first workflow.
 - [`references/pass-profiles.md`](references/pass-profiles.md)
-  — boundaries, HTTP, messaging, data and deployment pass contracts.
+  — boundaries, API, messaging, data and deployment pass contracts.
 - [`references/business-flows.md`](references/business-flows.md) — selecting and
   reporting potential business flows from source evidence.
 - [`references/settings.md`](references/settings.md) —

@@ -119,14 +119,14 @@ Artifact: `architecture.ai-http.pass-<NNN>.json`
 
 ### Question
 
-Which synchronous HTTP interfaces exist, and which components call or serve
+Which synchronous APIs exist, and which components call or serve
 them?
 
 ### Inspect
 
 - Controllers, routers, handlers, middleware, and route registration.
 - OpenAPI specifications and generated clients.
-- HTTP client usage (`Feign`, `WebClient`, `RestTemplate`, `fetch`, `axios`,
+- API client usage (`Feign`, `WebClient`, `RestTemplate`, `fetch`, `axios`,
   gRPC-over-HTTP gateways, and equivalents).
 - Base URLs, service discovery names, ingress routes, and timeout/retry
   configuration.
@@ -153,7 +153,7 @@ Artifact: `architecture.ai-messaging.pass-<NNN>.json`
 
 ### Question
 
-Which asynchronous channels exist, who publishes and consumes them, and what
+Which asynchronous Topics exist, who publishes and consumes them, and what
 delivery contract do they imply?
 
 ### Inspect
@@ -167,7 +167,7 @@ delivery contract do they imply?
 
 ### Emit
 
-- `message_channel` nodes with broker, channel name, protocol, schema, and
+- `message_channel` nodes with broker, Topic name, protocol, schema, and
   delivery metadata when available.
 - `publishes` edges from producers to channels.
 - `consumes` edges from channels to consumers.
@@ -176,7 +176,7 @@ delivery contract do they imply?
 
 ### Exit criteria
 
-The channel name and its evidence are recorded. Publisher/consumer direction
+The Topic name and its evidence are recorded. Publisher/consumer direction
 is explicit, and a shared payload type is not presented as a guaranteed event
 schema unless serialization or a schema registry proves it.
 
@@ -187,8 +187,7 @@ Artifact: `architecture.ai-data.pass-<NNN>.json`
 
 ### Question
 
-Which databases, schemas, tables, collections, buckets, and caches exist, and
-which components read or write them?
+Which Data resources exist, and which components read or write them?
 
 ### Inspect
 
@@ -202,11 +201,11 @@ which components read or write them?
 ### Emit
 
 - `data_store` nodes for physical stores and `data_schema` nodes for logical
-  schemas, tables, collections, indexes, buckets, or keyspaces.
+  Data resources.
 - `reads` and `writes` edges with operation or access evidence.
 - Ownership, source-of-truth, replication, and shared-database observations
   only when explicit or clearly labelled as hypotheses.
-- Migration/version evidence to distinguish current schema from historical
+- Migration/version evidence to distinguish current Data from historical
   definitions.
 
 ### Exit criteria
@@ -229,11 +228,11 @@ effects, and where do control-flow or execution-model boundaries change them?
 
 - Begin with `systemlens flows --json` and inspect every persisted same-method
   flow relevant to the question.
-- HTTP controllers, message listeners, schedulers, batch entry points, and
+- API controllers, message listeners, schedulers, batch entry points, and
   framework handlers.
 - Direct calls and injected interface calls only when one implementation is
   uniquely supported by repository wiring.
-- HTTP calls, message publications, data reads/writes, file or external-system
+- API calls, message publications, data reads/writes, file or external-system
   effects, and explicit transaction boundaries.
 - Branches, exception paths, loops, async/reactive hand-offs, retries,
   timeouts, circuit breakers, dead-letter routes, and compensation logic.

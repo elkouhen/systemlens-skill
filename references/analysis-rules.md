@@ -54,9 +54,9 @@ exposed route and `call` for an outgoing call.
 - External APIs are marked external only when the source explicitly names the
   external service through the supported convention.
 
-## Kafka extraction
+## Topic extraction
 
-The deterministic extractor recognises `@KafkaListener`, KafkaTemplate
+The current deterministic Topic extractor recognises `@KafkaListener`, KafkaTemplate
 `send`/`sendDefault`, `ProducerRecord`, Spring Cloud Stream `StreamBridge`,
 Kafka Streams sources/sinks, and compatible low-level Kafka client usage.
 It records `produce` and `consume` endpoints and infers a payload type only
@@ -66,9 +66,9 @@ from an explicit listener parameter or producer/client generic signature.
 - A dynamic expression is retained with `topic_dynamic=true`; it is never
   replaced by a topic inferred from a variable name, class name or nearby
   declaration.
-- Two dynamic values do not form a Kafka relation, even when their expressions
+- Two dynamic values do not form a Topic relation, even when their expressions
   look similar.
-- Kafka relations require a matching concrete topic between a producer and a
+- Topic relations require a matching concrete topic between a producer and a
   consumer. The graph displays the service → topic → service path.
 - Missing payload type is unknown, not an inferred DTO.
 - Duplicate sites are deduplicated by their stable role/topic/path/line ID.
@@ -76,9 +76,9 @@ from an explicit listener parameter or producer/client generic signature.
   `(namespace, fact_type, id)` identity. The newest imported value replaces the
   previous AI assertion; source-derived facts remain immutable.
 
-## Generic message channels
+## Generic Topics
 
-When enriching beyond deterministic Kafka extraction, use `kind=message_channel`
+When enriching beyond deterministic Topic extraction, use `kind=message_channel`
 for a concrete topic, queue, exchange, subscription or stream. Supported
 evidence includes producer/consumer annotations, client calls, binding
 configuration, infrastructure manifests and schema/contract files. Capture the
@@ -93,26 +93,26 @@ group; do not collapse them into one node.
 - A shared payload schema can be linked to a channel, but matching field names
   or serializer classes do not prove producer/consumer compatibility.
 - Runtime-observed messaging destinations remain observations and must not be
-  promoted to confirmed static topics without source or configuration evidence.
+  promoted to confirmed static Topics without source or configuration evidence.
 
-## Databases and data schemas
+## Data resources
 
-For data stores not covered by the MongoDB extractor, use
+For Data resources not covered by the deterministic MongoDB extractor, use
 `kind=data_schema` and `technology` such as `postgresql`, `mysql`, `oracle`,
 `sqlserver`, `redis`, `elasticsearch`, `s3` or another explicit provider.
-Represent the narrowest proven resource: database/schema/table or view,
+Represent the narrowest proven Data resource: database/schema/table or view,
 collection, index, keyspace, bucket or search index. Record migrations,
 entities/ORM mappings, repository/DAO queries, client configuration and
 deployment-managed stores as separate evidence when applicable.
 
-- A migration proves that a schema object is declared; a query or repository
+- A migration proves that a Data resource is declared; a query or repository
   proves access; neither alone proves which service owns the data.
 - Create `reads`/`writes` relations only when the access site and resource can
   be tied to the same concrete identifier. A database URL without a database
-  or schema is a store hint, not a table-level edge.
+  or schema is a store hint, not a Data-level edge.
 - Treat shared databases as shared dependencies, not service-to-service calls.
   Flag cross-service writes, undocumented ownership, destructive migrations and
-  incompatible schema changes as review items when evidence supports them.
+  incompatible Data changes as review items when evidence supports them.
 - Keep secrets, connection strings with credentials and raw SQL result data out
   of manifests and reports; redact values while preserving the property name
   and relative evidence path.
@@ -131,8 +131,8 @@ relationship.
 ## Potential source flows
 
 `systemlens flows` materializes only conservative same-method Java paths. An
-HTTP or Kafka entry point is followed by source-ordered HTTP calls, Kafka
-publications, and MongoDB reads/writes whose evidence lies in the same parsed
+HTTP or Topic entry point is followed by source-ordered HTTP calls, Topic
+publications, and Data reads/writes whose evidence lies in the same parsed
 method. This containment is useful evidence, but a branch may prevent an effect
 from running, so the result remains `potential` with medium confidence.
 
@@ -222,11 +222,11 @@ Do not enable Strategy1 merely to make an expected edge appear. First inspect
 `systemlens analyze indexing-issues --json`, verify that the repository follows
 the convention, and retain unresolved output when it does not.
 
-## Modules, MongoDB and manifests
+## Modules, Data, and manifests
 
 - Maven and Gradle modules are discovered with collision-safe identities;
   artifact display names are not sufficient when duplicates exist.
-- MongoDB collections are extracted from `@Document`, repository entity types
+- MongoDB Data is extracted from `@Document`, repository entity types
   and unambiguous `MongoTemplate` type arguments. Ambiguous class/collection
   matches remain unresolved.
 - Mongo persistence metadata includes root and conservatively resolved nested

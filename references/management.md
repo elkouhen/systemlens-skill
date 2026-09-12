@@ -49,6 +49,8 @@ For another MCP-compatible client:
 - Use `systemlens microservices`, `systemlens topics`, `systemlens apis`, `systemlens mongodb`,
   `systemlens dtos`, `systemlens projects`, `systemlens analyze coverage`,
   `systemlens analyze indexing-issues` and `systemlens analyze audit` for architecture questions.
+  These cover services, Topics, APIs, Data, DTOs, and projects; `mongodb` remains
+  the compatible command name for Data.
 - Use `systemlens index --topic-strategy strategy1` only for repositories that
   follow the documented Strategy1 Kafka and REST conventions.
 - With Strategy1, `src/main/resources/openapi/xxx.rest` publishes valid
