@@ -18,7 +18,7 @@ changes, the deterministic source inventory.
 
 For complex codebases, the skill provides five focused passes: `boundaries`,
 `http`, `messaging`, `data`, and `deployment`. Boundaries runs first; API,
-messaging, and data may then run in parallel; deployment closes the loop by
+messaging, and Data may then run in parallel; deployment closes the loop by
 mapping logical components to runtime resources. Each pass has its own namespace
 and replaceable JSON artifact. A separate `flows` review reconstructs selected
 business outcomes as evidence-backed potential source flows; it is reported in
@@ -54,7 +54,7 @@ code-analysis service is required.
 - [`BACKLOG.md`](BACKLOG.md) — prioritized architecture-analysis work items.
 - [`SKILL.md`](SKILL.md) — architecture-first workflow.
 - [`references/pass-profiles.md`](references/pass-profiles.md)
-  — boundaries, API, messaging, data and deployment pass contracts.
+  — boundaries, API, messaging, Data and deployment pass contracts.
 - [`references/business-flows.md`](references/business-flows.md) — selecting and
   reporting potential business flows from source evidence.
 - [`references/settings.md`](references/settings.md) —

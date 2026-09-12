@@ -38,7 +38,7 @@ For each selected flow, record:
 5. Stop and mark the path unresolved at reflection, dynamic dispatch, multiple
    bean candidates, computed routes or destinations, environment-only wiring,
    or a boundary outside the inspected scope.
-6. Compare the resulting report with the API, messaging, and data topology
+6. Compare the resulting report with the API, messaging, and Data topology
    facts. Correct a topology fact only through its owning pass; do not convert
    ordered steps into graph edges.
 

@@ -71,7 +71,7 @@ Run the profiles in this order:
 The default sequence is therefore:
 
 ```text
-boundaries → (http || messaging || data) → flows → deployment
+boundaries → (http || messaging || Data) → flows → deployment
 ```
 
 Repeat only the affected profiles after a code or infrastructure change. A
@@ -232,7 +232,7 @@ effects, and where do control-flow or execution-model boundaries change them?
   framework handlers.
 - Direct calls and injected interface calls only when one implementation is
   uniquely supported by repository wiring.
-- API calls, message publications, data reads/writes, file or external-system
+- API calls, message publications, Data reads/writes, file or external-system
   effects, and explicit transaction boundaries.
 - Branches, exception paths, loops, async/reactive hand-offs, retries,
   timeouts, circuit breakers, dead-letter routes, and compensation logic.

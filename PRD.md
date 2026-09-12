@@ -8,7 +8,7 @@ architecture analysis**.
 SystemLens remains the source of deterministic, code-derived facts. The skill
 adds the architectural facts that static extraction cannot reliably determine,
 such as implicit service boundaries, API relationships, messaging flows,
-data ownership, and deployment bindings. These additions must be evidence-based,
+Data ownership, and deployment bindings. These additions must be evidence-based,
 reviewable, and incrementally mergeable into the SystemLens model.
 
 The skill must never silently replace, delete, or blur the distinction between
@@ -98,7 +98,7 @@ and report alternatives, stop conditions, and scope limits.
 The default order is:
 
 ```text
-boundaries → (http || messaging || data) → flows → deployment
+boundaries → (http || messaging || Data) → flows → deployment
 ```
 
 The skill may select a subset when the user's question is narrower.
@@ -166,7 +166,7 @@ must query or export the graph before starting the next dependent pass.
 The feature is complete when an architect can:
 
 1. Run SystemLens static indexing and obtain a baseline model.
-2. Execute the boundaries, API, messaging, data, source-flow, and deployment
+2. Execute the boundaries, API, messaging, Data, source-flow, and deployment
    passes either
    sequentially or with the documented parallelization.
 3. Import the resulting topology JSON artifacts into their dedicated

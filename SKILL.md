@@ -88,7 +88,7 @@ evidence-based:
    modules, applications, Docker/Kubernetes/Helm manifests and configuration
    files. Record the source path that establishes each service boundary.
 2. For every service, inventory inbound/outbound APIs, published/consumed
-   channels, and read/write data stores. Separate a logical service from its
+   channels, and read/write Data stores. Separate a logical service from its
    deployable module, Data store, Data resource, Topic or channel,
    and external dependency.
 3. Correlate both directions: producer → channel → consumer, service → API →
@@ -105,7 +105,7 @@ evidence-based:
    snapshot and AI/runtime observations distinguishable in the final report.
 
 The minimum useful deliverable for a complex repository is a service matrix
-with service boundary, APIs, channels, data stores, evidence paths and
+with service boundary, APIs, channels, Data stores, evidence paths and
 confidence, plus a list of unresolved relationships. Include technology and
 ownership where the repository proves them; never infer ownership from naming
 alone.
@@ -307,7 +307,7 @@ duplicate. Use `architecture_graph` for the merged generic graph.
 `remove_graph_fact` is limited to matching AI assertions during replacement or
 explicit cleanup; it never deletes source-derived facts.
 
-For a data resource, use `kind=data_schema` and set `technology` to
+For a Data resource, use `kind=data_schema` and set `technology` to
 `mongodb`, `postgresql`, `redis`, `s3`, or another provider. For messaging,
 use `kind=message_channel` and set `technology` to `kafka`, `rabbitmq`, `sqs`,
 or another provider. Put provider-specific identifiers in `metadata`, for
