@@ -1,349 +1,80 @@
 ---
 name: systemlens
-description: "Guide iterative architecture and potential source-flow analysis with SystemLens, enriching an indexed repository with reviewable evidence and replaceable JSON topology facts."
+description: "Guide evidence-based architecture exploration with SystemLens, preserving the distinction between indexed source facts and reviewable complementary analysis."
 ---
 
-# systemlens Architecture Explorer
+# SystemLens skill
 
-Use `systemlens` to query a local, persisted architecture inventory, primarily
-for Java/Spring repositories. For polyglot or convention-heavy repositories,
-combine the deterministic inventory with the AI graph and MCP enrichment paths
-below; do not present unsupported source as if it were deterministically indexed.
-Start with the inventory before inspecting implementation files. It describes
-services, modules, APIs, Data resources, Topics and their evidenced
-relationships. Collections, schemas, tables, queues, and broker-specific
-topics are concrete technology views of these generic categories.
+## Scope and terminology
 
-## Documentation language
+**SystemLens** is the product: its CLI and MCP server index a repository and
+expose source-derived architecture facts. Its installed version and public
+documentation are the source of truth for supported commands, options, output,
+and data contracts.
 
-Write user-facing documentation, generated report text and examples in English.
-Preserve exact CLI output, source snippets and user-provided text when quoting
-them.
+**systemlens-skill** is the agent guidance in this directory. It helps an agent
+choose an investigation, interpret evidence conservatively, and prepare
+reviewable complementary findings. It does not extend SystemLens, invent a
+command, or turn an inference into a source-derived fact.
 
-## Ownership
+Use generic architecture terms in user-facing work: **APIs**, **Topics**, and
+**Data**. Technology-specific terms identify evidence or an extractor only
+when relevant to the inspected repository.
 
-Work from the target repository root. Own the `systemlens` lifecycle for that
-project.
+## Core behaviour
 
-- Run `systemlens doctor` before drawing broad architectural conclusions.
-- If configuration is missing, run `systemlens init`; never overwrite an existing
-  `.systemlens/config.yml`.
-- If the index is absent or source/configuration changed, run `systemlens index`
-  before querying. Use `systemlens index --full` after a broad refactor or an
-  extractor upgrade.
-- Treat `systemlens` as static, source-evidenced analysis. Keep dynamic,
-  ambiguous and unresolved integrations explicit; do not infer a dependency from
-  a coincidental route or a topic name.
+- Work from the analysed repository root and establish the current indexed
+  baseline before making broad architecture claims.
+- Use the SystemLens inventory first; inspect source, configuration, contracts,
+  and deployment manifests only to answer a defined gap or question.
+- Prefer a focused investigation to an unbounded repository map. State the
+  question, scope, exclusions, and desired deliverable before extracting facts.
+- Require concrete, relative evidence for material claims. Preserve dynamic,
+  ambiguous, generated-only, test-only, runtime-only, and out-of-scope findings
+  as qualified observations rather than guessed dependencies.
+- Keep deterministic SystemLens facts distinct from complementary analysis.
+  Complementary facts belong to a dedicated namespace and never overwrite facts
+  owned by SystemLens or another producer.
+- Make uncertainty, confidence, provenance, and stop conditions visible.
+- Never include credentials, tokens, connection-string secrets, or absolute
+  workstation paths in findings, reports, examples, or manifests.
+- Write user-facing reports and generated examples in English, while preserving
+  exact CLI output, source snippets, and user-provided text when quoted.
 
-## Setup
+## Investigation lifecycle
 
-For a fresh project:
+1. Confirm the repository perimeter and freshness of the SystemLens inventory.
+2. Choose the smallest analysis pass that answers the request.
+3. Collect evidence and correlate only explicit, uniquely resolvable
+   identifiers.
+4. Produce a reviewable result: a report for ordered source-flow analysis, or
+   a versioned fact manifest for complementary topology.
+5. Validate and review the result before any import. Re-read the merged model
+   after an import and report what remains unresolved.
 
-```bash
-systemlens init
-systemlens doctor
-systemlens index
-```
+Use a partial snapshot by default. A complete snapshot is appropriate only when
+the entire declared scope has been inspected and replacement of missing facts is
+intentional.
 
-The configuration controls the indexed source perimeter. See
-[settings.md](references/settings.md) only when the perimeter must change.
+## Reference routing
 
-For a targeted enrichment pass, an agent can start from this request:
+Read the relevant SystemLens-specific contract before performing the associated
+work; do not reconstruct product behaviour from this entrypoint.
 
-> Inspect the indexed architecture and the source evidence for the requested
-> scope. Write only the architecture facts that deterministic SystemLens
-> extraction does not establish into a reviewable JSON manifest, with stable
-> IDs, relative evidence paths, confidence, status, and reasons for unresolved
-> or ambiguous claims. Import the manifest into its own namespace only after
-> review.
+- [settings.md](references/settings.md) — repository perimeter, initialization,
+  indexing, and refresh.
+- [analysis-rules.md](references/analysis-rules.md) — extraction evidence,
+  conservative correlation, and prompt composition.
+- [pass-profiles.md](references/pass-profiles.md) — focused boundary, API,
+  messaging, Data, source-flow, and deployment investigations.
+- [business-flows.md](references/business-flows.md) — potential business-flow
+  reports and traversal limits.
+- [ai-graph.md](references/ai-graph.md) — versioned complementary fact manifest
+  contract and reconciliation rules.
+- [management.md](references/management.md) — installation, MCP setup, refresh,
+  and troubleshooting.
 
-## Architecture workflow
-
-The default workflow is to index deterministic facts, have the agent write a
-reviewable JSON manifest for facts that need enrichment, import that manifest
-into its own namespace, then export the merged model. Retrieve source evidence
-only when needed:
-
-1. `systemlens microservices` — discover services and main integrations.
-2. `systemlens microservices show <name>` — inspect one service.
-3. `systemlens microservices topics <name>`, `apis <name>` or `mongodb <name>` —
-   follow linked Topics, APIs, or Data. (`mongodb` is the compatible CLI name.)
-4. `systemlens topics`, `systemlens apis`, `systemlens dtos` or
-   `systemlens mongodb` — inspect a shared Topic, API, DTO, or Data object from
-   the other direction.
-5. `systemlens analyze microservices impact <name>` or `path <source> <target>` —
-   inspect dependencies and impact paths.
-6. `systemlens flows` and `systemlens flows show <id>` — inspect conservative,
-   same-method paths from an API or Topic entry point to external effects.
-
-Use `systemlens analyze coverage`, `systemlens analyze indexing-issues`, or
-`systemlens analyze audit` as optional diagnostics: respectively when the
-inventory may be incomplete, extraction needs investigation, or a static
-topology-risk review is requested.
-
-For a complex codebase, build the analysis in passes and keep the result
-evidence-based:
-
-1. Establish the repository perimeter and build/deployment units: services,
-   modules, applications, Docker/Kubernetes/Helm manifests and configuration
-   files. Record the source path that establishes each service boundary.
-2. For every service, inventory inbound/outbound APIs, published/consumed
-   channels, and read/write Data stores. Separate a logical service from its
-   deployable module, Data store, Data resource, Topic or channel,
-   and external dependency.
-3. Correlate both directions: producer → channel → consumer, service → API →
-   service, and service → Data. Require a concrete shared identifier
-   before creating an edge; retain candidate links as ambiguous when several
-   targets match.
-4. Inspect source evidence for every important conclusion. When the inventory
-   may be incomplete or a risk review is requested, run the relevant optional
-   diagnostic (`coverage`, `indexing-issues`, or `audit`). Report blind spots
-   (unsupported language, generated code, dynamic configuration, missing
-   manifests or runtime-only wiring) explicitly.
-5. If deterministic extraction is incomplete, create a bounded AI graph and
-   optionally persist only reviewed claims through MCP. Keep the deterministic
-   snapshot and AI/runtime observations distinguishable in the final report.
-
-The minimum useful deliverable for a complex repository is a service matrix
-with service boundary, APIs, channels, Data stores, evidence paths and
-confidence, plus a list of unresolved relationships. Include technology and
-ownership where the repository proves them; never infer ownership from naming
-alone.
-
-## Profiled architecture passes
-
-For a complex repository, use the focused pass profiles in
-[references/pass-profiles.md](references/pass-profiles.md). The recommended
-sequence is `boundaries`, then `http`, `messaging`, and `data` (in parallel when
-useful), followed by `flows` and `deployment`. Each topology pass writes a
-replaceable artifact in its own namespace: `ai-boundaries`, `ai-http`,
-`ai-messaging`, `ai-data`, or `ai-deployment`. Keep `partial` as the default
-mode and use `complete` only after inspecting the full scope of that profile.
-
-Select only the profiles needed by the user's question, but run `boundaries`
-first when the repository vocabulary is not established. After each import,
-review the inserted/updated/removed counts and query the graph before handing
-facts to the next pass.
-
-```bash
-systemlens microservices show order-service
-systemlens topics consumers orders.created
-systemlens apis consumers 'POST /payments'
-systemlens mongodb services orders
-systemlens projects show shared-domain
-systemlens flows --json
-```
-
-Topic message types are shown only when explicit in the source. A missing type
-is unknown, not an invitation to infer it from a topic name or serializer.
-
-## Source flow analysis
-
-Use the `flows` profile in
-[references/pass-profiles.md](references/pass-profiles.md) to expose potential
-application behaviour from code without runtime traces. Start with
-`systemlens flows --json`: its persisted flows link an API or Topic entry
-point to API calls, Topic publications, and Data accesses found in the same
-parsed Java method. The steps are source-ordered and deliberately labelled
-`potential` with medium confidence.
-
-An assisted pass may follow a bounded direct call chain and uniquely resolved
-injected interfaces or ports/adapters. Record evidence for both the call site
-and selected target. Keep branches as alternatives, summarize loops, and stop
-at reflection, dynamic dispatch, multiple bean candidates, or runtime routing.
-Capture transaction, asynchronous/reactive, retry, timeout, circuit-breaker,
-dead-letter, and compensation boundaries only when explicit in code or
-configuration.
-
-Do not flatten an assisted ordered flow into ordinary topology edges: the
-current AI graph contract describes relationships, not causal sequence. Until
-SystemLens provides a versioned ordered-flow import contract, return a
-reviewable source-flow report with relative evidence and compare it with the
-persisted same-method baseline.
-
-For a business-oriented investigation, use
-[business-flows.md](references/business-flows.md). Select two or three outcomes
-with the requester, start from `systemlens flows --json`, inspect each selected
-flow with `systemlens flows show <id> --json`, and use
-`systemlens topics trace <topic> --json` only to follow a relevant Topic
-continuation. The report must keep its business label separate from what the
-code proves: when the outcome is not documented or user-provided, call it a
-technical flow and record the uncertainty.
-
-## Iterative AI fact workflow
-
-Use this path to progressively complete a SystemLens model when repository
-conventions are not covered by deterministic extractors. The persisted model
-combines the SystemLens index with the latest accepted AI facts:
-
-1. Set `PROJECT_ROOT` to the repository being analysed and run the normal
-   SystemLens baseline (`doctor`, `init` if needed, then `index`). Keep
-   Strategy1 opt-in; do not enable it unless the repository follows the rules
-   in [analysis-rules.md](references/analysis-rules.md).
-2. On each analysis pass, inspect the relevant source, configuration,
-   manifests and previous findings, then produce a JSON fact file such as
-   `architecture.ai-graph.pass-001.json` using the
-   `systemlens-ai-graph-v1` contract. Use stable IDs and relative evidence
-   paths. A later pass may repeat a fact with better evidence or corrected
-   metadata; it must retain the same identity for the same logical fact.
-3. Validate the JSON before import: IDs are unique, edge endpoints exist,
-   statuses/confidence are valid, evidence is relative, and
-   ambiguous/unresolved claims include a reason.
-4. Import the complete fact file through the SystemLens/MCP enrichment surface
-   as an upsert/reconciliation operation. Match existing AI facts by stable
-   identity and replace their full value, evidence, status, confidence and
-   metadata. Do not append a second copy and do not skip an improved fact just
-   because it already exists.
-5. Scope replacement to facts managed by the current JSON producer or
-   namespace. Never delete or overwrite source-derived SystemLens facts, and
-   never delete unrelated AI facts from earlier passes. If the available MCP
-   surface only supports add/remove, use a bounded list → remove matching AI
-   assertion → add replacement sequence, then verify the result.
-6. Read the merged result with `architecture_graph`, review the import summary
-   and `list_graph_facts`, then export the current model if needed:
-   SystemLens's HTML renderer:
-
-   ```bash
-   cd "$PROJECT_ROOT"
-   systemlens import-facts architecture.ai-graph.pass-001.json \
-     --namespace ai-architecture
-   systemlens export microservices \
-     --graph architecture.ai-graph.json \
-     --html architecture.html \
-     --root-path "$PROJECT_ROOT"
-   ```
-
-7. Open `architecture.html`. Confirmed and proposed relations are drawn;
-   ambiguous and unresolved claims are available in the Quality panel. The
-   HTML graph is read-only; importing the JSON is what updates the persisted
-   enrichment layer.
-
-Use the following prompt as a bounded starting point for a general extraction
-pass. Add the relevant profile supplement from
-[pass-profiles.md](references/pass-profiles.md), rather than asking the agent
-to rediscover every category in every repository:
-
-> Analyse the code, build descriptors, configuration, contracts, and deployment
-> manifests under this directory. Start from the indexed SystemLens inventory;
-> use source inspection only to complete or qualify a specific gap. Establish
-> deployable services/modules and external systems before correlating APIs,
-> Topics or channels, and Data resources.
->
-> For each candidate fact, collect the narrowest concrete identifier and two
-> complementary observations when they are available: for example a route plus
-> its client configuration, a Topic binding plus a producer or consumer, or a
-> Data mapping plus an access site. Distinguish declaration, configuration,
-> implementation, generated code, test, and deployment evidence. Do not treat
-> one category as proof of another: a schema does not prove ownership, a client
-> does not prove a reachable target, and a shared payload type does not prove a
-> compatible message contract.
->
-> Resolve an edge only when one explicit identifier selects one target in the
-> inspected scope. Preserve dynamic values, multiple candidates, environment-
-> only wiring, generated-only references, and out-of-scope targets as
-> `ambiguous` or `unresolved`, with a short reason and the evidence that caused
-> the stop. Never expose secret values; retain only safe configuration-key or
-> secret-reference names.
->
-> Write `architecture.ai-<profile>.pass-001.json` in
-> `systemlens-ai-graph-v1` format, scoped to the requested profile namespace.
-> Use stable logical IDs, relative evidence paths, status, confidence, and
-> provenance for every claim. Keep `mode` as `partial` unless this pass has
-> inspected the entire declared profile scope. Validate the manifest, import it
-> only after review, verify the merged graph and import summary, and run
-> `systemlens export microservices --graph architecture.ai-<profile>.pass-001.json
-> --html architecture.html --root-path .` only when an HTML handoff is needed.
-
-Use `--json` when a downstream step needs structured results. The MCP surface
-supports the same workflow through `index_repository`, `import_graph_facts` and
-`architecture_graph`. The returned graph includes technology-specific legacy
-associations as well as generic Data and Topic facts.
-
-For the complete extraction contract, including supported Java/Spring forms,
-dynamic-value handling, exact REST target resolution, Topic matching,
-project/OpenAPI attribution, Data evidence and Strategy1 conventions, read
-[analysis-rules.md](references/analysis-rules.md). Never enable Strategy1 just
-to force an expected edge; verify the repository convention first.
-
-When the repository follows the documented `getTopics()` and
-`${kafka.topics.*.name}` conventions, use the explicit strategy:
-
-```bash
-systemlens index --topic-strategy strategy1
-```
-
-It may derive convention-based Topic and configured API dependencies. Treat
-these as convention-derived facts and inspect their source evidence. Do not
-enable this strategy solely to make an expected relation appear.
-
-For the Strategy1 OpenAPI publication convention, a declaration at
-`src/main/resources/openapi/xxx.rest` can publish valid same-named contracts
-anywhere in the repository. It also publishes every valid YAML or JSON OpenAPI
-contract under `model-xxx/src/main/resources/openapi/`; contract file names do
-not need to match `xxx`. Reindex with `--full --topic-strategy strategy1` after
-adding or moving a declaration or shared contract.
-
-Every build project independently inventories all valid YAML or JSON OpenAPI
-documents under its own `src/main/resources/openapi/` directory. Contract file
-names do not need to be `openapi.*` or `swagger.*`.
-
-## Exports and MCP
-
-```bash
-systemlens export microservices --html architecture.html
-systemlens export microservices --c4 likec4-project
-systemlens export projects --html project-dependencies.html
-systemlens mcp
-```
-
-The HTML export includes persisted MCP graph facts. After enriching a graph,
-rerun the export command to display added `data_schema` and
-`message_channel` nodes and their relations.
-
-When deterministic extraction cannot resolve repository-specific conventions,
-have the analysis agent produce a `systemlens-ai-graph-v1` manifest. Render it
-temporarily when reviewing it, or import it to the enrichment layer when the
-facts have been validated:
-
-```bash
-systemlens export microservices --graph architecture.ai-graph.json --html architecture.html --root-path /path/to/checkout
-```
-
-The manifest must keep source evidence relative, include confidence and
-`confirmed`/`proposed`/`ambiguous`/`unresolved` status on every claim, and give
-an explicit reason for unresolved claims. SystemLens draws confirmed and
-proposed claims and puts ambiguous or unresolved claims in the Quality panel;
-it never turns an AI guess into persisted source topology; persistence occurs
-only through explicit `import-facts`/`import_graph_facts`. See
-[ai-graph.md](references/ai-graph.md) for the full contract and example.
-
-Exports consume the persisted snapshot; refresh the index deliberately when
-source changes must be reflected. Use `--root-path` only to resolve local source
-links at HTML export time.
-
-The MCP server is a control surface for the two-layer workflow: call
-`index_repository` first, then reconcile JSON facts into the enrichment layer
-using `fact_type=node` or `fact_type=edge`. Reconciliation is idempotent: the
-same stable identity updates the existing AI assertion instead of creating a
-duplicate. Use `architecture_graph` for the merged generic graph.
-`remove_graph_fact` is limited to matching AI assertions during replacement or
-explicit cleanup; it never deletes source-derived facts.
-
-For a Data resource, use `kind=data_schema` and set `technology` to
-`mongodb`, `postgresql`, `redis`, `s3`, or another provider. For messaging,
-use `kind=message_channel` and set `technology` to `kafka`, `rabbitmq`, `sqs`,
-or another provider. Put provider-specific identifiers in `metadata`, for
-example `{database, schema, table}` or `{exchange, queue}`. Use edge kinds
-such as `provides`, `calls`, `reads`, `writes`, `publishes`, and `consumes`.
-
-## References
-
-- [settings.md](references/settings.md): project configuration.
-- [analysis-rules.md](references/analysis-rules.md): deterministic extraction,
-  conservative resolution and Strategy1 rules.
-- [ai-graph.md](references/ai-graph.md): versioned AI-produced graph manifests.
-- [pass-profiles.md](references/pass-profiles.md): focused architecture pass profiles.
-- [business-flows.md](references/business-flows.md): business-flow discovery and
-  source-flow report contract.
-- [management.md](references/management.md): installation, refresh and
-  troubleshooting.
+When a reference describes a command, option, MCP tool, JSON field, or export
+behaviour, verify it against the installed or development SystemLens product
+before relying on it. Update the reference alongside a SystemLens contract
+change; do not put product-specific details back into this generic entrypoint.

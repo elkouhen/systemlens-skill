@@ -3,6 +3,10 @@
 Coding-agent skill for `systemlens`, a local Java/Spring architecture explorer based
 on source ASTs.
 
+`systemlens` is the analysis product (CLI and MCP server). This repository is
+`systemlens-skill`: agent guidance that helps use the product conservatively;
+it does not define or extend the product's public contract.
+
 The skill guides an agent through initialization, incremental indexing and
 architecture exploration of complex repositories: microservices, APIs,
 Topics, Data resources, modules,
