@@ -32,7 +32,8 @@ systemlens init
 systemlens doctor
 systemlens index
 
-# Have the agent create a reviewable JSON facts manifest.
+# Use systemlens-skill with your coding agent to extract reviewable,
+# relative-evidence facts into a JSON manifest.
 systemlens import-facts architecture.ai-graph.pass-001.json \
   --namespace ai-architecture
 systemlens export microservices --html architecture.html
