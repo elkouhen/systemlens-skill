@@ -48,6 +48,15 @@ systemlens index
 The configuration controls the indexed source perimeter. See
 [settings.md](references/settings.md) only when the perimeter must change.
 
+For a targeted enrichment pass, an agent can start from this request:
+
+> Inspect the indexed architecture and the source evidence for the requested
+> scope. Write only the architecture facts that deterministic SystemLens
+> extraction does not establish into a reviewable JSON manifest, with stable
+> IDs, relative evidence paths, confidence, status, and reasons for unresolved
+> or ambiguous claims. Import the manifest into its own namespace only after
+> review.
+
 ## Architecture workflow
 
 The default workflow is to index deterministic facts, have the agent write a

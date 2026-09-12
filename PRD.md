@@ -68,8 +68,10 @@ requires architectural interpretation.
 ### FR-1 — Establish a deterministic baseline
 
 The skill must guide the user or agent through `systemlens init`, `doctor`,
-`index`, coverage checks, indexing diagnostics, and static audit before
-complementary facts are generated.
+and `index` before complementary facts are generated. It must recommend
+`coverage`, `indexing-issues`, or `audit` only when inventory completeness is
+in doubt, extraction needs investigation, or a static topology-risk review is
+requested.
 
 ### FR-2 — Support focused architecture passes
 

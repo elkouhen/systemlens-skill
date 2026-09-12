@@ -12,6 +12,10 @@ iterative: index once with SystemLens, generate focused JSON fact passes, then
 re-import them idempotently so newer evidence replaces older AI facts without
 duplicating or overwriting source-derived facts.
 
+Each JSON facts manifest is the durable, reviewable handoff between the agent
+and SystemLens. It owns only its namespace and supplements, rather than
+changes, the deterministic source inventory.
+
 For complex codebases, the skill provides five focused passes: `boundaries`,
 `http`, `messaging`, `data`, and `deployment`. Boundaries runs first; HTTP,
 messaging, and data may then run in parallel; deployment closes the loop by
