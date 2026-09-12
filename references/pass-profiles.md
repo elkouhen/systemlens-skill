@@ -96,6 +96,15 @@ systems, and ownership boundaries?
 - Module/package declarations and explicit dependency manifests.
 - Repository documentation only as corroborating evidence.
 
+### Prompt supplement
+
+> Identify only boundaries supported by an executable entry point, build target,
+> container image, workload, or explicit service registration. For each
+> candidate, distinguish the repository module from the deployable unit and
+> record the evidence that joins them. Treat documentation and directory names
+> as corroboration, not proof. Keep libraries, shared modules, and folders with
+> no runtime evidence out of the service inventory or mark them unresolved.
+
 ### Emit
 
 - `service`, `module`, `external_system`, and `deployment` nodes where
@@ -131,6 +140,16 @@ them?
 - Base URLs, service discovery names, ingress routes, and timeout/retry
   configuration.
 
+### Prompt supplement
+
+> For every API, capture its normalized method, path, protocol, serving
+> component, and route/spec evidence. For outgoing calls, trace the configured
+> base URL or discovery alias to exactly one target only when the configuration
+> is available in scope. Keep a route match, host-only client, generated client,
+> gateway declaration, or environment-only URL as a qualified observation; none
+> alone proves a service-to-service call. Record resilience and authentication
+> settings only when their configuration is explicit.
+
 ### Emit
 
 - API nodes with method, path, version, protocol, and owning component.
@@ -165,6 +184,16 @@ delivery contract do they imply?
 - Event schemas, serializers, message envelopes, retry policies, and ordering
   or idempotency settings.
 
+### Prompt supplement
+
+> Preserve the physical messaging shape: distinguish Topic, queue, exchange,
+> subscription, consumer group, routing key, retry channel, and dead-letter
+> channel. Resolve publish and consume direction from a concrete call, binding,
+> or listener; do not infer it from names. Link a payload schema only when a
+> serializer, binding, schema registry, or explicit contract proves the link.
+> State whether ordering, retries, idempotency, or delivery guarantees are
+> configured, unknown, or merely suggested by source structure.
+
 ### Emit
 
 - `message_channel` nodes with broker, Topic name, protocol, schema, and
@@ -197,6 +226,16 @@ Which Data resources exist, and which components read or write them?
   Elasticsearch, object storage, and embedded databases.
 - Backup, retention, encryption, replica, and ownership configuration where
   present.
+
+### Prompt supplement
+
+> Model the narrowest resource established by evidence: store, database,
+> schema, table, collection, keyspace, bucket, or index. Separate a migration
+> or ORM declaration from a repository/query/client access site, and identify
+> reads versus writes from the operation itself. Do not infer ownership,
+> source-of-truth, replication, or production retention from naming or a local
+> connection definition. Retain property and secret-reference names only; never
+> copy connection strings or credentials.
 
 ### Emit
 
@@ -237,6 +276,16 @@ effects, and where do control-flow or execution-model boundaries change them?
 - Branches, exception paths, loops, async/reactive hand-offs, retries,
   timeouts, circuit breakers, dead-letter routes, and compensation logic.
 - Tests as `test-evidenced` behaviour, kept distinct from production source.
+
+### Prompt supplement
+
+> Reconstruct only a bounded potential path. For every transition, record the
+> call site and selected target evidence, and retain branches as alternatives.
+> Mark transactions, asynchronous/reactive hand-offs, retries, timeouts,
+> circuit breakers, dead-letter routing, and compensation only when explicit.
+> Stop at reflection, dynamic dispatch, several injection candidates, computed
+> destinations, or runtime-only routing. Do not turn ordered steps into graph
+> facts or present source traversal as runtime execution.
 
 ### Report
 
@@ -280,6 +329,15 @@ them to runtime environments?
   config maps, secret references, probes, replicas, resources, and network
   policies.
 - Environment overlays and image/tag references.
+
+### Prompt supplement
+
+> Correlate a logical component with a workload only through an explicit image,
+> label, service account, pipeline target, or configuration binding. Keep each
+> environment overlay separate and label development-only Compose resources as
+> such. Extract secret and configuration references by name and scope, never
+> their values. Do not infer production topology, regions, scaling, or network
+> exposure from a base manifest when the effective overlay is unavailable.
 
 ### Emit
 

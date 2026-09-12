@@ -128,6 +128,43 @@ possible, emit `ambiguous`; if the identifier is dynamic or absent, emit
 `unresolved`. Never turn a common class, table or topic suffix into a confirmed
 relationship.
 
+## Prompt composition for code extraction
+
+Use a focused prompt per pass, not a generic request to "map the architecture".
+State the requested scope, profile namespace, repository revision, and whether
+the output is a `partial` or a deliberate `complete` snapshot. Begin with the
+indexed inventory and ask the agent to inspect only the gaps that matter to the
+question.
+
+The prompt must require the agent to:
+
+- collect the narrowest concrete identifier for each candidate fact before
+  correlating it with another component;
+- seek complementary evidence across code, configuration, contracts, and
+  deployment manifests when available, while recording which evidence type
+  supports which part of the claim;
+- distinguish declared resources, configured bindings, implemented access
+  sites, generated artifacts, tests, and deployment definitions;
+- record an explicit stop condition for dynamic values, several matching
+  targets, runtime-only wiring, uninspected repositories, or unavailable
+  environments;
+- produce only stable IDs, relative paths, safe configuration references,
+  confidence, status, and a concise rationale; and
+- validate the JSON and review the import result before claiming that the graph
+  has been updated.
+
+Ask for a relationship only when an explicit identifier joins both sides. A
+second corroborating observation strengthens confidence but does not turn a
+dynamic or many-to-one match into a resolved edge. Conversely, a lack of a
+second observation is not a reason to hide a concrete access site: emit the
+resource or endpoint with the appropriate qualified status.
+
+Do not use source shape as a substitute for semantics. In particular, a
+migration does not prove present ownership, a generated client does not prove a
+live call, a DTO does not prove a message contract, a hostname does not prove a
+service target, and a local development manifest does not prove production
+deployment. Keep those observations separately reviewable.
+
 ## Potential source flows
 
 `systemlens flows` materializes only conservative same-method Java paths. An

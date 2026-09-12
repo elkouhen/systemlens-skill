@@ -218,19 +218,41 @@ combines the SystemLens index with the latest accepted AI facts:
    HTML graph is read-only; importing the JSON is what updates the persisted
    enrichment layer.
 
-An agent can use this prompt as a bounded starting point:
+Use the following prompt as a bounded starting point for a general extraction
+pass. Add the relevant profile supplement from
+[pass-profiles.md](references/pass-profiles.md), rather than asking the agent
+to rediscover every category in every repository:
 
-> Analyse the code and configuration under this directory. First identify
-> all deployable services/modules, external systems, Topics or channels,
-> APIs, Data resources and their read/write sites.
-> Then
-> write `architecture.ai-graph.json` in `systemlens-ai-graph-v1` format. Keep
-> all evidence paths relative to the directory, include short reasons for
-> ambiguous or unresolved relationships, and do not guess dynamic targets.
-> Give the file a stable pass name, validate it, import it as a replacement of
-> the facts in its producer namespace, verify the merged graph, and finally run
-> `systemlens export microservices --graph architecture.ai-graph.json --html
-> architecture.html --root-path .` when an HTML handoff is needed.
+> Analyse the code, build descriptors, configuration, contracts, and deployment
+> manifests under this directory. Start from the indexed SystemLens inventory;
+> use source inspection only to complete or qualify a specific gap. Establish
+> deployable services/modules and external systems before correlating APIs,
+> Topics or channels, and Data resources.
+>
+> For each candidate fact, collect the narrowest concrete identifier and two
+> complementary observations when they are available: for example a route plus
+> its client configuration, a Topic binding plus a producer or consumer, or a
+> Data mapping plus an access site. Distinguish declaration, configuration,
+> implementation, generated code, test, and deployment evidence. Do not treat
+> one category as proof of another: a schema does not prove ownership, a client
+> does not prove a reachable target, and a shared payload type does not prove a
+> compatible message contract.
+>
+> Resolve an edge only when one explicit identifier selects one target in the
+> inspected scope. Preserve dynamic values, multiple candidates, environment-
+> only wiring, generated-only references, and out-of-scope targets as
+> `ambiguous` or `unresolved`, with a short reason and the evidence that caused
+> the stop. Never expose secret values; retain only safe configuration-key or
+> secret-reference names.
+>
+> Write `architecture.ai-<profile>.pass-001.json` in
+> `systemlens-ai-graph-v1` format, scoped to the requested profile namespace.
+> Use stable logical IDs, relative evidence paths, status, confidence, and
+> provenance for every claim. Keep `mode` as `partial` unless this pass has
+> inspected the entire declared profile scope. Validate the manifest, import it
+> only after review, verify the merged graph and import summary, and run
+> `systemlens export microservices --graph architecture.ai-<profile>.pass-001.json
+> --html architecture.html --root-path .` only when an HTML handoff is needed.
 
 Use `--json` when a downstream step needs structured results. The MCP surface
 supports the same workflow through `index_repository`, `import_graph_facts` and
