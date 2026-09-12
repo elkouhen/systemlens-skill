@@ -31,9 +31,11 @@ In the Java/Spring repository to inspect:
 systemlens init
 systemlens doctor
 systemlens index
-systemlens analyze coverage
-systemlens analyze indexing-issues
-systemlens analyze audit
+
+# Have the agent create a reviewable JSON facts manifest.
+systemlens import-facts architecture.ai-graph.pass-001.json \
+  --namespace ai-architecture
+systemlens export microservices --html architecture.html
 ```
 
 SystemLens uses local Java/Spring ASTs. No model download, rule pack or external

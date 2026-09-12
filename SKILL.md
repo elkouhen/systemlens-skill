@@ -50,7 +50,10 @@ The configuration controls the indexed source perimeter. See
 
 ## Architecture workflow
 
-Start with the indexed architecture and retrieve source evidence only when needed:
+The default workflow is to index deterministic facts, have the agent write a
+reviewable JSON manifest for facts that need enrichment, import that manifest
+into its own namespace, then export the merged model. Retrieve source evidence
+only when needed:
 
 1. `systemlens microservices` — discover services and main integrations.
 2. `systemlens microservices show <name>` — inspect one service.
@@ -58,13 +61,15 @@ Start with the indexed architecture and retrieve source evidence only when neede
    follow linked objects.
 4. `systemlens topics`, `systemlens apis`, `systemlens dtos` or
    `systemlens mongodb` — inspect a shared object from the other direction.
-5. `systemlens analyze coverage` and `systemlens analyze indexing-issues` —
-   identify inventory limits before relying on a conclusion.
-6. `systemlens analyze audit` — assess static topology risks.
-7. `systemlens analyze microservices impact <name>` or `path <source> <target>` —
+5. `systemlens analyze microservices impact <name>` or `path <source> <target>` —
    inspect dependencies and impact paths.
-8. `systemlens flows` and `systemlens flows show <id>` — inspect conservative,
+6. `systemlens flows` and `systemlens flows show <id>` — inspect conservative,
    same-method paths from an HTTP or Kafka entry point to external effects.
+
+Use `systemlens analyze coverage`, `systemlens analyze indexing-issues`, or
+`systemlens analyze audit` as optional diagnostics: respectively when the
+inventory may be incomplete, extraction needs investigation, or a static
+topology-risk review is requested.
 
 For a complex codebase, build the analysis in passes and keep the result
 evidence-based:
@@ -80,10 +85,11 @@ evidence-based:
    service, and service → data schema. Require a concrete shared identifier
    before creating an edge; retain candidate links as ambiguous when several
    targets match.
-4. Run `coverage`, `indexing-issues` and `audit`, then inspect source evidence
-   for every important conclusion. Report blind spots (unsupported language,
-   generated code, dynamic configuration, missing manifests or runtime-only
-   wiring) explicitly.
+4. Inspect source evidence for every important conclusion. When the inventory
+   may be incomplete or a risk review is requested, run the relevant optional
+   diagnostic (`coverage`, `indexing-issues`, or `audit`). Report blind spots
+   (unsupported language, generated code, dynamic configuration, missing
+   manifests or runtime-only wiring) explicitly.
 5. If deterministic extraction is incomplete, create a bounded AI graph and
    optionally persist only reviewed claims through MCP. Keep the deterministic
    snapshot and AI/runtime observations distinguishable in the final report.
@@ -115,9 +121,6 @@ systemlens topics consumers orders.created
 systemlens apis consumers 'POST /payments'
 systemlens mongodb services orders
 systemlens projects show shared-domain
-systemlens analyze coverage
-systemlens analyze indexing-issues
-systemlens analyze audit
 systemlens flows --json
 ```
 
