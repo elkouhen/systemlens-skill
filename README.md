@@ -49,8 +49,9 @@ systemlens import-facts architecture.ai-graph.pass-001.json \
 systemlens export microservices --html architecture.html
 ```
 
-SystemLens uses local Java/Spring ASTs. No model download, rule pack or external
-code-analysis service is required.
+SystemLens uses local Java/Spring ASTs and, when the local CodeQL CLI is
+provisioned, CodeQL for bounded interprocedural flow analysis. No model download
+or remote code-analysis service is required during indexing.
 
 ## Contents
 

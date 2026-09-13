@@ -26,18 +26,24 @@ For each selected flow, record:
 1. List the indexed baseline with `systemlens flows --json`. Select relevant
    potential flows by trigger, module, and externally visible effect.
 2. Inspect each selected flow with `systemlens flows show <id> --json`.
-   Treat its ordered same-method steps as the deterministic baseline.
+   Treat its ordered source-evidenced steps as the deterministic baseline.
+   With the default local CodeQL profile, a flow can include bounded
+   interprocedural `method_call` steps as well as same-method effects.
 3. When a relevant step publishes a Topic, use
    `systemlens topics trace <topic> --json` to explore bounded potential
    service-level continuations. A returned path is still potential and may be
    truncated, cyclic, or conditional.
-4. Inspect only the source and configuration needed to continue a path:
-   direct method calls, or injected interfaces with exactly one repository-
-   evidenced implementation. Record the evidence at both the call site and
-   selected target.
-5. Stop and mark the path unresolved at reflection, dynamic dispatch, multiple
-   bean candidates, computed routes or destinations, environment-only wiring,
-   or a boundary outside the inspected scope.
+4. Use the CodeQL-resolved chain first. A unique Java dispatch has medium
+   confidence; multiple `viableCallable` implementations are retained as
+   separate low-confidence candidates. Do not select one implementation from
+   Spring `@Qualifier`, `@Primary`, profiles, factory methods, or runtime
+   configuration unless the evidence is independently reviewed and reported as
+   source-assisted.
+5. Stop and mark the path unresolved at reflection, dynamic dispatch not
+   represented by CodeQL, computed routes or destinations, environment-only
+   wiring, or a boundary outside the inspected scope. A reported `cycle` is a
+   potential cyclic call or concrete Kafka continuation, not proof of runtime
+   repetition.
 6. Compare the resulting report with the API, messaging, and Data topology
    facts. Correct a topology fact only through its owning pass; do not convert
    ordered steps into graph edges.

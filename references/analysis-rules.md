@@ -167,11 +167,15 @@ deployment. Keep those observations separately reviewable.
 
 ## Potential source flows
 
-`systemlens flows` materializes only conservative same-method Java paths. An
-HTTP or Topic entry point is followed by source-ordered HTTP calls, Topic
-publications, and Data reads/writes whose evidence lies in the same parsed
-method. This containment is useful evidence, but a branch may prevent an effect
-from running, so the result remains `potential` with medium confidence.
+`systemlens flows` materializes conservative same-method Java paths and, by
+default when local CodeQL is available, bounded interprocedural Java call
+chains. An HTTP or Topic entry point is followed by source-ordered HTTP calls,
+Topic publications, and Data reads/writes in the same parsed method; CodeQL
+adds `method_call` steps only between indexed source methods. Concrete Kafka
+publications can continue into concrete downstream message-entry flows, with a
+bounded number of asynchronous hops. Cyclic call chains and Kafka continuations
+are retained with `status: cycle` rather than hidden. Every flow remains
+`potential`: a branch may prevent an effect from running.
 
 An assisted analysis may continue through direct calls or an injected
 interface only when repository wiring resolves exactly one implementation.

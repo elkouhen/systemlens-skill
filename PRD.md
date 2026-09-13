@@ -88,10 +88,11 @@ The skill must support these independently runnable passes:
 | Data | `ai-data` | Data stores and resources, reads, writes, ownership observations |
 | Deployment | `ai-deployment` | workloads, environments, runtime resources, configuration bindings |
 
-Source-flow analysis is an additional review workflow. It compares persisted
-same-method SystemLens flows with bounded source-assisted traversal, but stays
-separate from graph-fact namespaces until an ordered-flow import contract
-exists. For business-flow discovery, it must select two or three outcomes,
+Source-flow analysis is an additional review workflow. It starts from persisted
+SystemLens potential flows, including bounded CodeQL interprocedural chains and
+Kafka continuations when locally available, but stays separate from graph-fact
+namespaces until an ordered-flow import contract exists. For business-flow
+discovery, it must select two or three outcomes,
 record the requested or documented outcome separately from source evidence,
 and report alternatives, stop conditions, and scope limits.
 

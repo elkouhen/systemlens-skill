@@ -47,9 +47,12 @@ when relevant to the inspected repository.
 2. Choose the smallest analysis pass that answers the request.
 3. Collect evidence and correlate only explicit, uniquely resolvable
    identifiers.
-4. Produce a reviewable result: a report for ordered source-flow analysis, or
+4. Use persisted `systemlens flows` as the baseline for ordered source-flow
+   analysis; its CodeQL-derived call chains and Kafka continuations remain
+   potential, confidence-qualified evidence rather than runtime traces.
+5. Produce a reviewable result: a report for ordered source-flow analysis, or
    a versioned fact manifest for complementary topology.
-5. Validate and review the result before any import. Re-read the merged model
+6. Validate and review the result before any import. Re-read the merged model
    after an import and report what remains unresolved.
 
 Use a partial snapshot by default. A complete snapshot is appropriate only when
