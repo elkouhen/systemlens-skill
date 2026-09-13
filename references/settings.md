@@ -11,6 +11,7 @@ exclude:
   - "node_modules/**"
   - ".systemlens/**"
 min_severity: INFO
+root_path: .
 analysis:
   strategy: default
   codeql: true
