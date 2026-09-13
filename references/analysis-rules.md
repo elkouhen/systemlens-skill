@@ -196,7 +196,7 @@ Strategy1 is repository-convention support, not a general heuristic. Enable it
 only when the repository follows these conventions:
 
 ```bash
-systemlens index --topic-strategy strategy1
+systemlens index --strategy strategy1
 ```
 
 The selected profile is persisted and must be consistent across a federated

@@ -12,7 +12,7 @@ exclude:
   - ".systemlens/**"
 min_severity: INFO
 analysis:
-  topic_strategy: default
+  strategy: default
   codeql: true
   codeql_max_hops: 12
   codeql_max_paths: 10000
@@ -30,6 +30,10 @@ call transitions; index progress reports when that transition bound is reached.
 Set `codeql: false` only when an AST-only flow inventory is intended. The
 temporary database is not persisted and indexing does not download CodeQL
 packages.
+
+For a one-off fast refresh without changing the project configuration, run
+`systemlens index --no-codeql`. It cannot be combined with
+`--codeql-database`.
 
 After changing project configuration, run `systemlens index`. Explicit Kafka
 manifests can be indexed with `systemlens index --manifest FILE`; they must be
