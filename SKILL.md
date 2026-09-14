@@ -12,9 +12,10 @@ expose source-derived architecture facts. Its installed version and public
 documentation are the source of truth for supported commands, options, output,
 and data contracts.
 
-**systemlens-skill** is the agent guidance in this directory. It helps an agent
-choose an investigation, interpret evidence conservatively, and prepare
-reviewable complementary findings. It does not extend SystemLens, invent a
+**systemlens-skill** is optional agent guidance in this directory. It lets a
+person using SystemLens direct an agent to choose an investigation, interpret
+evidence conservatively, and prepare reviewable complementary findings. It
+enriches the separate graph-fact layer; it does not extend SystemLens, invent a
 command, or turn an inference into a source-derived fact.
 
 Use generic architecture terms in user-facing work: **APIs**, **Topics**, and

@@ -1,11 +1,13 @@
 # systemlens-skill
 
-Coding-agent skill for `systemlens`, a local Java/Spring architecture explorer based
-on source ASTs.
+Companion skill for `systemlens`, a local Java/Spring architecture explorer
+based on source ASTs.
 
-`systemlens` is the analysis product (CLI and MCP server). This repository is
-`systemlens-skill`: agent guidance that helps use the product conservatively;
-it does not define or extend the product's public contract.
+`systemlens` is the analysis product (CLI and MCP server), intended for people
+who need to analyse a codebase. This repository is `systemlens-skill`: optional
+agent guidance that enriches the product's separate graph-fact layer through
+reviewable, evidence-based analysis; it does not define or extend the product's
+public contract.
 
 The skill guides an agent through initialization, incremental indexing and
 architecture exploration of complex repositories: microservices, APIs,

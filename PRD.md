@@ -2,8 +2,9 @@
 
 ## 1. Product objective
 
-The primary objective of this skill is to **complete SystemLens's static
-architecture analysis**.
+The primary objective of this optional skill is to let a person using
+SystemLens direct an agent to **enrich SystemLens's architecture graph** when
+deterministic extraction leaves a bounded gap.
 
 SystemLens remains the source of deterministic, code-derived facts. The skill
 adds the architectural facts that static extraction cannot reliably determine,
@@ -12,7 +13,7 @@ Data ownership, and deployment bindings. These additions must be evidence-based,
 reviewable, and incrementally mergeable into the SystemLens model.
 
 The skill must never silently replace, delete, or blur the distinction between
-deterministic SystemLens facts and AI-produced complementary facts.
+deterministic SystemLens facts and agent-produced complementary facts.
 
 ## 2. Problem statement
 
@@ -70,8 +71,9 @@ requires architectural interpretation.
 
 ### FR-1 — Establish a deterministic baseline
 
-The skill must guide the user or agent through `systemlens init`, `doctor`,
-and `index` before complementary facts are generated. It must recommend
+The skill must guide the analyst and, when used, the agent through
+`systemlens init`, `doctor`, and `index` before complementary facts are
+generated. It must recommend
 `coverage`, `indexing-issues`, or `audit` only when inventory completeness is
 in doubt, extraction needs investigation, or a static topology-risk review is
 requested.
