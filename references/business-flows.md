@@ -27,8 +27,13 @@ For each selected flow, record:
    potential flows by trigger, module, and externally visible effect.
 2. Inspect each selected flow with `systemlens flows show <id> --json`.
    Treat its ordered source-evidenced steps as the deterministic baseline.
-   With the default local CodeQL profile, a flow can include bounded
-   interprocedural `method_call` steps as well as same-method effects.
+   With the default local CodeQL profile, a flow can include interprocedural
+   `method_call` steps as well as same-method effects. Direct endpoint-pair
+   reachability has no hop limit; AST fallback exploration remains bounded.
+   Direct proofs and fallback paths are combined. Fallback paths can cross
+   modules and ordinary helper methods using qualified types, signatures and
+   a unique source-declared implementation, always at low confidence. Unknown
+   types and ambiguous implementations remain unresolved by this fallback.
 3. When a relevant step publishes a Topic, use
    `systemlens topics trace <topic> --json` to explore bounded potential
    service-level continuations. A returned path is still potential and may be

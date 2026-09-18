@@ -267,7 +267,8 @@ effects, and where do control-flow or execution-model boundaries change them?
 
 - Begin with `systemlens flows --json` and inspect every persisted potential
   flow relevant to the question. The default local CodeQL profile may add
-  bounded interprocedural method calls; status `cycle` identifies a possible
+  interprocedural method calls (bounded for fallback paths, unbounded direct
+  endpoint-pair reachability); status `cycle` identifies a possible
   call or Kafka-continuation cycle.
 - API controllers, message listeners, schedulers, batch entry points, and
   framework handlers.

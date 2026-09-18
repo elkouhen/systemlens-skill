@@ -168,8 +168,11 @@ deployment. Keep those observations separately reviewable.
 ## Potential source flows
 
 `systemlens flows` materializes conservative same-method Java paths and, by
-default when local CodeQL is available, bounded interprocedural Java call
-chains. An HTTP or Topic entry point is followed by source-ordered HTTP calls,
+default when local CodeQL is available, interprocedural Java call chains.
+Direct CodeQL endpoint-pair reachability is unioned with bounded fallback
+paths. Qualified source types, compatible signatures and transitive inheritance
+can support a unique cross-module fallback implementation at low confidence;
+method names alone cannot. An HTTP or Topic entry point is followed by source-ordered HTTP calls,
 Topic publications, and Data reads/writes in the same parsed method; CodeQL
 adds `method_call` steps only between indexed source methods. Concrete Kafka
 publications can continue into concrete downstream message-entry flows, with a

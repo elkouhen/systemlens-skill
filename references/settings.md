@@ -25,9 +25,15 @@ compatibility but does not change AST endpoint extraction.
 
 `analysis.codeql` enables the default local interprocedural analysis. When the
 CodeQL CLI and its Java pack are provisioned locally, SystemLens creates a
-temporary source-only database and extends potential flows across Java method
-calls. `codeql_max_hops` bounds call depth and `codeql_max_paths` bounds explored
-call transitions; index progress reports when that transition bound is reached.
+temporary source-only database for the whole repository and extends potential
+flows across Java method calls. Direct input/output reachability is not bounded
+by hop or transition counts. `codeql_max_hops` bounds fallback call depth and
+`codeql_max_paths` bounds fallback transitions; index progress reports when that
+transition bound is reached, even alongside direct results. Direct pairs and
+fallback pairs are combined. Cross-module AST fallback requires qualified
+receiver/contract types, compatible signatures and one concrete implementation
+through source-declared inheritance; it never selects a same-name method alone.
+The subprocess timeout also covers live progress reading.
 Set `codeql: false` only when an AST-only flow inventory is intended. The
 temporary database is not persisted and indexing does not download CodeQL
 packages.
