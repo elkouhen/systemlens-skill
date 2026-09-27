@@ -28,7 +28,7 @@ a { color: inherit; text-decoration: none; }
 .brand-mark i:nth-child(1) { height: 12px; opacity: .55; }
 .brand-mark i:nth-child(2) { height: 19px; }
 .brand-mark i:nth-child(3) { height: 24px; background: var(--orange); }
-.nav { display: flex; align-items: center; gap: 30px; font-size: 12px; font-weight: 700; color: var(--muted); }
+.nav { display: flex; align-items: center; gap: 22px; font: 11px var(--mono); font-weight: 500; color: var(--muted); }
 .nav a:hover, .text-link:hover, .site-footer a:hover { color: var(--teal); }
 .nav-github { color: var(--ink); padding: 10px 15px; border: 1px solid var(--line); border-radius: 8px; }
 .nav-github:hover { border-color: var(--teal); }
