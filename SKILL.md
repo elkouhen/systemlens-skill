@@ -5,6 +5,12 @@ description: "Guide evidence-based architecture exploration with SystemLens, pre
 
 # SystemLens skill
 
+The purpose of this skill is to enrich a SystemLens analysis with reviewable
+AI-produced explanations and complementary findings. SystemLens remains the
+source of truth for deterministic architecture facts, indexed flows, source
+evidence, and CodeQL results. This skill must never replace that index or
+silently turn an inference into an indexed fact.
+
 ## Scope and terminology
 
 **SystemLens** is the product: its CLI and MCP server index a repository and
@@ -15,8 +21,9 @@ and data contracts.
 **systemlens-skill** is optional agent guidance in this directory. It lets a
 person using SystemLens direct an agent to choose an investigation, interpret
 evidence conservatively, and prepare reviewable complementary findings. It
-enriches the separate graph-fact layer; it does not extend SystemLens, invent a
-command, or turn an inference into a source-derived fact.
+exists to enrich the product's analysis with explanations and complementary
+findings; it does not extend SystemLens, invent a command, or turn an inference
+into a source-derived fact.
 
 Use generic architecture terms in user-facing work: **APIs**, **Topics**, and
 **Data**. Technology-specific terms identify evidence or an extractor only
@@ -36,6 +43,9 @@ when relevant to the inspected repository.
 - Keep deterministic SystemLens facts distinct from complementary analysis.
   Complementary facts belong to a dedicated namespace and never overwrite facts
   owned by SystemLens or another producer.
+- Treat every generated description, report, and complementary fact as an
+  enrichment layer. Preserve the underlying SystemLens result unchanged and
+  make the relationship to its source flow or fact explicit.
 - Make uncertainty, confidence, provenance, and stop conditions visible.
 - Never include credentials, tokens, connection-string secrets, or absolute
   workstation paths in findings, reports, examples, or manifests.
@@ -49,11 +59,16 @@ when relevant to the inspected repository.
 3. Collect evidence and correlate only explicit, uniquely resolvable
    identifiers.
 4. Use persisted `systemlens flows` as the baseline for ordered source-flow
-   analysis; its CodeQL-derived call chains and Kafka continuations remain
+   analysis; its CodeQL-derived or source-symbol call chains and Kafka continuations remain
    potential, confidence-qualified evidence rather than runtime traces.
-5. Produce a reviewable result: a report for ordered source-flow analysis, or
-   a versioned fact manifest for complementary topology.
-6. Validate and review the result before any import. Re-read the merged model
+5. When a human-readable explanation is needed, enrich each persisted flow with
+   one AI-generated description keyed by flow ID. Store these descriptions in
+   `.systemlens/flow-descriptions.json`; they are presentation text, not new
+   architecture facts. Follow [the flow-description contract](references/flow-descriptions.md).
+6. Produce a reviewable result: a report for ordered source-flow analysis, a
+   flow-description enrichment file, or a versioned fact manifest for
+   complementary topology.
+7. Validate and review the result before any import. Re-read the merged model
    after an import and report what remains unresolved.
 
 Use a partial snapshot by default. A complete snapshot is appropriate only when
@@ -73,6 +88,8 @@ work; do not reconstruct product behaviour from this entrypoint.
   messaging, Data, source-flow, and deployment investigations.
 - [business-flows.md](references/business-flows.md) — potential business-flow
   reports and traversal limits.
+- [flow-descriptions.md](references/flow-descriptions.md) — AI-generated
+  descriptions for persisted flows and the HTML enrichment contract.
 - [ai-graph.md](references/ai-graph.md) — versioned complementary fact manifest
   contract and reconciliation rules.
 - [management.md](references/management.md) — installation, MCP setup, refresh,

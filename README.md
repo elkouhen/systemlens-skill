@@ -9,6 +9,10 @@ agent guidance that enriches the product's separate graph-fact layer through
 reviewable, evidence-based analysis; it does not define or extend the product's
 public contract.
 
+The skill's primary objective is enrichment. It adds reviewable AI explanations
+and complementary findings around the deterministic SystemLens index. It does
+not replace indexing, alter source evidence, or become a second source of truth.
+
 The skill guides an agent through initialization, incremental indexing and
 architecture exploration of complex repositories: microservices, APIs,
 Topics, Data resources, modules,
@@ -29,6 +33,13 @@ mapping logical components to runtime resources. Each pass has its own namespace
 and replaceable JSON artifact. A separate `flows` review reconstructs selected
 business outcomes as evidence-backed potential source flows; it is reported in
 Markdown and is not imported as an ordered topology graph.
+
+For a complete CodeQL analysis, the skill can also generate one AI-written
+description per persisted flow. These descriptions are stored separately in
+`.systemlens/flow-descriptions.json` and loaded by the HTML export by flow ID;
+they enrich presentation without changing indexed facts. See
+[`references/flow-descriptions.md`](references/flow-descriptions.md) and the
+[`full CodeQL prompt`](prompts/full-index-codeql-flow-descriptions.md).
 
 ## Install
 
@@ -64,6 +75,8 @@ or remote code-analysis service is required during indexing.
   — boundaries, API, messaging, Data and deployment pass contracts.
 - [`references/business-flows.md`](references/business-flows.md) — selecting and
   reporting potential business flows from source evidence.
+- [`references/flow-descriptions.md`](references/flow-descriptions.md) — AI
+  descriptions for persisted flows and the HTML enrichment contract.
 - [`references/settings.md`](references/settings.md) —
   project configuration.
 - [`references/management.md`](references/management.md)
