@@ -5,6 +5,14 @@ based on source ASTs.
 
 **Website:** [systemlens-skill on GitHub Pages](https://elkouhen.github.io/systemlens-skill/)
 
+## Related projects
+
+- [SystemLens](https://github.com/elkouhen/systemlens) is the local CLI and
+  MCP server that indexes source-derived architecture facts.
+- [SystemLens observability lab](https://github.com/elkouhen/systemlens-observability-lab)
+  is the Java, Kubernetes, Elastic, OpenTelemetry, Kafka, and database fixture
+  used to exercise architecture and observability workflows.
+
 `systemlens` is the analysis product (CLI and MCP server), intended for people
 who need to analyse a codebase. This repository is `systemlens-skill`: optional
 agent guidance that enriches the product's separate graph-fact layer through
