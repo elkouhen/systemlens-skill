@@ -25,9 +25,9 @@
   <main id="top">
     <section class="hero shell">
       <div class="hero-copy">
-        <p class="eyebrow"><span class="status-dot"></span> Companion skill for SystemLens</p>
-        <h1>Turn architecture gaps into <em>reviewable evidence.</em></h1>
-        <p class="hero-lede">Guide an agent through focused analysis of a Java or Spring repository while keeping source facts, AI findings, and uncertainty distinct.</p>
+        <p class="eyebrow"><span class="status-dot"></span> Agent guidance for SystemLens</p>
+        <h1>Explain call graphs with <em>evidence.</em></h1>
+        <p class="hero-lede">Add concise descriptions to persisted SystemLens flows without changing the indexed facts or presenting potential paths as runtime traces.</p>
         <div class="hero-actions">
           <a class="button button-primary" href="#install">Get started <span aria-hidden="true">↓</span></a>
           <a class="button button-quiet" href="https://github.com/elkouhen/systemlens-skill/blob/main/SKILL.md">Read the skill <span aria-hidden="true">↗</span></a>
@@ -38,17 +38,17 @@
         <div class="orb orb-two"></div>
         <div class="graph-card graph-source">
           <span class="node-icon source-icon">S</span>
-          <div><strong>Source index</strong><small>deterministic facts</small></div>
+          <div><strong>Persisted flow</strong><small>SystemLens output</small></div>
         </div>
         <div class="graph-line line-one"></div>
         <div class="graph-line line-two"></div>
         <div class="graph-card graph-review">
           <span class="node-icon review-icon">R</span>
-          <div><strong>Reviewable graph</strong><small>evidence + confidence</small></div>
+          <div><strong>Flow description</strong><small>source-grounded text</small></div>
         </div>
         <div class="graph-card graph-ai">
           <span class="node-icon ai-icon">AI</span>
-          <div><strong>Complementary facts</strong><small>scoped namespaces</small></div>
+          <div><strong>Presentation layer</strong><small>no fact changes</small></div>
         </div>
         <div class="graph-label label-one">baseline</div>
         <div class="graph-label label-two">enrich</div>
@@ -58,23 +58,23 @@
     <section class="principles band">
       <div class="shell principle-grid">
         <div class="principle-intro">
-          <p class="eyebrow">The contract</p>
-          <h2>Complement the index.<br><em>Never blur it.</em></h2>
+          <p class="eyebrow">The scope</p>
+          <h2>Describe the result.<br><em>Do not replace it.</em></h2>
         </div>
         <div class="principle">
           <span class="principle-number">01</span>
-          <h3>Static first</h3>
-          <p>Establish the SystemLens baseline before making broad architecture claims.</p>
+          <h3>Flow output</h3>
+          <p>Read the persisted flow steps that SystemLens already found.</p>
         </div>
         <div class="principle">
           <span class="principle-number">02</span>
-          <h3>Evidence over inference</h3>
-          <p>Trace material findings to files, symbols, configuration, or manifests.</p>
+          <h3>Evidence first</h3>
+          <p>Ground each sentence in ordered steps and source locations.</p>
         </div>
         <div class="principle">
           <span class="principle-number">03</span>
           <h3>Uncertainty stays visible</h3>
-          <p>Keep ambiguity, confidence, provenance, and stop conditions in the result.</p>
+          <p>Keep potential or partially reconciled flows qualified.</p>
         </div>
       </div>
     </section>
@@ -106,25 +106,21 @@ Do not change indexed facts.</code></pre>
       <div class="install-copy">
         <p class="eyebrow">Start locally</p>
         <h2>Install the skill.<br><em>Keep your code close.</em></h2>
-        <p>SystemLens analyzes local Java and Spring source. The skill adds agent guidance for evidence-based enrichment and review.</p>
+        <p>Install the skill into your agent environment. Install SystemLens separately in the repository you want to inspect.</p>
         <a class="text-link" href="https://github.com/elkouhen/systemlens-skill/blob/main/README.md">Explore the documentation <span aria-hidden="true">↗</span></a>
       </div>
       <div class="terminal" aria-label="Installation commands">
         <div class="terminal-bar"><span></span><span></span><span></span><small>terminal</small></div>
         <pre><span class="prompt">$</span> npx skills add elkouhen/systemlens-skill
-<span class="prompt">$</span> uv tool install systemlens
 
-<span class="comment"># in the repository to inspect</span>
-<span class="prompt">$</span> systemlens init
-<span class="prompt">$</span> systemlens doctor
-<span class="prompt">$</span> systemlens index
-<span class="prompt">$</span> systemlens export microservices --html architecture.html</pre>
+<span class="comment"># install the product separately</span>
+<span class="prompt">$</span> uv tool install systemlens</pre>
       </div>
     </section>
 
     <section class="cta band">
       <div class="shell cta-inner">
-        <div><p class="eyebrow">Open source architecture analysis</p><h2>Make the unknowns <em>reviewable.</em></h2></div>
+        <div><p class="eyebrow">SystemLens companion</p><h2>Make each flow <em>readable.</em></h2></div>
         <a class="button button-primary" href="https://github.com/elkouhen/systemlens-skill">View on GitHub <span aria-hidden="true">↗</span></a>
       </div>
     </section>

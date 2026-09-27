@@ -1,36 +1,33 @@
 # systemlens-skill
 
-Companion skill for `systemlens`, a local Java/Spring architecture explorer
-based on source ASTs.
+Companion skill for `systemlens`, a local Java/Spring architecture explorer.
 
 **Website:** [systemlens-skill on GitHub Pages](https://elkouhen.github.io/systemlens-skill/)
 
+## Scope
+
+This repository owns agent guidance for explaining persisted SystemLens flows
+and producing optional, reviewable complementary findings. It does not own the
+SystemLens CLI, MCP server, deterministic index, or HTML export.
+
+Use [SystemLens](https://github.com/elkouhen/systemlens) for repository
+indexing and graph exploration. Use this skill when an agent needs to explain
+call graphs or enrich a bounded gap with evidence.
+
 ## Related projects
 
-- [SystemLens](https://github.com/elkouhen/systemlens) is the local CLI and
-  MCP server that indexes source-derived architecture facts.
+- [SystemLens](https://github.com/elkouhen/systemlens) owns indexing, graph
+  exploration, and exports.
 - [SystemLens observability lab](https://github.com/elkouhen/systemlens-observability-lab)
-  is the Java, Kubernetes, Elastic, OpenTelemetry, Kafka, and database fixture
-  used to exercise architecture and observability workflows.
+  owns the runnable observability environment.
 
-`systemlens` is the analysis product (CLI and MCP server), intended for people
-who need to analyse a codebase. This repository is `systemlens-skill`: optional
-agent guidance that enriches the product's separate graph-fact layer through
-reviewable, evidence-based analysis; it does not define or extend the product's
-public contract.
+The skill adds reviewable AI explanations and complementary findings around a
+deterministic SystemLens result. It does not replace indexing, alter source
+evidence, or become a second source of truth.
 
-The skill's primary objective is enrichment. It adds reviewable AI explanations
-and complementary findings around the deterministic SystemLens index. It does
-not replace indexing, alter source evidence, or become a second source of truth.
-
-The skill guides an agent through initialization, incremental indexing and
-architecture exploration of complex repositories: microservices, APIs,
-Topics, Data resources, modules,
-dependencies and topology risks. Unsupported conventions can be completed with
-an evidence-based AI graph and reviewed MCP facts. The intended workflow is
-iterative: index once with SystemLens, generate focused JSON fact passes, then
-re-import them idempotently so newer evidence replaces older AI facts without
-duplicating or overwriting source-derived facts.
+Its primary presentation use case is to describe persisted potential flows in
+plain language. Its optional topology passes cover bounded gaps that require
+reviewable evidence outside deterministic extraction.
 
 Each JSON facts manifest is the durable, reviewable handoff between the agent
 and SystemLens. It owns only its namespace and supplements, rather than
@@ -58,26 +55,17 @@ For a copyable prompt that explains persisted call graphs, see
 
 ```bash
 npx skills add elkouhen/systemlens-skill
+```
+
+Install SystemLens separately, then follow its product documentation to index
+the repository before asking the agent to explain its flows:
+
+```bash
 uv tool install systemlens
 ```
 
-In the Java/Spring repository to inspect:
-
-```bash
-systemlens init
-systemlens doctor
-systemlens index
-
-# Have the agent write reviewable, relative-evidence facts in JSON.
-# Import the facts into the AI architecture namespace.
-systemlens import-facts architecture.ai-graph.pass-001.json \
-  --namespace ai-architecture
-systemlens export microservices --html architecture.html
-```
-
-SystemLens uses local Java/Spring ASTs and, when the local CodeQL CLI is
-provisioned, CodeQL for bounded interprocedural flow analysis. No model download
-or remote code-analysis service is required during indexing.
+See the [SystemLens quick start](https://github.com/elkouhen/systemlens#quick-start)
+for product commands.
 
 ## Contents
 
