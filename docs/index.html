@@ -117,6 +117,33 @@
       </div>
     </section>
 
+    <section class="section prompt-section">
+      <div class="shell prompt-layout">
+        <div>
+          <p class="eyebrow">A prompt you can copy</p>
+          <h2>Start with a question.<br><em>Keep the scope visible.</em></h2>
+          <p class="section-note">Ask the agent to establish the SystemLens baseline, choose only the required passes, and return reviewable manifests.</p>
+          <a class="text-link" href="https://github.com/elkouhen/systemlens-skill/blob/main/prompts/enrich-architecture.md">Open the complete prompt ↗</a>
+        </div>
+        <div class="prompt-card">
+          <pre><code>Use SystemLens to enrich the architecture model.
+
+Question: Which services own the checkout API,
+its callers, and the data it writes?
+
+Scope: checkout modules and deployment manifests.
+Exclude tests and generated sources.
+
+Establish the baseline with init, doctor, and index.
+Run boundaries, http, and data passes.
+Write versioned partial manifests with relative
+evidence, confidence, provenance, and stable IDs.
+Keep ambiguous relationships unresolved.
+Review every manifest before import.</code></pre>
+        </div>
+      </div>
+    </section>
+
     <section id="install" class="section shell install-section">
       <div class="install-copy">
         <p class="eyebrow">Start locally</p>

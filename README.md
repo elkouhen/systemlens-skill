@@ -51,6 +51,9 @@ they enrich presentation without changing indexed facts. See
 [`references/flow-descriptions.md`](references/flow-descriptions.md) and the
 [`full CodeQL prompt`](prompts/full-index-codeql-flow-descriptions.md).
 
+For a copyable prompt that starts a focused architecture enrichment session,
+see [`prompts/enrich-architecture.md`](prompts/enrich-architecture.md).
+
 ## Install
 
 ```bash
@@ -81,6 +84,8 @@ or remote code-analysis service is required during indexing.
 - [`PRD.md`](PRD.md) — product requirements and completion objective for the skill.
 - [`BACKLOG.md`](BACKLOG.md) — prioritized architecture-analysis work items.
 - [`SKILL.md`](SKILL.md) — architecture-first workflow.
+- [`prompts/enrich-architecture.md`](prompts/enrich-architecture.md) — copyable
+  prompt for a focused enrichment pass.
 - [`references/pass-profiles.md`](references/pass-profiles.md)
   — boundaries, API, messaging, Data and deployment pass contracts.
 - [`references/business-flows.md`](references/business-flows.md) — selecting and
