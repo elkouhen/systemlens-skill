@@ -27,8 +27,9 @@ For each selected flow, record:
    potential flows by trigger, module, and externally visible effect.
 2. Inspect each selected flow with `systemlens flows show <id> --json`.
    Treat its ordered source-evidenced steps as the deterministic baseline.
-   With the default local CodeQL profile, a flow can include interprocedural
-   `method_call` steps as well as same-method effects. Direct endpoint-pair
+   A flow can include low-confidence source-symbol `method_call` steps
+   without CodeQL. The default local CodeQL profile can add further
+   interprocedural steps. Direct endpoint-pair
    reachability has no hop limit; AST fallback exploration remains bounded.
    Direct proofs and fallback paths are combined. Fallback paths can cross
    modules and ordinary helper methods using qualified types, signatures and

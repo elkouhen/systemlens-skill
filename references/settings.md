@@ -34,9 +34,9 @@ fallback pairs are combined. Cross-module AST fallback requires qualified
 receiver/contract types, compatible signatures and one concrete implementation
 through source-declared inheritance; it never selects a same-name method alone.
 The subprocess timeout also covers live progress reading.
-Set `codeql: false` only when an AST-only flow inventory is intended. The
-temporary database is not persisted and indexing does not download CodeQL
-packages.
+Set `codeql: false` for an AST-only flow inventory. Unique source-declared
+receiver calls can still add low-confidence `method_call` steps. The temporary
+database is not persisted and indexing does not download CodeQL packages.
 
 For a one-off fast refresh without changing the project configuration, run
 `systemlens index --no-codeql`. It cannot be combined with

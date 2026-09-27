@@ -97,7 +97,7 @@ group; do not collapse them into one node.
 
 ## Data resources
 
-For Data resources not covered by the deterministic MongoDB extractor, use
+For Data resources not covered by deterministic MongoDB facts or JPA entity declarations, use
 `kind=data_schema` and `technology` such as `postgresql`, `mysql`, `oracle`,
 `sqlserver`, `redis`, `elasticsearch`, `s3` or another explicit provider.
 Represent the narrowest proven Data resource: database/schema/table or view,
@@ -167,8 +167,10 @@ deployment. Keep those observations separately reviewable.
 
 ## Potential source flows
 
-`systemlens flows` materializes conservative same-method Java paths and, by
-default when local CodeQL is available, interprocedural Java call chains.
+`systemlens flows` materializes conservative same-method Java paths. It can
+also follow uniquely resolved receiver-typed source calls at low confidence,
+including when CodeQL is disabled. Local CodeQL adds further interprocedural
+Java call chains when available.
 Direct CodeQL endpoint-pair reachability is unioned with bounded fallback
 paths. Qualified source types, compatible signatures and transitive inheritance
 can support a unique cross-module fallback implementation at low confidence;
@@ -270,6 +272,8 @@ the convention, and retain unresolved output when it does not.
 
 - Maven and Gradle modules are discovered with collision-safe identities;
   artifact display names are not sufficient when duplicates exist.
+- JPA `@Entity` classes are indexed as declarations with source evidence.
+  They do not establish a physical table, database engine, or read/write call.
 - MongoDB Data is extracted from `@Document`, repository entity types
   and unambiguous `MongoTemplate` type arguments. Ambiguous class/collection
   matches remain unresolved.

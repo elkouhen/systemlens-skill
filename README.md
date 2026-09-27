@@ -3,6 +3,8 @@
 Companion skill for `systemlens`, a local Java/Spring architecture explorer
 based on source ASTs.
 
+**Website:** [systemlens-skill on GitHub Pages](https://elkouhen.github.io/systemlens-skill/)
+
 `systemlens` is the analysis product (CLI and MCP server), intended for people
 who need to analyse a codebase. This repository is `systemlens-skill`: optional
 agent guidance that enriches the product's separate graph-fact layer through
