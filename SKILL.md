@@ -71,10 +71,10 @@ when relevant to the inspected repository.
 7. Validate and review the result before any import. Re-read the merged model
    after an import and report what remains unresolved.
 
-For a copyable user prompt that starts a focused enrichment session, use
-[`prompts/enrich-architecture.md`](prompts/enrich-architecture.md). It asks
-the agent to establish the SystemLens baseline, select only the required
-passes, produce versioned manifests, and import them after review.
+For a copyable user prompt that explains persisted call graphs, use
+[`prompts/enrich-architecture.md`](prompts/enrich-architecture.md). It asks the
+agent to inspect each flow and write one evidence-backed description without
+changing the indexed facts.
 
 Use a partial snapshot by default. A complete snapshot is appropriate only when
 the entire declared scope has been inspected and replacement of missing facts is

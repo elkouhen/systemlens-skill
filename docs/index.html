@@ -14,8 +14,7 @@
       <span>systemlens<span class="brand-muted">-skill</span></span>
     </a>
     <nav class="nav" aria-label="Main navigation">
-      <a href="#workflow">Workflow</a>
-      <a href="#passes">Passes</a>
+      <a href="#example">Example</a>
       <a href="#install">Install</a>
       <a class="nav-github" href="https://github.com/elkouhen/systemlens-skill">GitHub <span aria-hidden="true">↗</span></a>
     </nav>
@@ -78,68 +77,25 @@
       </div>
     </section>
 
-    <section id="workflow" class="section shell">
-      <div class="section-heading">
+    <section id="example" class="section shell prompt-section">
+      <div class="prompt-layout">
         <div>
-          <p class="eyebrow">A focused loop</p>
-          <h2>From baseline to <em>understanding.</em></h2>
-        </div>
-        <p class="section-note">Run only the pass that answers the question. Re-import reviewed facts as your repository changes.</p>
-      </div>
-      <div class="workflow">
-        <div class="step"><span class="step-index">01</span><div><h3>Index</h3><p>Build the deterministic baseline with SystemLens.</p></div></div>
-        <div class="step-arrow" aria-hidden="true">→</div>
-        <div class="step"><span class="step-index">02</span><div><h3>Investigate</h3><p>Choose a bounded pass and collect relative evidence.</p></div></div>
-        <div class="step-arrow" aria-hidden="true">→</div>
-        <div class="step"><span class="step-index">03</span><div><h3>Review</h3><p>Validate facts, confidence, ownership, and open questions.</p></div></div>
-        <div class="step-arrow" aria-hidden="true">→</div>
-        <div class="step"><span class="step-index">04</span><div><h3>Reconcile</h3><p>Import the namespace and inspect the merged model.</p></div></div>
-      </div>
-    </section>
-
-    <section id="passes" class="section section-tinted">
-      <div class="shell">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Five focused passes</p>
-            <h2>Ask a smaller question.<br><em>Get a clearer answer.</em></h2>
-          </div>
-          <p class="section-note">Each topology pass writes to its own namespace and produces a versioned JSON artifact.</p>
-        </div>
-        <div class="pass-grid">
-          <article class="pass-card pass-boundaries"><span class="pass-number">01</span><span class="pass-symbol">◈</span><h3>Boundaries</h3><p>Services, modules, external systems, and logical ownership.</p><code>ai-boundaries</code></article>
-          <article class="pass-card pass-api"><span class="pass-number">02</span><span class="pass-symbol">⌁</span><h3>API</h3><p>Routes, synchronous callers, and servers.</p><code>ai-http</code></article>
-          <article class="pass-card pass-messaging"><span class="pass-number">03</span><span class="pass-symbol">≋</span><h3>Messaging</h3><p>Topics, queues, exchanges, publishers, and consumers.</p><code>ai-messaging</code></article>
-          <article class="pass-card pass-data"><span class="pass-number">04</span><span class="pass-symbol">▣</span><h3>Data</h3><p>Data stores, resources, reads, writes, and ownership observations.</p><code>ai-data</code></article>
-          <article class="pass-card pass-deployment"><span class="pass-number">05</span><span class="pass-symbol">⌂</span><h3>Deployment</h3><p>Workloads, environments, runtime resources, and bindings.</p><code>ai-deployment</code></article>
-          <article class="pass-card pass-flows"><span class="pass-number">+</span><span class="pass-symbol">↝</span><h3>Source flows</h3><p>Potential business outcomes reconstructed as a separate report.</p><code>review only</code></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section prompt-section">
-      <div class="shell prompt-layout">
-        <div>
-          <p class="eyebrow">A prompt you can copy</p>
-          <h2>Start with a question.<br><em>Keep the scope visible.</em></h2>
-          <p class="section-note">Ask the agent to establish the SystemLens baseline, choose only the required passes, and return reviewable manifests.</p>
-          <a class="text-link" href="https://github.com/elkouhen/systemlens-skill/blob/main/prompts/enrich-architecture.md">Open the complete prompt ↗</a>
+          <p class="eyebrow">Example enrichment</p>
+          <h2>Explain the call graph.<br><em>Keep the evidence.</em></h2>
+          <p class="section-note">SystemLens finds potential flows. The skill adds one concise, source-grounded description per flow for the HTML export.</p>
+          <a class="text-link" href="https://github.com/elkouhen/systemlens-skill/blob/main/prompts/full-index-codeql-flow-descriptions.md">Open the complete prompt ↗</a>
         </div>
         <div class="prompt-card">
-          <pre><code>Use SystemLens to enrich the architecture model.
+          <pre><code>Run `systemlens flows list --json`.
+Inspect every flow with `systemlens flows show`.
 
-Question: Which services own the checkout API,
-its callers, and the data it writes?
+Write one sentence per flow that names:
+the trigger, source component, and main effect.
 
-Scope: checkout modules and deployment manifests.
-Exclude tests and generated sources.
-
-Establish the baseline with init, doctor, and index.
-Run boundaries, http, and data passes.
-Write versioned partial manifests with relative
-evidence, confidence, provenance, and stable IDs.
-Keep ambiguous relationships unresolved.
-Review every manifest before import.</code></pre>
+Use ordered steps and source locations only.
+Keep potential or unresolved flows qualified.
+Write `.systemlens/flow-descriptions.json`.
+Do not change indexed facts.</code></pre>
         </div>
       </div>
     </section>
@@ -161,38 +117,6 @@ Review every manifest before import.</code></pre>
 <span class="prompt">$</span> systemlens doctor
 <span class="prompt">$</span> systemlens index
 <span class="prompt">$</span> systemlens export microservices --html architecture.html</pre>
-      </div>
-    </section>
-
-    <section class="section ecosystem-section">
-      <div class="shell">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">The SystemLens ecosystem</p>
-            <h2>Three repositories.<br><em>One architecture workflow.</em></h2>
-          </div>
-          <p class="section-note">Use the product for the deterministic baseline, this skill for reviewable enrichment, and the lab for an observable Java system.</p>
-        </div>
-        <div class="ecosystem-grid">
-          <a class="ecosystem-card" href="https://elkouhen.github.io/systemlens/">
-            <span class="ecosystem-kicker">Product</span>
-            <h3>SystemLens</h3>
-            <p>Local Java/Spring architecture analysis through the CLI, MCP server, and HTML exports.</p>
-            <span class="text-link">Open the product site ↗</span>
-          </a>
-          <a class="ecosystem-card" href="https://elkouhen.github.io/systemlens-observability-lab/">
-            <span class="ecosystem-kicker">Fixture</span>
-            <h3>Observability lab</h3>
-            <p>A Java and Kubernetes environment with Elastic, OpenTelemetry, Kafka, and databases.</p>
-            <span class="text-link">Open the lab site ↗</span>
-          </a>
-          <a class="ecosystem-card" href="https://github.com/elkouhen/systemlens-skill">
-            <span class="ecosystem-kicker">Agent guidance</span>
-            <h3>systemlens-skill</h3>
-            <p>Focused, evidence-based enrichment that keeps complementary facts separate and reviewable.</p>
-            <span class="text-link">View the repository ↗</span>
-          </a>
-        </div>
       </div>
     </section>
 
