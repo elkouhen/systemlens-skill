@@ -15,6 +15,7 @@
     </a>
     <nav class="nav" aria-label="Main navigation">
       <a href="#example">Example</a>
+      <a href="#import">Import</a>
       <a href="#install">Install</a>
       <a href="https://elkouhen.github.io/systemlens/">SystemLens</a>
       <a href="https://elkouhen.github.io/systemlens-observability-lab/">Lab</a>
@@ -98,6 +99,24 @@ Use ordered steps and source locations only.
 Keep potential or unresolved flows qualified.
 Write `.systemlens/flow-descriptions.json`.
 Do not change indexed facts.</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="import" class="section shell prompt-section">
+      <div class="prompt-layout">
+        <div>
+          <p class="eyebrow">After review</p>
+          <h2>Re-import facts.<br><em>Keep descriptions separate.</em></h2>
+          <p class="section-note">Topology manifests are imported into their own namespace. Flow descriptions stay in the presentation file used by the HTML export.</p>
+        </div>
+        <div class="prompt-card">
+          <pre><code># topology facts
+systemlens import-facts architecture.ai-&lt;profile&gt;.pass-001.json \
+  --namespace ai-&lt;profile&gt;
+
+# flow descriptions
+systemlens export microservices --html architecture.html</code></pre>
         </div>
       </div>
     </section>
