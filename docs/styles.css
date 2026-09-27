@@ -113,3 +113,16 @@ h1 { max-width: 800px; margin: 14px 0 20px; font-size: clamp(2.5rem, 7vw, 5rem);
   .hero { margin-bottom: 56px; }
   .hero-art { min-height: 320px; }
 }
+
+/* Match the SystemLens reference hierarchy. */
+.eyebrow {
+  color: var(--mint);
+  font-family: var(--sans);
+  font-size: .78rem;
+  letter-spacing: .08em;
+  font-weight: 700;
+  margin-bottom: 19px;
+}
+.status-dot { display: none; }
+h1, h2 { letter-spacing: -.04em; }
+h1 em, h2 em { color: var(--ink); }
