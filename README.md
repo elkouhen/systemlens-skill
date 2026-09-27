@@ -6,13 +6,14 @@ Companion skill for `systemlens`, a local Java/Spring architecture explorer.
 
 ## Scope
 
-This repository owns agent guidance for explaining persisted SystemLens flows
-and producing optional, reviewable complementary findings. It does not own the
+This repository owns agent guidance for completing SystemLens findings with
+reviewable AI explanations and complementary facts. It does not own the
 SystemLens CLI, MCP server, deterministic index, or HTML export.
 
 Use [SystemLens](https://github.com/elkouhen/systemlens) for repository
-indexing and graph exploration. Use this skill when an agent needs to explain
-call graphs or enrich a bounded gap with evidence.
+indexing and graph exploration. Use this skill when an agent needs to complete
+a bounded finding with evidence. Explaining persisted call graphs is one
+example.
 
 ## Related projects
 
@@ -25,9 +26,9 @@ The skill adds reviewable AI explanations and complementary findings around a
 deterministic SystemLens result. It does not replace indexing, alter source
 evidence, or become a second source of truth.
 
-Its primary presentation use case is to describe persisted potential flows in
-plain language. Its optional topology passes cover bounded gaps that require
-reviewable evidence outside deterministic extraction.
+It can describe persisted potential flows in plain language. Its optional
+topology passes cover bounded gaps that require reviewable evidence outside
+deterministic extraction.
 
 Each JSON facts manifest is the durable, reviewable handoff between the agent
 and SystemLens. It owns only its namespace and supplements, rather than
@@ -48,7 +49,7 @@ they enrich presentation without changing indexed facts. See
 [`references/flow-descriptions.md`](references/flow-descriptions.md) and the
 [`full CodeQL prompt`](prompts/full-index-codeql-flow-descriptions.md).
 
-For a copyable prompt that explains persisted call graphs, see
+For a copyable example prompt that explains persisted call graphs, see
 [`prompts/enrich-architecture.md`](prompts/enrich-architecture.md).
 
 ## Install
@@ -58,7 +59,7 @@ npx skills add elkouhen/systemlens-skill
 ```
 
 Install SystemLens separately, then follow its product documentation to index
-the repository before asking the agent to explain its flows:
+the repository before asking the agent to complete findings:
 
 ```bash
 uv tool install systemlens
@@ -72,7 +73,7 @@ for product commands.
 - [`PRD.md`](PRD.md) — product requirements and completion objective for the skill.
 - [`BACKLOG.md`](BACKLOG.md) — prioritized architecture-analysis work items.
 - [`SKILL.md`](SKILL.md) — architecture-first workflow.
-- [`prompts/enrich-architecture.md`](prompts/enrich-architecture.md) — copyable
+- [`prompts/enrich-architecture.md`](prompts/enrich-architecture.md) — example
   prompt for explaining persisted call graphs.
 - [`references/pass-profiles.md`](references/pass-profiles.md)
   — boundaries, API, messaging, Data and deployment pass contracts.

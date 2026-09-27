@@ -71,7 +71,7 @@ when relevant to the inspected repository.
 7. Validate and review the result before any import. Re-read the merged model
    after an import and report what remains unresolved.
 
-For a copyable user prompt that explains persisted call graphs, use
+For an example prompt that explains persisted call graphs, use
 [`prompts/enrich-architecture.md`](prompts/enrich-architecture.md). It asks the
 agent to inspect each flow and write one evidence-backed description without
 changing the indexed facts.
