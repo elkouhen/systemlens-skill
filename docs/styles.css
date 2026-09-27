@@ -79,3 +79,37 @@ h1 em, h2 em { font-style: normal; color: var(--teal); }
 .site-footer { display: flex; justify-content: space-between; align-items: center; min-height: 83px; color: var(--muted); font: 10px var(--mono); }.site-footer a { color: var(--ink); }
 @media (max-width: 850px) { .hero { grid-template-columns: 1fr; padding-top: 70px; }.hero-art { min-height: 360px; }.principle-grid { grid-template-columns: 1fr 1fr; }.principle-intro { grid-column: 1 / -1; }.workflow { grid-template-columns: 1fr 1fr; }.step-arrow { display: none; }.pass-grid, .ecosystem-grid { grid-template-columns: 1fr 1fr; }.prompt-layout, .install-section { grid-template-columns: 1fr; gap: 38px; }.section-heading { align-items: start; flex-direction: column; gap: 18px; margin-bottom: 35px; } }
 @media (max-width: 560px) { .shell, .site-header { width: min(100% - 48px, 1160px); }.site-header { height: 70px; }.nav { gap: 14px; }.nav a:not(.nav-github) { display: none; }.nav-github { padding: 8px 10px; }.hero { min-height: auto; padding-top: 55px; padding-bottom: 60px; }.hero-lede { font-size: 15px; }.hero-actions { align-items: stretch; flex-direction: column; }.button { justify-content: center; }.hero-art { min-height: 320px; }.graph-card { transform: scale(.85); transform-origin: center; }.graph-source { left: 0; }.graph-review { right: 0; }.graph-ai { left: 14%; }.principle-grid, .pass-grid, .ecosystem-grid { grid-template-columns: 1fr; }.principle-intro { grid-column: auto; }.principle { min-height: 120px; }.section { padding-top: 75px; padding-bottom: 75px; }.workflow { grid-template-columns: 1fr; gap: 0; }.step { min-height: 0; padding: 20px 0; }.step-index { margin-bottom: 10px; }.cta-inner, .site-footer { align-items: flex-start; flex-direction: column; }.cta h2 { font-size: 32px; }.site-footer { justify-content: center; gap: 8px; padding: 25px 0; } }
+
+/* Keep the skill site aligned with the SystemLens reference page. */
+.site-header { height: auto; padding-top: 28px; margin-bottom: 54px; }
+.nav { gap: 24px; }
+.hero { min-height: 0; margin-bottom: 74px; padding-top: 0; padding-bottom: 0; grid-template-columns: minmax(0, .95fr) minmax(300px, 1.05fr); gap: 34px; }
+h1 { max-width: 800px; margin: 14px 0 20px; font-size: clamp(2.5rem, 7vw, 5rem); line-height: 1; }
+.hero-lede { font-size: 1.1rem; }
+.button { padding: 10px 16px; border-radius: 8px; }
+.section { padding-top: 48px; padding-bottom: 0; }
+.principles { padding-top: 0; padding-bottom: 0; }
+.principle-grid { padding-top: 48px; padding-bottom: 48px; }
+.hero-art { min-height: 430px; border-radius: 16px; box-shadow: 0 20px 56px rgba(0, 0, 0, .22); }
+.graph-card, .prompt-card, .terminal { border-radius: 14px; }
+.prompt-card, .terminal { box-shadow: 0 20px 56px rgba(0, 0, 0, .22); }
+.pass-card, .ecosystem-card { border-radius: 14px; }
+.site-footer { margin-top: 60px; padding-top: 22px; }
+.principles.band { background: transparent; color: var(--ink); }
+.principle-intro .eyebrow { color: var(--mint); }
+.principle-intro h2 em { color: var(--accent); }
+.principle { padding: 24px; border: 1px solid var(--line); border-radius: 14px; background: var(--teal-dark); }
+.principle p { color: var(--muted); }
+.cta.band { background: var(--surface); color: var(--ink); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+
+@media (max-width: 850px) {
+  .site-header { padding-top: 22px; margin-bottom: 38px; }
+  .hero { margin-bottom: 56px; }
+  .hero-art { min-height: 360px; }
+}
+
+@media (max-width: 560px) {
+  .site-header { height: auto; padding-top: 22px; margin-bottom: 38px; }
+  .hero { margin-bottom: 56px; }
+  .hero-art { min-height: 320px; }
+}
