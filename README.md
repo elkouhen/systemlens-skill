@@ -22,6 +22,21 @@ example.
 - [SystemLens observability lab](https://github.com/elkouhen/systemlens-observability-lab)
   owns the runnable observability environment.
 
+## Three-repository workflow
+
+The repositories have complementary responsibilities:
+
+| Repository | Responsibility | What this skill consumes or produces |
+|---|---|---|
+| `systemlens` | Deterministic Java/Spring indexing and graph visualization. | Consumes its persisted inventory, flows, call graphs, and evidence. |
+| `systemlens-skill` | Reviewable AI enrichment and architecture audits. | Produces explanations, reports, and namespace-owned complementary facts. |
+| `systemlens-observability-lab` | Test applications and complete Kubernetes/Elastic observability deployment. | Provides the Java fixture and runtime context for validation. |
+
+The skill starts after `systemlens index` and an initial graph export. It does
+not index source code or replace the SystemLens model. When runtime behaviour
+must be checked, use the laboratory application and its deployment/telemetry
+validation procedures; do not infer runtime behaviour from a static graph.
+
 The skill adds reviewable AI explanations and complementary findings around a
 deterministic SystemLens result. It does not replace indexing, alter source
 evidence, or become a second source of truth.
@@ -52,6 +67,9 @@ they enrich presentation without changing indexed facts. See
 For a copyable example prompt that explains persisted call graphs, see
 [`prompts/enrich-architecture.md`](prompts/enrich-architecture.md).
 
+For a complexity-focused audit of dependency and call graphs, see
+[`prompts/audit-architecture-complexity.md`](prompts/audit-architecture-complexity.md).
+
 ## Install
 
 ```bash
@@ -65,6 +83,19 @@ the repository before asking the agent to complete findings:
 uv tool install systemlens
 ```
 
+Recommended workflow:
+
+1. Run `systemlens doctor`, `systemlens index`, and an HTML export to establish
+   the deterministic baseline.
+2. Ask the agent for one bounded task: explain selected flows, audit dependency
+   and call-graph complexity, or run a focused topology pass.
+3. Review the evidence-backed result and import only the complementary facts
+   that the task requires.
+
+The skill is an enrichment layer around an indexed SystemLens model. It should
+not be used as a substitute for indexing, and it must keep uncertainty and
+provenance visible when the source evidence is incomplete.
+
 See the [SystemLens quick start](https://github.com/elkouhen/systemlens#quick-start)
 for product commands.
 
@@ -75,6 +106,8 @@ for product commands.
 - [`SKILL.md`](SKILL.md) — architecture-first workflow.
 - [`prompts/enrich-architecture.md`](prompts/enrich-architecture.md) — example
   prompt for explaining persisted call graphs.
+- [`prompts/audit-architecture-complexity.md`](prompts/audit-architecture-complexity.md)
+  — prompt for identifying complexity hotspots in dependency and call graphs.
 - [`references/pass-profiles.md`](references/pass-profiles.md)
   — boundaries, API, messaging, Data and deployment pass contracts.
 - [`references/business-flows.md`](references/business-flows.md) — selecting and

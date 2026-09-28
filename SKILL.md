@@ -25,6 +25,11 @@ exists to enrich the product's analysis with explanations and complementary
 findings; it does not extend SystemLens, invent a command, or turn an inference
 into a source-derived fact.
 
+The companion `systemlens-observability-lab` is a separate runtime validation
+environment. Use it when the question requires deployed Kubernetes behaviour,
+telemetry, or Elastic verification; do not present static SystemLens evidence
+or AI enrichment as proof of runtime behaviour.
+
 Use generic architecture terms in user-facing work: **APIs**, **Topics**, and
 **Data**. Technology-specific terms identify evidence or an extractor only
 when relevant to the inspected repository.
