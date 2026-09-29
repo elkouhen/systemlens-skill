@@ -75,6 +75,17 @@ when relevant to the inspected repository.
    complementary topology.
 7. Validate and review the result before any import. Re-read the merged model
    after an import and report what remains unresolved.
+8. When an imported fact changes the topology used by persisted flows, run
+   `systemlens flows calculate`. It reuses the stored AST and CodeQL snapshot
+   and projects the independent enrichment facts into the transient
+   reconstruction; it does not re-index source files or overwrite source
+   facts.
+
+When `.systemlens/analysis-scope.json` exists, read it before collecting
+evidence and apply its selectors to every step of the investigation. Resolve
+services, flows, Topics, and Data resources against persisted SystemLens IDs;
+never widen an unresolved selector by guessing from a name fragment. Follow
+the [analysis scope contract](references/analysis-scope.md).
 
 For an example prompt that explains persisted call graphs, use
 [`prompts/enrich-architecture.md`](prompts/enrich-architecture.md). It asks the
@@ -100,6 +111,8 @@ work; do not reconstruct product behaviour from this entrypoint.
   reports and traversal limits.
 - [flow-descriptions.md](references/flow-descriptions.md) — AI-generated
   descriptions for persisted flows and the HTML enrichment contract.
+- [analysis-scope.md](references/analysis-scope.md) — reusable selectors for
+  targeted flow descriptions, audits, and enrichment passes.
 - [ai-graph.md](references/ai-graph.md) — versioned complementary fact manifest
   contract and reconciliation rules.
 - [management.md](references/management.md) — installation, MCP setup, refresh,

@@ -3,6 +3,11 @@
 Use this prompt with an agent operating from the root of an indexed Java
 repository.
 
+If `.systemlens/analysis-scope.json` exists, read and validate it first. Apply
+the scope to the flow IDs before writing descriptions, and report selected,
+excluded, and unresolved selectors. Do not generate descriptions outside the
+declared scope.
+
 ```text
 Run a complete SystemLens index for the current repository and use the existing
 CodeQL Java database for method-call analysis.
@@ -32,11 +37,13 @@ Procedure:
 
    uv run systemlens flows list --json
 
-   Record the flow IDs and inspect each flow with:
+   Resolve `.systemlens/analysis-scope.json` against the complete flow list.
+   Record the selected, excluded, and unresolved selectors. Inspect each
+   selected flow with:
 
    uv run systemlens flows show <FLOW_ID> --json
 
-6. For every persisted flow, write exactly one concise sentence in the
+6. For every selected flow, write exactly one concise sentence in the
    requested language. Include, when supported by the flow:
    - the trigger, such as an HTTP route, Kafka topic, or scheduled task;
    - the originating service and the relevant downstream service or effect;
@@ -60,8 +67,9 @@ Procedure:
      ]
    }
 
-10. Validate that the file contains one entry for every flow ID, no duplicate
-    IDs, no empty descriptions, and no absolute machine-specific source paths.
+10. Validate that the file contains one entry for every selected flow ID, no
+    duplicate IDs, no empty descriptions, and no absolute machine-specific
+    source paths. Do not create descriptions for excluded flows.
     The file is an AI enrichment layer. It must not replace or edit the
     persisted SystemLens facts.
 11. Run the HTML export and confirm that the flow cards contain the imported

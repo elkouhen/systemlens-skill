@@ -70,6 +70,12 @@ For a copyable example prompt that explains persisted call graphs, see
 For a complexity-focused audit of dependency and call graphs, see
 [`prompts/audit-architecture-complexity.md`](prompts/audit-architecture-complexity.md).
 
+To target the same subset across prompts, create
+`.systemlens/analysis-scope.json` using the
+[`analysis scope contract`](references/analysis-scope.md). It can select exact
+flow IDs, services, protocols, Topics, or Data resources without changing the
+indexed model.
+
 ## Install
 
 ```bash
@@ -91,6 +97,10 @@ Recommended workflow:
    and call-graph complexity, or run a focused topology pass.
 3. Review the evidence-backed result and import only the complementary facts
    that the task requires.
+4. After importing topology facts, run `systemlens flows calculate` to
+   reconstruct persisted flows from the stored AST, CodeQL and enrichment
+   snapshots. This command does not rerun indexing or CodeQL; it keeps the AI
+   facts in their independent enrichment layer.
 
 The skill is an enrichment layer around an indexed SystemLens model. It should
 not be used as a substitute for indexing, and it must keep uncertainty and
@@ -114,6 +124,8 @@ for product commands.
   reporting potential business flows from source evidence.
 - [`references/flow-descriptions.md`](references/flow-descriptions.md) — AI
   descriptions for persisted flows and the HTML enrichment contract.
+- [`references/analysis-scope.md`](references/analysis-scope.md) — reusable
+  scope selectors for targeted analyses.
 - [`references/settings.md`](references/settings.md) —
   project configuration.
 - [`references/management.md`](references/management.md)

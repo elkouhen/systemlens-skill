@@ -121,6 +121,30 @@ Do not change indexed facts.</code></pre>
       </div>
     </section>
 
+    <section class="section shell" aria-labelledby="targeted-analysis">
+      <div class="prompt-layout">
+        <div>
+          <p class="eyebrow">Targeted analysis</p>
+          <h2 id="targeted-analysis">Choose the scope.<br><em>Reuse it everywhere.</em></h2>
+          <p class="section-note">Create one optional scope file to focus flow descriptions, complexity audits, or enrichment passes on the same services, flows, Topics, or Data resources.</p>
+          <a class="text-link" href="https://github.com/elkouhen/systemlens-skill/blob/main/references/analysis-scope.md">Open the scope contract ↗</a>
+        </div>
+        <div class="prompt-card">
+          <pre><code>{
+  "format": "systemlens-analysis-scope-v1",
+  "deliverable": "complexity-audit",
+  "include": {
+    "services": ["inventory-service"],
+    "flow_ids": [],
+    "protocols": ["http", "kafka"],
+    "topics": [],
+    "data_resources": []
+  }
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
     <section id="import" class="section shell prompt-section">
       <div class="prompt-layout">
         <div>

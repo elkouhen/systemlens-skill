@@ -4,6 +4,11 @@ Use this prompt from the root of an indexed repository when you want to
 identify structural complexity in the persisted dependency graph and potential
 call graphs.
 
+If `.systemlens/analysis-scope.json` exists, read and validate it first. Apply
+the selected scope to dependency, topology, and call-graph observations. State
+the selected and excluded counts in the report, and do not widen an unresolved
+selector.
+
 ```text
 Audit the architecture complexity of this repository using SystemLens.
 

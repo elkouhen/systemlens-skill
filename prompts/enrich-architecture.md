@@ -3,6 +3,10 @@
 Use this prompt from the root of an indexed Java repository when SystemLens has
 persisted potential call graphs and you want a concise explanation for each one.
 
+If `.systemlens/analysis-scope.json` exists, read and validate it first. Apply
+the selected scope to the flow list and describe only matching flows. Report
+unresolved selectors and the selected flow count; do not widen the scope.
+
 ```text
 Use SystemLens to explain the persisted call graphs for this repository.
 

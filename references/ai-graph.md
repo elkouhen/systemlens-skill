@@ -97,6 +97,19 @@ The manifest is never merged into the SQLite source-derived tables. It can be
 persisted explicitly into the separate enrichment layer with
 `systemlens import-facts` or the MCP `import_graph_facts` tool.
 
+When imported facts add or clarify event arcs used by persisted flows, run:
+
+```bash
+systemlens flows calculate
+```
+
+This reconstructs flows from the stored AST and CodeQL results together with
+the independent enrichment facts. It does not rerun indexing or CodeQL, and it
+does not move AI facts into source-derived tables. Confirmed and proposed event
+facts may contribute transient topology arcs when their channel and endpoint
+mapping are unambiguous; ambiguous or unresolved facts remain available for
+review without being used as guessed flow dependencies.
+
 For an AI analysis that should be persisted and visible in the complete MCP
 graph, reconcile every node and edge by stable identity. `graph_fact_exists`
 may inspect the current value, but must not cause an improved fact to be

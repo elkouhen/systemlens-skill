@@ -57,6 +57,19 @@ summary (`inserted`, `updated`, and `removed`) and query the graph after every
 import. If evidence is ambiguous, emit an unresolved fact with its reason or
 omit the fact; do not turn an inference into a confirmed dependency.
 
+After importing facts that add or clarify event topology, refresh the persisted
+flow snapshot:
+
+```bash
+systemlens flows calculate
+```
+
+The command reads the existing AST, CodeQL and enrichment snapshots. It does
+not rerun `systemlens index`, source extraction or CodeQL, and it does not copy
+AI facts into source-derived tables. Imported facts remain independently owned
+by their namespace while contributing eligible confirmed or proposed topology
+arcs during reconstruction.
+
 ## Recommended execution order
 
 Run the profiles in this order:
