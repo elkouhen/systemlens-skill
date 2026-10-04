@@ -17,12 +17,12 @@ repository is analysed in focused passes.
   "project": "project-name",
   "generated_by": {"agent": "agent-name", "model": "model-id", "source_revision": "commit-or-unknown", "pass": "pass-001", "namespace": "ai-architecture"},
   "nodes": [
-    {"id": "orders", "kind": "service", "name": "orders", "evidence": [{"path": "src/main/java/Orders.java", "start_line": 12, "end_line": 20}]},
-    {"id": "billing", "kind": "service", "name": "billing"},
+    {"id": "orders", "kind": "service", "name": "orders", "module": "orders-api", "evidence": [{"path": "src/main/java/Orders.java", "start_line": 12, "end_line": 20}]},
+    {"id": "billing", "kind": "service", "name": "billing", "module": "billing-api"},
     {"id": "orders-created", "kind": "topic", "name": "orders.created"}
   ],
   "edges": [
-    {"id": "orders-to-billing", "source": "orders", "target": "billing", "kind": "event", "channel": "orders.created", "status": "confirmed", "confidence": "high", "message_type": "OrderCreated", "evidence": [{"path": "src/main/java/Orders.java", "start_line": 42, "end_line": 42}]}
+    {"id": "orders-to-billing", "source": "orders", "target": "billing", "kind": "event", "module": "orders-api", "channel": "orders.created", "status": "confirmed", "confidence": "high", "message_type": "OrderCreated", "evidence": [{"path": "src/main/java/Orders.java", "start_line": 42, "end_line": 42}]}
   ]
 }
 ```
@@ -56,7 +56,8 @@ field such as `postgresql`, `redis`, `rabbitmq`, or `sqs`, and a `metadata`
 object for provider-specific identifiers. A `Data` resource can be a MongoDB
 collection, SQL table, keyspace, bucket or another persisted data contract; a
 `Topic` can be a Kafka topic, queue, exchange, subscription or stream.
-For complex or polyglot repositories, service nodes may include `technology`,
+Nodes and edges may include an optional `module` field naming the owning build
+module. For complex or polyglot repositories, service nodes may include `technology`,
 `module`, `runtime` and `deployment` metadata; data/message nodes may include
 `namespace`, `database`, `schema`, `table`, `collection`, `queue`, `exchange`,
 `consumer_group` or `binding` metadata. Use only fields established by source,
