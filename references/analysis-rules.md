@@ -209,17 +209,21 @@ workspace. Strategy1 adds the following facts:
 
 ### Kafka topic conventions
 
-- `getTopics().getXxx()` produces the physical topic `XXX` normalized to
-  `SCREAMING_SNAKE_CASE` (camel-case boundaries split; hyphens become
-  underscores).
+- `getTopics().getXxx()` resolves only when the exact key `Xxx` exists in
+  `kafka.yml` or `kafka.yaml` under `topics.<key>.nom`.
 - A method whose name starts with `envoyerMessageKafka` and has at least two
   arguments is treated as a producer. This includes
   `envoyerMessageKafkaRequest` and `envoyerMessageKafkaReply`.
-- Its first argument is resolved through the same topic resolver, including
-  `kafkaProperties.getTopics().getXxx()`; its second argument is used for the
-  explicit payload type when the Java signature makes that type available.
+- Its first argument is resolved through the same exact catalog lookup,
+  including `kafkaProperties.getTopics().getXxx()`; its second argument is used
+  for the explicit payload type when the Java signature makes that type
+  available.
 - A `@KafkaListener` annotation containing a key shaped like
-  `${kafka.topics.xxx.<property>}` consumes the normalized topic `XXX`.
+  `${kafka.topics.<key>.<property>}` consumes the physical topic declared at
+  the exact `<key>` entry.
+- Strategy1 removes `${kafka.prefix-topic}.` from a matched declared value
+  before persisting the physical topic. It does not apply any other topic-key
+  normalization or derive a topic from an unmatched key.
 - Strategy1 replaces the standard Kafka endpoint at the same role, file and
   line when it covers that site, preventing duplicate facts.
 - `retour_<request-topic>` is used only by the separate request/reply analysis
