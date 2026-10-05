@@ -35,6 +35,10 @@ For each selected flow, record:
    modules and ordinary helper methods using qualified types, signatures and
    a unique source-declared implementation, always at low confidence. Unknown
    types and ambiguous implementations remain unresolved by this fallback.
+   With Strategy1, a flow rooted at `consume` can reuse a Kafka listener's
+   input from the same class. Check `reason` for convention provenance and
+   retain its low confidence: the listener-to-consume connection is unproven.
+   Report it separately from the source-evidenced calls inside `consume`.
 3. When a relevant step publishes a Topic, use
    `systemlens topics trace <topic> --json` to explore bounded potential
    service-level continuations. A returned path is still potential and may be
