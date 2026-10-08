@@ -3,194 +3,44 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Evidence-based architecture exploration with SystemLens.">
-  <title>systemlens-skill | Evidence-based architecture exploration</title>
+  <title>SystemLens direct-analysis skill</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="site-header">
-    <a class="brand" href="#top" aria-label="systemlens-skill home">
-      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
-      <span>systemlens<span class="brand-muted">-skill</span></span>
-    </a>
-    <nav class="nav" aria-label="Main navigation">
-      <a href="#example">Example</a>
-      <a href="#import">Import</a>
-      <a href="#install">Install</a>
-      <a href="https://elkouhen.github.io/systemlens/">SystemLens</a>
-      <a href="https://elkouhen.github.io/systemlens-observability-lab/">Lab</a>
-      <a class="nav-github" href="https://github.com/elkouhen/systemlens-skill">GitHub <span aria-hidden="true">↗</span></a>
-    </nav>
+  <header class="topbar">
+    <a class="brand" href="./">SystemLens skill</a>
+    <nav><a href="https://github.com/elkouhen/systemlens">SystemLens</a><a href="https://github.com/elkouhen/systemlens-observability-lab">POC lab</a></nav>
   </header>
-
-  <main id="top">
-    <section class="hero shell">
-      <div class="hero-copy">
-        <p class="eyebrow">Agent guidance for SystemLens</p>
-        <h1>Complete architecture findings with <em>AI.</em></h1>
-        <p class="hero-lede">Add reviewable explanations and complementary facts to a SystemLens result without changing its deterministic evidence.</p>
-        <div class="hero-actions">
-          <a class="button button-primary" href="#install">Get started <span aria-hidden="true">↓</span></a>
-          <a class="button button-quiet" href="https://github.com/elkouhen/systemlens-skill/blob/main/SKILL.md">Read the skill <span aria-hidden="true">↗</span></a>
-        </div>
-      </div>
-      <div class="hero-art" aria-label="A diagram showing deterministic facts feeding a reviewable architecture graph" role="img">
-        <div class="orb orb-one"></div>
-        <div class="orb orb-two"></div>
-        <div class="graph-card graph-source">
-          <span class="node-icon source-icon">S</span>
-          <div><strong>Indexed findings</strong><small>SystemLens output</small></div>
-        </div>
-        <div class="graph-line line-one"></div>
-        <div class="graph-line line-two"></div>
-        <div class="graph-card graph-review">
-          <span class="node-icon review-icon">R</span>
-          <div><strong>AI enrichment</strong><small>evidence + context</small></div>
-        </div>
-        <div class="graph-card graph-ai">
-          <span class="node-icon ai-icon">AI</span>
-          <div><strong>Reviewable result</strong><small>facts stay distinct</small></div>
-        </div>
-        <div class="graph-label label-one">baseline</div>
-        <div class="graph-label label-two">enrich</div>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">Direct source analysis</p>
+      <h1>Turn application evidence into an interactive architecture graph.</h1>
+      <p class="lead">The skill reads a bounded application directly, creates a reviewable JSON fact manifest, imports it into SystemLens, and exports HTML without running <code>systemlens index</code>.</p>
+      <a class="button" href="#steps">Follow the five steps</a>
+    </section>
+    <section id="steps" class="steps">
+      <h2>Five steps</h2>
+      <div class="grid">
+        <article><span>01</span><h3>Scope</h3><p>Choose the application root, the architecture question, included services, and excluded directories.</p></article>
+        <article><span>02</span><h3>Analyze directly</h3><p>Read controllers, clients, listeners, publishers, persistence adapters, configuration, and local contracts.</p></article>
+        <article><span>03</span><h3>Create facts</h3><p>Write a <code>systemlens-ai-graph-v1</code> manifest with stable IDs, relative evidence, status, and confidence.</p></article>
+        <article><span>04</span><h3>Import</h3><p>Initialize the repository and import the manifest into a dedicated namespace. This does not index source files.</p></article>
+        <article><span>05</span><h3>Export</h3><p>Generate the HTML graph and check that its topology matches the manifest and its evidence.</p></article>
       </div>
     </section>
-
-    <section class="principles band">
-      <div class="shell principle-grid">
-        <div class="principle-intro">
-          <p class="eyebrow">The scope</p>
-          <h2>Complete findings.<br><em>Do not replace them.</em></h2>
-        </div>
-        <div class="principle">
-          <span class="principle-number">01</span>
-          <h3>Source baseline</h3>
-          <p>Start from findings that SystemLens already indexed.</p>
-        </div>
-        <div class="principle">
-          <span class="principle-number">02</span>
-          <h3>Evidence first</h3>
-          <p>Ground every explanation or complementary fact in repository evidence.</p>
-        </div>
-        <div class="principle">
-          <span class="principle-number">03</span>
-          <h3>Uncertainty stays visible</h3>
-          <p>Keep potential, ambiguous, and unresolved findings qualified.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="section shell" aria-labelledby="ecosystem-workflow">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Three repositories</p>
-          <h2 id="ecosystem-workflow">Start with the map.<br><em>Enrich. Then verify.</em></h2>
-        </div>
-        <p class="section-note">Each repository has one responsibility. Keep static evidence, AI interpretation, and runtime observation distinct.</p>
-      </div>
-      <div class="workflow workflow-three" aria-label="Three-repository architecture workflow">
-        <article class="step"><span class="step-index">01 / SYSTEMLENS</span><h3>Index and visualize</h3><p>Create the deterministic Java/Spring inventory, flows, call graphs, and HTML model.</p></article>
-        <span class="step-arrow" aria-hidden="true">→</span>
-        <article class="step"><span class="step-index">02 / SKILL</span><h3>Enrich with AI</h3><p>Explain selected flows or audit complexity with evidence-backed, reviewable findings.</p></article>
-        <span class="step-arrow" aria-hidden="true">→</span>
-        <article class="step"><span class="step-index">03 / LAB</span><h3>Verify at runtime</h3><p>Deploy the Java fixture on Kubernetes and check telemetry through Elastic and OpenTelemetry.</p></article>
-      </div>
-      <p><a class="text-link" href="https://elkouhen.github.io/systemlens/">Open SystemLens ↗</a> · <a class="text-link" href="https://elkouhen.github.io/systemlens-observability-lab/">Open the observability lab ↗</a></p>
-    </section>
-
-    <section id="example" class="section shell prompt-section">
-      <div class="prompt-layout">
-        <div>
-          <p class="eyebrow">Example enrichment</p>
-          <h2>Explain the call graph.<br><em>Keep the evidence.</em></h2>
-          <p class="section-note">SystemLens finds potential flows. The skill adds one concise, source-grounded description per flow for the HTML export.</p>
-          <a class="text-link" href="https://github.com/elkouhen/systemlens-skill/blob/main/prompts/full-index-codeql-flow-descriptions.md">Open the complete prompt ↗</a>
-        </div>
-        <div class="prompt-card">
-          <pre><code>Run `systemlens flows list --json`.
-Inspect every flow with `systemlens flows show`.
-
-Write one sentence per flow that names:
-the trigger, source component, and main effect.
-
-Use ordered steps and source locations only.
-Keep potential or unresolved flows qualified.
-Write `.systemlens/flow-descriptions.json`.
-Do not change indexed facts.</code></pre>
-        </div>
-      </div>
-    </section>
-
-    <section class="section shell" aria-labelledby="targeted-analysis">
-      <div class="prompt-layout">
-        <div>
-          <p class="eyebrow">Targeted analysis</p>
-          <h2 id="targeted-analysis">Choose the scope.<br><em>Reuse it everywhere.</em></h2>
-          <p class="section-note">Create one optional scope file to focus flow descriptions, complexity audits, or enrichment passes on the same services, flows, Topics, or Data resources.</p>
-          <a class="text-link" href="https://github.com/elkouhen/systemlens-skill/blob/main/references/analysis-scope.md">Open the scope contract ↗</a>
-        </div>
-        <div class="prompt-card">
-          <pre><code>{
-  "format": "systemlens-analysis-scope-v1",
-  "deliverable": "complexity-audit",
-  "include": {
-    "services": ["inventory-service"],
-    "flow_ids": [],
-    "protocols": ["http", "kafka"],
-    "topics": [],
-    "data_resources": []
-  }
-}</code></pre>
-        </div>
-      </div>
-    </section>
-
-    <section id="import" class="section shell prompt-section">
-      <div class="prompt-layout">
-        <div>
-          <p class="eyebrow">After review</p>
-          <h2>Re-import facts.<br><em>Keep descriptions separate.</em></h2>
-          <p class="section-note">Topology manifests are imported into their own namespace. Flow descriptions stay in the presentation file used by the HTML export.</p>
-        </div>
-        <div class="prompt-card">
-          <pre><code># topology facts
-systemlens import-facts architecture.ai-&lt;profile&gt;.pass-001.json \
-  --namespace ai-&lt;profile&gt;
-
-# flow descriptions
+    <section class="command-section">
+      <div><p class="eyebrow">SystemLens handoff</p><h2>Only three commands after analysis</h2><p>The first command creates configuration. The second creates the empty compatible schema and imports facts. The third renders the imported graph.</p></div>
+      <pre><code>systemlens init
+systemlens import-facts architecture.ai-graph.json --namespace direct-analysis --complete
 systemlens export microservices --html architecture.html</code></pre>
-        </div>
-      </div>
     </section>
-
-    <section id="install" class="section shell install-section">
-      <div class="install-copy">
-        <p class="eyebrow">Start locally</p>
-        <h2>Install the skill.<br><em>Keep your code close.</em></h2>
-        <p>Install the skill into your agent environment. Install SystemLens separately in the repository you want to inspect.</p>
-        <a class="text-link" href="https://github.com/elkouhen/systemlens-skill/blob/main/README.md">Explore the documentation <span aria-hidden="true">↗</span></a>
-      </div>
-      <div class="terminal" aria-label="Installation commands">
-        <div class="terminal-bar"><span></span><span></span><span></span><small>terminal</small></div>
-        <pre><span class="prompt">$</span> npx skills add elkouhen/systemlens-skill
-
-<span class="comment"># install the product separately</span>
-<span class="prompt">$</span> uv tool install systemlens</pre>
-      </div>
-    </section>
-
-    <section class="cta band">
-      <div class="shell cta-inner">
-        <div><p class="eyebrow">SystemLens companion</p><h2>Make each finding <em>reviewable.</em></h2></div>
-        <a class="button button-primary" href="https://github.com/elkouhen/systemlens-skill">View on GitHub <span aria-hidden="true">↗</span></a>
-      </div>
+    <section class="poc">
+      <p class="eyebrow">Validated path</p>
+      <h2>Supermarket POC</h2>
+      <p>The example analyzes order, inventory, and restock source files directly. The manifest records 16 topology facts and 3 ordered flows, imports them into an empty SQLite schema, and produces an HTML export. The source index remains empty.</p>
+      <div class="proof"><strong>0</strong><span>indexed source modules</span><strong>16</strong><span>imported topology facts</span><strong>3</strong><span>imported flows</span><strong>1</strong><span>HTML graph export</span></div>
     </section>
   </main>
-
-  <footer class="site-footer shell">
-    <span>systemlens-skill</span>
-    <span>Apache License 2.0</span>
-    <a href="https://github.com/elkouhen/systemlens-skill">GitHub <span aria-hidden="true">↗</span></a>
-  </footer>
+  <footer><a href="https://github.com/elkouhen/systemlens-skill">View the skill on GitHub</a></footer>
 </body>
 </html>

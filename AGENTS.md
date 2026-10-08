@@ -12,11 +12,9 @@ supported SystemLens CLI and MCP surface.
 | [`README.md`](README.md) | Installation and user-facing entry point | Changing setup or daily usage |
 | [`PRD.md`](PRD.md) | Product scope, requirements, and acceptance criteria | Evaluating scope or changing workflows |
 | [`SKILL.md`](SKILL.md) | Agent instructions and primary workflow | Changing any skill behaviour |
-| [`references/analysis-rules.md`](references/analysis-rules.md) | Deterministic extraction and conservative inference rules | Changing analysis guidance |
-| [`references/ai-graph.md`](references/ai-graph.md) | `systemlens-ai-graph-v1` contract | Changing generated topology facts |
-| [`references/pass-profiles.md`](references/pass-profiles.md) | Focused analysis-pass contracts | Changing pass sequencing or outputs |
-| [`references/settings.md`](references/settings.md) | Project configuration contract | Changing initialization or indexing guidance |
-| [`references/management.md`](references/management.md) | Installation, MCP setup, refresh, and troubleshooting | Changing operational guidance |
+| [`references/direct-analysis.md`](references/direct-analysis.md) | Direct source-analysis procedure | Changing analysis guidance |
+| [`references/fact-manifest.md`](references/fact-manifest.md) | `systemlens-ai-graph-v1` contract | Changing generated facts or import behavior |
+| [`examples/supermarket-direct-analysis.json`](examples/supermarket-direct-analysis.json) | Direct-analysis POC manifest | Changing the validation example |
 | [`../systemlens/`](../systemlens/) | CLI, MCP, persistence, and export implementation | Verifying a command or public contract |
 | [`../systemlens-observability-lab/`](../systemlens-observability-lab/) | Java/Spring integration fixture | Running cross-repository acceptance checks |
 
@@ -51,10 +49,10 @@ SystemLens version or revision in the handoff.
    Never include machine-specific source roots.
 7. Never place credentials, tokens, private keys, or unredacted secret values in
    instructions, examples, fixtures, or generated artifacts.
-8. Keep deterministic SystemLens facts distinct from AI-produced facts. Retain
-   explicit confidence, status, provenance, ambiguity, and namespace ownership.
-9. Do not silently add an imported ordered-flow format before SystemLens exposes
-   a versioned public contract for it.
+8. Keep direct-analysis facts distinct from deterministic SystemLens facts.
+   Retain explicit confidence, status, provenance, ambiguity, and namespace
+   ownership.
+9. Never add `systemlens index` to the direct-analysis workflow.
 10. When a workflow, command, option, MCP tool, configuration field, or data
     contract changes, update every affected example in `README.md`, `SKILL.md`,
     and `references/` in the same pass. Before creating a commit, verify that
@@ -75,7 +73,7 @@ and every JSON example is syntactically valid. If a repository validation
 script or CI target exists, use it instead of an ad-hoc substitute.
 
 For any command, workflow, MCP, settings, or graph-contract change, run the
-cross-repository compatibility check when both sibling repositories are
+direct-analysis compatibility check when both sibling repositories are
 available. It must use the development checkout of `../systemlens/`, not an
 unqualified globally installed executable, and must exercise a temporary copy
 of the Java application under
@@ -85,16 +83,16 @@ of the Java application under
 SYSTEMLENS_BIN="$(cd ../systemlens && pwd)/.venv/bin/systemlens"
 "$SYSTEMLENS_BIN" version
 cd <temporary-app-copy>
-"$SYSTEMLENS_BIN" doctor
-"$SYSTEMLENS_BIN" index
-"$SYSTEMLENS_BIN" flows --json
+"$SYSTEMLENS_BIN" init
+"$SYSTEMLENS_BIN" import-facts architecture.ai-graph.json --namespace direct-analysis --complete
 "$SYSTEMLENS_BIN" export microservices --html <temporary-output>
 ```
 
 The compatibility check must not modify the sibling laboratory checkout or
-reuse its persisted `.systemlens/findings.db`. Validate structured output and
-confirm that the generated HTML contains graph data. Report unavailable Java,
-Maven, `uv`, or browser prerequisites rather than claiming the check passed.
+reuse its persisted `.systemlens/findings.db`. Confirm that no source index
+was created, validate structured output, and confirm that the generated HTML
+contains graph data. Report unavailable Java, Maven, `uv`, or browser
+prerequisites rather than claiming the check passed.
 
 ## Review checklist
 

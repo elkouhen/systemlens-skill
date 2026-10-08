@@ -1,124 +1,78 @@
 ---
 name: systemlens
-description: "Guide evidence-based architecture exploration with SystemLens, preserving the distinction between indexed source facts and reviewable complementary analysis."
+description: "Analyze an application directly, generate evidence-backed architecture facts as JSON, import them into SystemLens, and produce an HTML graph without indexing the source code with SystemLens."
 ---
 
-# SystemLens skill
+# SystemLens direct-analysis skill
 
-The purpose of this skill is to enrich a SystemLens analysis with reviewable
-AI-produced explanations and complementary findings. SystemLens remains the
-source of truth for deterministic architecture facts, indexed flows, source
-evidence, and CodeQL results. This skill must never replace that index or
-silently turn an inference into an indexed fact.
+This skill analyzes an application directly and produces a reviewable JSON
+manifest of architecture facts. It then imports that manifest into SystemLens
+and generates an HTML architecture export.
 
-## Scope and terminology
+The skill does not run `systemlens index`. SystemLens stores the imported facts
+as an enrichment namespace. The source code remains outside the SystemLens
+indexing pipeline for this workflow.
 
-**SystemLens** is the product: its CLI and MCP server index a repository and
-expose source-derived architecture facts. Its installed version and public
-documentation are the source of truth for supported commands, options, output,
-and data contracts.
+## Workflow
 
-**systemlens-skill** is optional agent guidance in this directory. It lets a
-person using SystemLens direct an agent to choose an investigation, interpret
-evidence conservatively, and prepare reviewable complementary findings. It
-exists to enrich the product's analysis with explanations and complementary
-findings; it does not extend SystemLens, invent a command, or turn an inference
-into a source-derived fact.
+Follow these steps in order:
 
-The companion `systemlens-observability-lab` is a separate runtime validation
-environment. Use it when the question requires deployed Kubernetes behaviour,
-telemetry, or Elastic verification; do not present static SystemLens evidence
-or AI enrichment as proof of runtime behaviour.
+1. Define the application root, analysis question, included services, and
+   excluded directories. Treat the application root as the base for all paths.
+2. Inspect the source directly with repository tools. Read controllers,
+   consumers, publishers, clients, persistence adapters, configuration, and
+   local contracts only when they answer the defined question.
+3. Record one evidence-backed node or edge per fact in a
+   `systemlens-ai-graph-v1` JSON manifest. For flow analysis, add the
+   manifest's `endpoints` and ordered `flows` arrays. Use relative evidence
+   paths and preserve unknown or ambiguous values instead of guessing them.
+4. Run `systemlens init` in the application root. This creates configuration;
+   it does not analyze source files.
+5. Run `systemlens import-facts manifest.json --namespace direct-analysis
+   --complete`. The importer creates the empty compatible SQLite schema when
+   the repository has not been indexed and writes only the manifest facts.
+6. Run `systemlens export microservices --html architecture.html` and inspect
+   the generated graph and its evidence.
 
-Use generic architecture terms in user-facing work: **APIs**, **Topics**, and
-**Data**. Technology-specific terms identify evidence or an extractor only
-when relevant to the inspected repository.
+## Analysis rules
 
-## Core behaviour
+- Use the smallest source scope that answers the question.
+- Treat source annotations, method calls, configuration, and local API or
+  AsyncAPI contracts as evidence with different confidence levels.
+- Keep node and edge IDs stable across revisions of the same analysis pass.
+- Use `confirmed` only when the source evidence supports the relation.
+- Use `proposed` for a plausible relation that needs review.
+- Use `ambiguous` or `unresolved` with a `reason` when the source does not
+  identify one target or channel.
+- Never invent a concrete topic, route, collection, service, payload type, or
+  source location.
+- Keep evidence paths relative to the analyzed application root.
+- Never include credentials, tokens, private keys, absolute workstation paths,
+  or full secret-bearing configuration values.
+- Do not describe static source evidence as runtime observation.
 
-- Work from the analysed repository root and establish the current indexed
-  baseline before making broad architecture claims.
-- Use the SystemLens inventory first; inspect source, configuration, contracts,
-  and deployment manifests only to answer a defined gap or question.
-- Prefer a focused investigation to an unbounded repository map. State the
-  question, scope, exclusions, and desired deliverable before extracting facts.
-- Require concrete, relative evidence for material claims. Preserve dynamic,
-  ambiguous, generated-only, test-only, runtime-only, and out-of-scope findings
-  as qualified observations rather than guessed dependencies.
-- Keep deterministic SystemLens facts distinct from complementary analysis.
-  Complementary facts belong to a dedicated namespace and never overwrite facts
-  owned by SystemLens or another producer.
-- Treat every generated description, report, and complementary fact as an
-  enrichment layer. Preserve the underlying SystemLens result unchanged and
-  make the relationship to its source flow or fact explicit.
-- Make uncertainty, confidence, provenance, and stop conditions visible.
-- Never include credentials, tokens, connection-string secrets, or absolute
-  workstation paths in findings, reports, examples, or manifests.
-- Write user-facing reports and generated examples in English, while preserving
-  exact CLI output, source snippets, and user-provided text when quoted.
+## Manifest and import boundaries
 
-## Investigation lifecycle
+The manifest contract, including optional direct flows, is defined in
+[`references/fact-manifest.md`](references/fact-manifest.md). The importer
+validates the format, stores facts under the requested namespace, and keeps
+source-derived tables empty when no index has been run.
 
-1. Confirm the repository perimeter and freshness of the SystemLens inventory.
-2. Choose the smallest analysis pass that answers the request.
-3. Collect evidence and correlate only explicit, uniquely resolvable
-   identifiers.
-4. Use persisted `systemlens flows` as the baseline for ordered source-flow
-   analysis; its CodeQL-derived or source-symbol call chains and Kafka continuations remain
-   potential, confidence-qualified evidence rather than runtime traces.
-5. When a human-readable explanation is needed, enrich each persisted flow with
-   one AI-generated description keyed by flow ID. Store these descriptions in
-   `.systemlens/flow-descriptions.json`; they are presentation text, not new
-   architecture facts. Follow [the flow-description contract](references/flow-descriptions.md).
-6. Produce a reviewable result: a report for ordered source-flow analysis, a
-   flow-description enrichment file, or a versioned fact manifest for
-   complementary topology.
-7. Validate and review the result before any import. Re-read the merged model
-   after an import and report what remains unresolved.
-8. When an imported fact changes the topology used by persisted flows, run
-   `systemlens flows calculate`. It reuses the stored AST and CodeQL snapshot
-   and projects the independent enrichment facts into the transient
-   reconstruction; it does not re-index source files or overwrite source
-   facts.
+Facts from separate analyses must use separate namespaces. Use `--complete`
+only when the manifest represents the complete current snapshot of that
+namespace. A partial import leaves other facts in the namespace unchanged.
 
-When `.systemlens/analysis-scope.json` exists, read it before collecting
-evidence and apply its selectors to every step of the investigation. Resolve
-services, flows, Topics, and Data resources against persisted SystemLens IDs;
-never widen an unresolved selector by guessing from a name fragment. Follow
-the [analysis scope contract](references/analysis-scope.md).
+## Output review
 
-For an example prompt that explains persisted call graphs, use
-[`prompts/enrich-architecture.md`](prompts/enrich-architecture.md). It asks the
-agent to inspect each flow and write one evidence-backed description without
-changing the indexed facts.
+Before handing off the HTML export, verify that:
 
-Use a partial snapshot by default. A complete snapshot is appropriate only when
-the entire declared scope has been inspected and replacement of missing facts is
-intentional.
+- every confirmed relation has evidence;
+- unresolved and ambiguous facts remain visible as qualified issues;
+- the manifest contains no absolute path or secret value;
+- the HTML file contains graph data;
+- the rendered topology matches the manifest rather than an unrequested
+  source index.
 
-## Reference routing
-
-Read the relevant SystemLens-specific contract before performing the associated
-work; do not reconstruct product behaviour from this entrypoint.
-
-- [settings.md](references/settings.md) — repository perimeter, initialization,
-  indexing, and refresh.
-- [analysis-rules.md](references/analysis-rules.md) — extraction evidence,
-  conservative correlation, and prompt composition.
-- [pass-profiles.md](references/pass-profiles.md) — focused boundary, API,
-  messaging, Data, source-flow, and deployment investigations.
-- [business-flows.md](references/business-flows.md) — potential business-flow
-  reports and traversal limits.
-- [flow-descriptions.md](references/flow-descriptions.md) — AI-generated
-  descriptions for persisted flows and the HTML enrichment contract.
-- [analysis-scope.md](references/analysis-scope.md) — reusable selectors for
-  targeted flow descriptions, audits, and enrichment passes.
-- [ai-graph.md](references/ai-graph.md) — versioned complementary fact manifest
-  contract and reconciliation rules.
-- [management.md](references/management.md) — installation, MCP setup, refresh,
-  and troubleshooting.
-
-When a reference describes a command, option, MCP tool, JSON field, or export
-behaviour, verify it against the installed or development SystemLens product
-before relying on it. Update the reference alongside a SystemLens contract
-change; do not put product-specific details back into this generic entrypoint.
+For a complete workflow example, see
+[`README.md`](README.md) and the step-by-step page on the
+[skill site](docs/index.html).
