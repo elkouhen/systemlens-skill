@@ -1,4 +1,4 @@
 interface:
-  display_name: "SystemLens direct analysis"
-  short_description: "Analyze source directly and import JSON architecture facts"
-  default_prompt: "Use $systemlens to inspect this application directly, create a systemlens-ai-graph-v1 JSON manifest with relative evidence, import it without running systemlens index, and generate an HTML architecture export."
+  display_name: "SystemLens CodeQL analysis"
+  short_description: "Index with CodeQL, enrich facts, and export architecture"
+  default_prompt: "Use $systemlens to install and verify CodeQL, create a CodeQL database, index this application with SystemLens, inspect the source directly for complementary facts, import a systemlens-ai-graph-v1 JSON manifest with relative evidence, and generate an HTML architecture export."

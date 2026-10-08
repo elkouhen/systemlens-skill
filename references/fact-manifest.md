@@ -1,7 +1,8 @@
 # Fact manifest contract
 
 The direct-analysis handoff uses `systemlens-ai-graph-v1`. The manifest is a
-reviewable snapshot of facts produced by the skill, not a source index.
+reviewable snapshot of complementary facts produced by the skill. The normal
+workflow also contains a CodeQL-backed SystemLens source index.
 
 ## Required shape
 
@@ -54,7 +55,7 @@ The importer preserves source-derived facts separately. A `partial` manifest
 adds or updates only its listed facts. A `complete` manifest removes stale
 facts from its namespace when imported with `--complete`.
 
-## Optional direct flows
+## Optional direct bootstrap flows
 
 The same manifest may include `endpoints` and `flows` for source-evidenced
 causal analysis. An endpoint identifies a service, integration system, role,
@@ -62,7 +63,8 @@ channel, relative source path, and line range. A flow identifies its service,
 method, status, confidence, reason, and ordered steps. Each step may reference
 an endpoint ID.
 
-When these arrays are present, `systemlens import-facts` persists them in the
+When these arrays are present, `systemlens import-facts` persists them in an
 empty repository snapshot. The importer rejects this operation when indexed
-source endpoints or modules already exist. The HTML export can then expose the
-selected flow and call-tree views without running source indexing.
+source endpoints or modules already exist. After CodeQL-backed indexing,
+endpoints and flows come from the indexed snapshot and should not be duplicated
+in the enrichment manifest.

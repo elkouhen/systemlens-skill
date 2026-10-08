@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SystemLens direct-analysis skill</title>
+  <title>SystemLens CodeQL analysis skill</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,32 +13,37 @@
   </header>
   <main>
     <section class="hero">
-      <p class="eyebrow">Direct source analysis</p>
+      <p class="eyebrow">CodeQL-backed source analysis</p>
       <h1>Turn application evidence into an interactive architecture graph.</h1>
-      <p class="lead">The skill reads a bounded application directly, creates a reviewable JSON fact manifest, imports it into SystemLens, and exports HTML without running <code>systemlens index</code>.</p>
-      <a class="button" href="#steps">Follow the five steps</a>
+      <p class="lead">The skill installs and verifies CodeQL, creates a CodeQL-backed SystemLens source index, enriches it with direct source analysis, and exports a reviewable HTML architecture graph.</p>
+      <a class="button" href="#steps">Follow the seven steps</a>
     </section>
     <section id="steps" class="steps">
-      <h2>Five steps</h2>
+      <h2>Seven steps</h2>
       <div class="grid">
         <article><span>01</span><h3>Scope</h3><p>Choose the application root, the architecture question, included services, and excluded directories.</p></article>
-        <article><span>02</span><h3>Analyze directly</h3><p>Read controllers, clients, listeners, publishers, persistence adapters, configuration, and local contracts.</p></article>
-        <article><span>03</span><h3>Create facts</h3><p>Write a <code>systemlens-ai-graph-v1</code> manifest with stable IDs, relative evidence, status, and confidence.</p></article>
-        <article><span>04</span><h3>Import</h3><p>Initialize the repository and import the manifest into a dedicated namespace. This does not index source files.</p></article>
-        <article><span>05</span><h3>Export</h3><p>Generate the HTML graph and check that its topology matches the manifest and its evidence.</p></article>
+        <article><span>02</span><h3>Install CodeQL</h3><p>Install the <a href="https://docs.github.com/en/code-security/how-tos/find-and-fix-code-vulnerabilities/scan-from-the-command-line/set-up-codeql-cli">CodeQL CLI</a> and verify it with <code>codeql version</code>.</p></article>
+        <article><span>03</span><h3>Index</h3><p>Create a CodeQL database, then index the application with the CodeQL-backed SystemLens engine.</p></article>
+        <article><span>04</span><h3>Analyze directly</h3><p>Read controllers, clients, listeners, publishers, persistence adapters, configuration, and local contracts.</p></article>
+        <article><span>05</span><h3>Create facts</h3><p>Write a <code>systemlens-ai-graph-v1</code> manifest with stable IDs, relative evidence, status, and confidence.</p></article>
+        <article><span>06</span><h3>Import</h3><p>Import complementary facts into a dedicated namespace without duplicating indexed endpoints or flows.</p></article>
+        <article><span>07</span><h3>Export</h3><p>Generate the HTML graph and check that its topology matches the indexed model, manifest, and evidence.</p></article>
       </div>
     </section>
     <section class="command-section">
-      <div><p class="eyebrow">SystemLens handoff</p><h2>Only three commands after analysis</h2><p>The first command creates configuration. The second creates the empty compatible schema and imports facts. The third renders the imported graph.</p></div>
+      <div><p class="eyebrow">SystemLens handoff</p><h2>CodeQL baseline and enrichment</h2><p>CodeQL creates the source database, SystemLens indexes it, then the manifest adds complementary facts and the export renders the result.</p></div>
       <pre><code>systemlens init
+mkdir -p .codeql
+codeql database create .codeql/systemlens-java --language=java --source-root=. --build-mode=none
+systemlens index --full --call-graph-engine codeql --codeql-database .codeql/systemlens-java
 systemlens import-facts architecture.ai-graph.json --namespace direct-analysis --complete
 systemlens export microservices --html architecture.html</code></pre>
     </section>
     <section class="poc">
       <p class="eyebrow">Validated path</p>
       <h2>Supermarket POC</h2>
-      <p>The example analyzes order, inventory, and restock source files directly. The manifest records 16 topology facts and 3 ordered flows, imports them into an empty SQLite schema, and produces an HTML export. The source index remains empty.</p>
-      <div class="proof"><strong>0</strong><span>indexed source modules</span><strong>16</strong><span>imported topology facts</span><strong>3</strong><span>imported flows</span><strong>1</strong><span>HTML graph export</span></div>
+      <p>The example analyzes order, inventory, and restock source files with CodeQL and SystemLens first, then imports complementary direct-analysis facts. The indexed snapshot supplies the source modules, endpoints, and code flows used by the HTML export.</p>
+      <div class="proof"><strong>CodeQL</strong><span>source baseline</span><strong>direct</strong><span>complementary facts</span><strong>HTML</strong><span>graph export</span></div>
     </section>
   </main>
   <footer><a href="https://github.com/elkouhen/systemlens-skill">View the skill on GitHub</a></footer>

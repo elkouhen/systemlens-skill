@@ -1,17 +1,14 @@
 ---
 name: systemlens
-description: "Analyze an application directly, generate evidence-backed architecture facts as JSON, import them into SystemLens, and produce an HTML graph without indexing the source code with SystemLens."
+description: "Install CodeQL, index an application with CodeQL and SystemLens, analyze it directly for complementary facts, import the facts as JSON, and produce an HTML graph."
 ---
 
-# SystemLens direct-analysis skill
+# SystemLens CodeQL analysis skill
 
-This skill analyzes an application directly and produces a reviewable JSON
-manifest of architecture facts. It then imports that manifest into SystemLens
-and generates an HTML architecture export.
-
-The skill does not run `systemlens index`. SystemLens stores the imported facts
-as an enrichment namespace. The source code remains outside the SystemLens
-indexing pipeline for this workflow.
+This skill creates a deterministic source baseline with CodeQL and SystemLens,
+then analyzes the application directly to produce a reviewable JSON manifest of
+complementary architecture facts. It imports that manifest and generates an
+HTML architecture export.
 
 ## Workflow
 
@@ -19,19 +16,37 @@ Follow these steps in order:
 
 1. Define the application root, analysis question, included services, and
    excluded directories. Treat the application root as the base for all paths.
-2. Inspect the source directly with repository tools. Read controllers,
+2. Install the CodeQL CLI if it is not already available, following the
+   [official CodeQL CLI setup instructions](https://docs.github.com/en/code-security/how-tos/find-and-fix-code-vulnerabilities/scan-from-the-command-line/set-up-codeql-cli).
+   Put the executable on `PATH` and verify it with `codeql version` before
+   continuing.
+3. Initialize SystemLens and create a CodeQL database for the application:
+   ```bash
+   systemlens init
+   mkdir -p .codeql
+   codeql database create .codeql/systemlens-java \
+     --language=java --source-root=. --build-mode=none
+   ```
+4. Index the application with the CodeQL-backed SystemLens engine:
+   ```bash
+   systemlens index --full --call-graph-engine codeql \
+     --codeql-database .codeql/systemlens-java
+   ```
+   The indexed snapshot is the baseline for source modules, endpoints and
+   code flows.
+5. Inspect the source directly with repository tools. Read controllers,
    consumers, publishers, clients, persistence adapters, configuration, and
    local contracts only when they answer the defined question.
-3. Record one evidence-backed node or edge per fact in a
+6. Record one evidence-backed complementary node or edge per fact in a
    `systemlens-ai-graph-v1` JSON manifest. For flow analysis, add the
-   manifest's `endpoints` and ordered `flows` arrays. Use relative evidence
-   paths and preserve unknown or ambiguous values instead of guessing them.
-4. Run `systemlens init` in the application root. This creates configuration;
-   it does not analyze source files.
-5. Run `systemlens import-facts manifest.json --namespace direct-analysis
-   --complete`. The importer creates the empty compatible SQLite schema when
-   the repository has not been indexed and writes only the manifest facts.
-6. Run `systemlens export microservices --html architecture.html` and inspect
+   indexed SystemLens flows as the baseline and add only direct observations
+   that are not already represented there. Do not duplicate indexed endpoints
+   or flows in the manifest after indexing. Use relative evidence paths and
+   preserve unknown or ambiguous values instead of guessing them.
+7. Run `systemlens import-facts manifest.json --namespace direct-analysis
+   --complete`. The importer adds the complementary facts to the indexed
+   snapshot without replacing CodeQL-derived source facts.
+8. Run `systemlens export microservices --html architecture.html` and inspect
    the generated graph and its evidence.
 
 ## Analysis rules
@@ -53,10 +68,11 @@ Follow these steps in order:
 
 ## Manifest and import boundaries
 
-The manifest contract, including optional direct flows, is defined in
+The manifest contract, including optional direct bootstrap flows, is defined in
 [`references/fact-manifest.md`](references/fact-manifest.md). The importer
-validates the format, stores facts under the requested namespace, and keeps
-source-derived tables empty when no index has been run.
+validates the format and stores complementary facts under the requested
+namespace. A direct bootstrap import remains available when CodeQL cannot run,
+but it is not the default workflow.
 
 Facts from separate analyses must use separate namespaces. Use `--complete`
 only when the manifest represents the complete current snapshot of that
@@ -71,7 +87,7 @@ Before handing off the HTML export, verify that:
 - the manifest contains no absolute path or secret value;
 - the HTML file contains graph data;
 - the rendered topology matches the manifest rather than an unrequested
-  source index.
+  CodeQL-backed source index and the complementary manifest.
 
 For a complete workflow example, see
 [`README.md`](README.md) and the step-by-step page on the

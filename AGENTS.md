@@ -52,7 +52,9 @@ SystemLens version or revision in the handoff.
 8. Keep direct-analysis facts distinct from deterministic SystemLens facts.
    Retain explicit confidence, status, provenance, ambiguity, and namespace
    ownership.
-9. Never add `systemlens index` to the direct-analysis workflow.
+9. Keep CodeQL installation, CodeQL database creation, and the CodeQL-backed
+   `systemlens index` command in the primary analysis workflow. Direct manifest
+   flows remain a fallback for an empty index only.
 10. When a workflow, command, option, MCP tool, configuration field, or data
     contract changes, update every affected example in `README.md`, `SKILL.md`,
     and `references/` in the same pass. Before creating a commit, verify that
@@ -89,9 +91,10 @@ cd <temporary-app-copy>
 ```
 
 The compatibility check must not modify the sibling laboratory checkout or
-reuse its persisted `.systemlens/findings.db`. Confirm that no source index
-was created, validate structured output, and confirm that the generated HTML
-contains graph data. Report unavailable Java, Maven, `uv`, or browser
+reuse its persisted `.systemlens/findings.db`. Confirm that the CodeQL-backed
+source index and generated HTML contain graph data, validate structured output,
+and confirm that the complementary manifest import did not replace indexed
+source facts. Report unavailable CodeQL, Java, Maven, `uv`, or browser
 prerequisites rather than claiming the check passed.
 
 ## Review checklist

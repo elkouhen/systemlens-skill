@@ -1,7 +1,8 @@
 # Product requirements: direct application analysis skill
 
 The skill helps an agent produce a reviewable architecture graph from source
-code without running the SystemLens source indexer.
+code with a deterministic CodeQL-backed SystemLens source index, then add
+evidence-backed direct-analysis facts.
 
 ## Users
 
@@ -9,8 +10,8 @@ code without running the SystemLens source indexer.
   application.
 - An architect who needs explicit evidence and uncertainty in a shareable
   graph.
-- An agent that must hand structured findings to SystemLens without changing
-  the application or source-derived index.
+- An agent that must hand structured findings to SystemLens while preserving a
+  deterministic source-derived index.
 
 ## Workflow outcome
 
@@ -20,13 +21,14 @@ SystemLens namespace, and generates an HTML architecture export.
 
 ## Scope
 
-The skill covers direct source inspection, fact generation, manifest review,
-fact import, and HTML export. It does not run AST extraction, CodeQL, runtime
-instrumentation, or Kubernetes discovery through SystemLens.
+The skill covers CodeQL setup, source indexing, direct source inspection, fact
+generation, manifest review, fact import, and HTML export. It does not cover
+runtime instrumentation or Kubernetes discovery through SystemLens.
 
 ## Acceptance criteria
 
-- The skill explicitly forbids `systemlens index` in its primary workflow.
+- The skill requires a verified CodeQL CLI and a CodeQL-backed `systemlens
+  index` in its primary workflow.
 - Every confirmed fact has relative evidence or an explicit reason for its
   absence.
 - Ambiguous and unresolved facts remain qualified in the manifest.

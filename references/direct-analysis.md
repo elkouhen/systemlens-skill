@@ -7,6 +7,19 @@ resources in scope, and the directories to exclude. Exclude generated output,
 build directories, vendored dependencies, and secrets unless the question
 requires them.
 
+## Create the deterministic baseline
+
+Install and verify the CodeQL CLI with `codeql version`. Then run
+`systemlens init`, create a CodeQL database with
+`codeql database create .codeql/systemlens-java --language=java
+--source-root=. --build-mode=none`, and index it with
+`systemlens index --full --call-graph-engine codeql
+--codeql-database .codeql/systemlens-java`.
+
+Use the indexed modules, endpoints and code flows as the deterministic
+baseline. Direct analysis is for facts that require contextual interpretation
+or are not represented by the indexed model.
+
 ## Read source evidence
 
 Inspect the smallest set of files that can answer the question. For a service
@@ -32,7 +45,7 @@ every status and confidence value is valid. Review the JSON before importing it.
 
 ## Import and export
 
-Run `systemlens init` once in the application root. Then import the manifest
-into a dedicated namespace and generate the HTML export. Do not run
-`systemlens index` as part of this procedure. If the question later requires a
-deterministic source inventory, treat that as a separate workflow and namespace.
+After indexing, import only complementary facts into a dedicated namespace and
+generate the HTML export. Do not duplicate indexed endpoints or flows in the
+manifest. If CodeQL cannot run, the direct bootstrap workflow can import the
+optional endpoint and flow fields into an otherwise empty SystemLens index.
