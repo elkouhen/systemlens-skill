@@ -33,7 +33,10 @@ Follow these steps in order:
      --codeql-database .codeql/systemlens-java
    ```
    The indexed snapshot is the baseline for source modules, endpoints and
-   code flows.
+   code flows. When the CodeQL CLI is unavailable or not licensed for the
+   codebase, run `systemlens index --full --call-graph-engine source`
+   instead: the tree-sitter engine needs no external tool. Report that choice;
+   `systemlens analyze compare-engines` measures its gap where both run.
 5. Inspect the source directly with repository tools. Read controllers,
    consumers, publishers, clients, persistence adapters, configuration, and
    local contracts only when they answer the defined question.
