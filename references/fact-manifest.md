@@ -55,6 +55,18 @@ The importer preserves source-derived facts separately. A `partial` manifest
 adds or updates only its listed facts. A `complete` manifest removes stale
 facts from its namespace when imported with `--complete`.
 
+## Flow data-access annotations
+
+A `flow_data_access` node annotates an indexed flow by its `flow_id` with an
+`action` (`read`, `insert`, `update`, `delete`, `create_or_update`, or
+`read_update`) and an optional `branch`. Use it only for an operation the
+source index does not already hold. SystemLens indexes typed operations
+from Spring Data JPA, `EntityManager`, literal JDBC statements, and MongoDB
+with their transaction scope and guard evidence; `systemlens analyze
+coverage --json` lists what it covered and every unresolved operation with
+its reason. An annotation never records a guard or a transaction that the
+source does not state.
+
 ## Optional direct bootstrap flows
 
 The same manifest may include `endpoints` and `flows` for source-evidenced

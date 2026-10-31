@@ -67,7 +67,16 @@ Follow these steps in order:
 - Keep evidence paths relative to the analyzed application root.
 - Never include credentials, tokens, private keys, absolute workstation paths,
   or full secret-bearing configuration values.
-- Do not describe static source evidence as runtime observation.
+- Do not describe static source evidence as runtime observation, latency
+  percentile, or hotspot; those come only from a persisted runtime
+  collection, are lower bounds or approximations, and carry their source.
+- Treat an indexed data operation as a source-level attempt: `insert` does
+  not prove a row was created, and a reachable operation does not prove it
+  ran. Do not duplicate the indexed JPA, `EntityManager`, JDBC, or MongoDB
+  operations, their transaction scope, or their guards in the manifest.
+- Report a review-aid candidate (`potential_lost_update`,
+  `potential_dual_write`) as "protection not established" or "recovery not
+  established" with both source sites, never as a defect.
 
 ## Manifest and import boundaries
 
