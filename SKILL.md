@@ -32,8 +32,10 @@ Follow these steps in order:
    systemlens index --full --call-graph-engine codeql \
      --codeql-database .codeql/systemlens-java
    ```
-   The indexed snapshot is the baseline for source modules, endpoints and
-   code flows. When the CodeQL CLI is unavailable or not licensed for the
+   SystemLens refuses a database that does not match the current sources,
+   for example after a source change or with another `--source-root`:
+   recreate the database with step 3 before indexing again. The indexed
+   snapshot is the baseline for source modules, endpoints and code flows. When the CodeQL CLI is unavailable or not licensed for the
    codebase, run `systemlens index --full --call-graph-engine source`
    instead: the tree-sitter engine needs no external tool. Report that choice;
    `systemlens analyze compare-engines` measures its gap where both run.
