@@ -22,7 +22,7 @@ Follow these steps in order:
    continuing.
 3. Initialize SystemLens and create a CodeQL database for the application:
    ```bash
-   systemlens init
+   systemlens init --profile codeql
    mkdir -p .codeql
    codeql database create .codeql/systemlens-java \
      --language=java --source-root=. --build-mode=none
@@ -34,10 +34,14 @@ Follow these steps in order:
    ```
    SystemLens refuses a database that does not match the current sources,
    for example after a source change or with another `--source-root`:
-   recreate the database with step 3 before indexing again. The indexed
-   snapshot is the baseline for source modules, endpoints and code flows. When the CodeQL CLI is unavailable or not licensed for the
-   codebase, run `systemlens index --full --call-graph-engine source`
-   instead: the tree-sitter engine needs no external tool. Report that choice;
+   recreate it with the `codeql database create` command of step 3 before
+   indexing again. The indexed snapshot is the baseline for source modules,
+   endpoints and code flows.
+
+   When the CodeQL CLI is unavailable or not licensed for the codebase,
+   initialize with `systemlens init` (profile `default`) and run
+   `systemlens index --full --call-graph-engine source` instead: the
+   tree-sitter engine needs no external tool. Report that choice;
    `systemlens analyze compare-engines` measures its gap where both run.
 5. Inspect the source directly with repository tools. Read controllers,
    consumers, publishers, clients, persistence adapters, configuration, and

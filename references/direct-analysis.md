@@ -10,7 +10,7 @@ requires them.
 ## Create the deterministic baseline
 
 Install and verify the CodeQL CLI with `codeql version`. Then run
-`systemlens init`, create a CodeQL database with
+`systemlens init --profile codeql`, create a CodeQL database with
 `codeql database create .codeql/systemlens-java --language=java
 --source-root=. --build-mode=none`, and index it with
 `systemlens index --full --call-graph-engine codeql
