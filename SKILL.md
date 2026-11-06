@@ -30,7 +30,7 @@ Follow these steps in order:
 4. Index the application with the CodeQL-backed SystemLens engine:
    ```bash
    systemlens index --full --call-graph-engine codeql \
-     --codeql-database .codeql/systemlens-java
+     --engine-database .codeql/systemlens-java
    ```
    SystemLens refuses a database that does not match the current sources,
    for example after a source change or with another `--source-root`:

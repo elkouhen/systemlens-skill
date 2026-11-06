@@ -14,7 +14,7 @@ Install and verify the CodeQL CLI with `codeql version`. Then run
 `codeql database create .codeql/systemlens-java --language=java
 --source-root=. --build-mode=none`, and index it with
 `systemlens index --full --call-graph-engine codeql
---codeql-database .codeql/systemlens-java`. SystemLens refuses a database
+--engine-database .codeql/systemlens-java`. SystemLens refuses a database
 built from other sources or another source root; recreate it after any
 source change. Without a usable CodeQL CLI,
 index with `systemlens index --full --call-graph-engine source` and state in

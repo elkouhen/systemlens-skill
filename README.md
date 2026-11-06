@@ -30,7 +30,7 @@ mkdir -p .codeql
 codeql database create .codeql/systemlens-java \
   --language=java --source-root=. --build-mode=none
 systemlens index --full --call-graph-engine codeql \
-  --codeql-database .codeql/systemlens-java
+  --engine-database .codeql/systemlens-java
 systemlens import-facts architecture.ai-graph.json \
   --namespace direct-analysis --complete
 systemlens export microservices --html architecture.html
