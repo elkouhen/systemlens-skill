@@ -22,7 +22,7 @@ Follow these steps in order:
    continuing.
 3. Initialize SystemLens and create a CodeQL database for the application:
    ```bash
-   systemlens init --profile codeql
+   systemlens init --engine codeql
    mkdir -p .codeql
    codeql database create .codeql/systemlens-java \
      --language=java --source-root=. --build-mode=none
