@@ -28,8 +28,16 @@ or are not represented by the indexed model.
 
 Inspect the smallest set of files that can answer the question. For a service
 graph, start with application entry points, HTTP controllers and clients,
-Kafka listeners and publishers, persistence adapters, configuration, and local
-OpenAPI or AsyncAPI contracts.
+Kafka, RabbitMQ and JMS listeners and publishers, persistence adapters,
+configuration, and local OpenAPI or AsyncAPI contracts.
+
+The index already starts flows at REST routes, Kafka, RabbitMQ and JMS
+listeners, `@Scheduled` methods, `CommandLineRunner`, `ApplicationRunner`,
+`@PostConstruct` and `@EventListener` methods, and follows `publishEvent`
+into the listeners (SystemLens PDR-16). A flow ends on an HTTP call, a
+message publication or a data operation (PDR-15). Read the source directly
+for other triggers, such as `@SqsListener` or Spring Batch jobs, and for
+effects SystemLens does not index, such as Redis.
 
 Record the path and line for each fact while reading. Keep a direct source
 observation separate from a conclusion that requires correlation across files.
